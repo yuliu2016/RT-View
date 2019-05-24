@@ -11,6 +11,8 @@ class RTView : Stage() {
         scene = Scene(ViewPanel())
         width = 1120.dp2px
         height = 630.dp2px
+        minHeight = 384.dp2px
+        minWidth = 768.dp2px
         isMaximized = true
     }
 }

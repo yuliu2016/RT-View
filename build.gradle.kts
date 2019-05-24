@@ -26,8 +26,6 @@ dependencies {
     implementation(kotlin("reflect"))
     // Kotlin Coroutines
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.2.1")
-    // DataFrame Library
-    implementation(group = "de.mpicbg.scicomp", name = "krangl", version = "0.11")
     // Table Library
     implementation(group = "tech.tablesaw", name = "tablesaw-core", version = "0.33.2")
     

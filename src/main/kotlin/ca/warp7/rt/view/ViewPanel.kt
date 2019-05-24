@@ -1,26 +1,25 @@
 package ca.warp7.rt.view
 
 import javafx.geometry.Insets
+import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.control.Separator
+import javafx.scene.control.SplitPane
+import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeView
-import javafx.scene.image.Image
-import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import org.controlsfx.control.spreadsheet.SpreadsheetView
 import org.kordamp.ikonli.javafx.FontIcon
-import javafx.scene.control.TreeItem
 
 
-
-internal class ViewPanel: BorderPane() {
+internal class ViewPanel : BorderPane() {
     init {
         stylesheets.add("/ca/warp7/rt/view/light.css")
-        val sv = SpreadsheetView()
+        val sv = CopyableSpreadsheet(getSampleGrid())
+        val p48 = 96.dp2px
+        sv.columns.forEach { it.setPrefWidth(p48) }
         sv.isEditable = false
         sv.isFixingRowsAllowed = false
         sv.isShowRowHeader = true
@@ -31,25 +30,28 @@ internal class ViewPanel: BorderPane() {
         lv.minWidth = 56.dp2px
         lv.maxWidth = 56.dp2px
         lv.spacing = 16.dp2px
-        lv.padding = Insets(8.dp2px, 0.0, 8.dp2px, 0.0)
+        lv.padding = Insets(16.dp2px, 0.0, 0.0, 0.0)
         lv.alignment = Pos.TOP_CENTER
-        val icons = listOf("far-file-alt", "fas-search", "fas-camera", "fas-tasks", "fas-balance-scale").map { getImg(it) }
+
+        val icons = listOf("far-file-alt", "fas-search", "fas-qrcode", "far-images",
+                "fas-code", "fas-tasks", "fas-cogs").map { getImg(it) }
         lv.children.addAll(icons)
 
         val b = HBox()
         VBox.setVgrow(b, Priority.ALWAYS)
         lv.children.add(b)
 
-        lv.children.add(getImg("fas-sliders-h"))
-
         val sidePane = BorderPane()
         sidePane.left = lv
 
-        val boxCont = VBox()
+        val boxCont = SplitPane()
+        boxCont.orientation = Orientation.VERTICAL
         boxCont.style = "-fx-background-color: #e0e0e0"
         boxCont.minWidth = 384.dp2px
+        boxCont.maxWidth = 384.dp2px
 
-        boxCont.children.add(tree())
+        boxCont.items.add(tree())
+        boxCont.items.add(tree())
 
         sidePane.center = boxCont
 
@@ -74,6 +76,8 @@ internal class ViewPanel: BorderPane() {
         rootItem.children.add(javaItem)
 
         t.root = rootItem
+        t.isShowRoot = false
+        t.minHeight = 128.dp2px
 
         VBox.setVgrow(t, Priority.ALWAYS)
         return t
@@ -82,10 +86,13 @@ internal class ViewPanel: BorderPane() {
     private fun getImg(p: String): Node {
         val a = FontIcon(p)
         a.iconSize = 24.dp2px.toInt()
+        if (p == "fab-python") {
+            a.iconSize = 28.dp2px.toInt()
+        }
         val box = HBox()
         box.alignment = Pos.CENTER
         box.prefWidth = 56.dp2px
-        box.prefHeight = 42.dp2px
+        box.prefHeight = 40.dp2px
         box.children.add(a)
         return box
     }

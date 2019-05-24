@@ -215,7 +215,7 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 /*NEW*/
 
 .master-tab-container {
-    -fx-background-color: #202020;
+    -fx-background-color: #404040;
 }
 
 .master-tab-container .ikonli-font-icon{
