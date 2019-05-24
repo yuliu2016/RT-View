@@ -215,13 +215,13 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 /*NEW*/
 
 .master-tab-container {
-    -fx-background-color: #404040;
+    -fx-background-color: #202020;
 }
 
 .master-tab-container .ikonli-font-icon{
-    -fx-icon-color: #ccc;
+    -fx-icon-color: #aaa;
 }
 
 .master-tab-container HBox:hover .ikonli-font-icon{
-    -fx-icon-color: #5a8ade;
+    -fx-icon-color: #fff;
 }

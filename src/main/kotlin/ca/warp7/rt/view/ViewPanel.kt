@@ -11,6 +11,8 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Color
+import javafx.scene.text.*
 import org.kordamp.ikonli.javafx.FontIcon
 
 
@@ -30,11 +32,26 @@ internal class ViewPanel : BorderPane() {
         lv.minWidth = 56.dp2px
         lv.maxWidth = 56.dp2px
         lv.spacing = 16.dp2px
-        lv.padding = Insets(16.dp2px, 0.0, 0.0, 0.0)
+        lv.padding = Insets(8.dp2px, 0.0, 0.0, 0.0)
         lv.alignment = Pos.TOP_CENTER
 
-        val icons = listOf("far-file-alt", "fas-search", "fas-qrcode", "far-images",
-                "fas-code", "fas-tasks", "fas-cogs").map { getImg(it) }
+        val rt = TextFlow()
+        rt.children.add(Text("R").apply {
+            fill = Color.valueOf("deae5a")
+
+            font = Font.font(font.family, FontWeight.NORMAL, 32.dp2px)
+        })
+        rt.children.add(Text("T").apply {
+            fill = Color.valueOf("5a8ade")
+            font = Font.font(font.family, FontWeight.BOLD, 20.dp2px)
+        })
+
+        rt.textAlignment = TextAlignment.CENTER
+        rt.prefHeight = 40.dp2px
+        lv.children.add(rt)
+
+        val icons = listOf("far-chart-bar", "fas-terminal", "fas-qrcode", "far-images",
+                "far-file-code", "fas-tasks", "fas-cogs").map { getImg(it) }
         lv.children.addAll(icons)
 
         val b = HBox()
@@ -86,8 +103,8 @@ internal class ViewPanel : BorderPane() {
     private fun getImg(p: String): Node {
         val a = FontIcon(p)
         a.iconSize = 24.dp2px.toInt()
-        if (p == "fab-python") {
-            a.iconSize = 28.dp2px.toInt()
+        if (p == "fas-terminal") {
+            a.iconSize = 20.dp2px.toInt()
         }
         val box = HBox()
         box.alignment = Pos.CENTER
