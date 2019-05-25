@@ -1,7 +1,6 @@
 package ca.warp7.rt.view
 
 import javafx.collections.FXCollections
-import javafx.collections.ObservableList
 import javafx.event.ActionEvent
 import javafx.scene.Node
 import javafx.scene.control.MenuItem
@@ -13,9 +12,10 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import org.controlsfx.control.spreadsheet.Grid
 import org.controlsfx.control.spreadsheet.GridBase
-import org.controlsfx.control.spreadsheet.SpreadsheetCell
-import org.controlsfx.control.spreadsheet.SpreadsheetCellType
+import org.controlsfx.control.spreadsheet.SpreadsheetCellType.*
 import org.kordamp.ikonli.javafx.FontIcon
+import tech.tablesaw.api.Table
+import tech.tablesaw.io.csv.CsvReadOptions
 
 typealias Combo = KeyCodeCombination
 
@@ -37,6 +37,7 @@ fun menuItem(t: String,
     return item
 }
 
+@Suppress("unused")
 private fun tree(): Node {
     val t = TreeView<String>()
     val rootItem = TreeItem("Tutorials")
@@ -63,15 +64,25 @@ private fun tree(): Node {
 }
 
 fun getSampleGrid(): Grid {
-    val gridBase = GridBase(80, 10)
-    val rows = FXCollections.observableArrayList<ObservableList<SpreadsheetCell>>()
-    for (row in 0 until gridBase.rowCount) {
-        val currentRow = FXCollections.observableArrayList<SpreadsheetCell>()
-        for (column in 0 until gridBase.columnCount) {
-            currentRow.add(SpreadsheetCellType.STRING.createCell(row, column, 1, 1, "toto"))
+    val options = CsvReadOptions
+            .builder(CopyableSpreadsheet::class.java.getResourceAsStream("/ca/warp7/rt/view/window/test.csv"))
+            .missingValueIndicator("")
+
+    val df = Table.read().usingOptions(options)
+    val grid = GridBase(df.rowCount(), df.columnCount())
+
+    val cols = df.columns().mapIndexed { colIndex, column ->
+        (0 until df.rowCount()).map { rowIndex ->
+            STRING.createCell(rowIndex, colIndex, 1, 1,
+                    if (column.isMissing(rowIndex)) "" else column.get(rowIndex).toString())
         }
-        rows.add(currentRow)
     }
-    gridBase.setRows(rows)
-    return gridBase
+
+    for(i in 0 until df.rowCount()) {
+        grid.rows.add(FXCollections.observableList(cols.map { it[i] }))
+    }
+
+    grid.columnHeaders.addAll(df.columns().map { it.name() })
+
+    return grid
 }
