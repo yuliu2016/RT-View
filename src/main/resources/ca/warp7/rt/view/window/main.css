@@ -69,16 +69,3 @@
 .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
-
-
-.master-tab-icon-container {
-    -fx-background-color: #333;
-}
-
-.master-tab-icon-container .ikonli-font-icon{
-    -fx-icon-color: #aaa;
-}
-
-.master-tab-icon-container HBox:hover .ikonli-font-icon{
-    -fx-icon-color: #fff;
-}

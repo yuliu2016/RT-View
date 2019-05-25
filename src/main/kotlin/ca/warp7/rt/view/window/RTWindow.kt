@@ -1,18 +1,24 @@
 package ca.warp7.rt.view.window
 
+import ca.warp7.rt.view.CopyableSpreadsheet
 import ca.warp7.rt.view.dp2px
+import ca.warp7.rt.view.getSampleGrid
 import javafx.collections.FXCollections
+import javafx.collections.ListChangeListener
 import javafx.collections.ObservableList
 import javafx.geometry.Insets
 import javafx.geometry.Pos
+import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.*
 import javafx.stage.Stage
+import org.kordamp.ikonli.javafx.FontIcon
 
 @Suppress("MemberVisibilityCanBePrivate", "unused", "SpellCheckingInspection")
 class RTWindow private constructor(
@@ -26,7 +32,6 @@ class RTWindow private constructor(
 
     val masterTabs: MutableList<MasterTab>
 
-    private val tabs: ObservableList<MasterTab>
     private var content: MasterTabView? = null
 
     private val rtTextIcon by lazy {
@@ -60,6 +65,11 @@ class RTWindow private constructor(
         sidebarPane = BorderPane()
         rootPane.left = sidebarPane
 
+        val sv = CopyableSpreadsheet(getSampleGrid())
+        sv.isEditable = false
+        sv.columns.forEach { it.setPrefWidth(100.0) }
+        rootPane.center = sv
+
         iconContainer = VBox().apply {
             styleClass.add("master-tab-icon-container")
             minWidth = 56.dp2px
@@ -83,7 +93,7 @@ class RTWindow private constructor(
         stage.apply {
             scene = Scene(rootPane).apply {
                 stylesheets.add(kMainCSS)
-                stylesheets.add(kLightCSS)
+                stylesheets.add(kDarkCSS)
                 setOnKeyPressed {
                     when {
                         it.code == KeyCode.F11 -> stage.isFullScreen = true
@@ -93,8 +103,26 @@ class RTWindow private constructor(
             }
         }
 
-        tabs = FXCollections.observableArrayList()
-        masterTabs = tabs
+        masterTabs = mutableListOf()
+    }
+
+    fun updateTabs() {
+        iconContainer.children.apply {
+            clear()
+            add(rtTextIcon)
+            addAll(masterTabs.map { getIcon(it) })
+        }
+    }
+
+    private fun getIcon(p: MasterTab): Node {
+        val a = FontIcon(p.iconName)
+        a.iconSize = p.iconSize.dp2px.toInt()
+        val box = HBox()
+        box.alignment = Pos.CENTER
+        box.prefWidth = 56.dp2px
+        box.prefHeight = 40.dp2px
+        box.children.add(a)
+        return box
     }
 
     fun show() {
@@ -105,7 +133,7 @@ class RTWindow private constructor(
         return this === primary
     }
 
-    private var isLight = true
+    private var isLight = false
 
     private fun toggleTheme() {
         isLight = !isLight

@@ -3,9 +3,14 @@ package ca.warp7.rt.view
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.event.ActionEvent
+import javafx.scene.Node
 import javafx.scene.control.MenuItem
+import javafx.scene.control.TreeItem
+import javafx.scene.control.TreeView
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
+import javafx.scene.layout.Priority
+import javafx.scene.layout.VBox
 import org.controlsfx.control.spreadsheet.Grid
 import org.controlsfx.control.spreadsheet.GridBase
 import org.controlsfx.control.spreadsheet.SpreadsheetCell
@@ -30,6 +35,31 @@ fun menuItem(t: String,
     item.accelerator = combo
     item.setOnAction { onAction.invoke(it) }
     return item
+}
+
+private fun tree(): Node {
+    val t = TreeView<String>()
+    val rootItem = TreeItem("Tutorials")
+
+    val webItem = TreeItem("Web Tutorials")
+    webItem.children.add(TreeItem("HTML  Tutorial"))
+    webItem.children.add(TreeItem("HTML5 Tutorial"))
+    webItem.children.add(TreeItem("CSS Tutorial"))
+    webItem.children.add(TreeItem("SVG Tutorial"))
+    rootItem.children.add(webItem)
+
+    val javaItem = TreeItem("Java Tutorials")
+    javaItem.children.add(TreeItem("Java Language"))
+    javaItem.children.add(TreeItem("Java Collections"))
+    javaItem.children.add(TreeItem("Java Concurrency"))
+    rootItem.children.add(javaItem)
+
+    t.root = rootItem
+    t.isShowRoot = false
+    t.minHeight = 128.dp2px
+
+    VBox.setVgrow(t, Priority.ALWAYS)
+    return t
 }
 
 fun getSampleGrid(): Grid {

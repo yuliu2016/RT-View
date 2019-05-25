@@ -1,3 +1,7 @@
+.root {
+    -fx-background-color: black;
+}
+
 .list-cell {
     -fx-background-color: white;
     -fx-padding: 0;
@@ -78,28 +82,43 @@
 .spreadsheet-cell:filled:focused:selected,
 .spreadsheet-cell:filled:focused:selected:hover {
     /*-fx-background-color: #8cb1ff;*/
-    -fx-background-color: #ddd;
-    -fx-border-color: #a9a9a9;
+    -fx-background-color: #202020;
+    -fx-border-color: #404040;
     -fx-border-width: 1px;
-    -fx-text-fill: -fx-selection-bar-text;
+    -fx-text-fill: white;
 }
 
 .spreadsheet-cell:hover,
 .spreadsheet-cell:filled:focused {
     /*-fx-background-color: #988490;*/
-    -fx-text-fill: -fx-text-inner-color;
+    -fx-text-fill: white;
     -fx-background-insets: 0, 0 0 1 0;
 }
 
 .spreadsheet-cell {
     -fx-padding: 0 0 0 0.2em;
-    -fx-border-color: #3c5c94;
-    -fx-border-width: 0.3px;
-    -fx-background-color: -fx-table-cell-border-color, white;
+    -fx-border-color: #404040;
+    -fx-border-width: 1px;
+    -fx-text-fill: white;
+    /*-fx-background-color: -fx-table-cell-border-color, white;*/
+    -fx-background-color: black;
 }
 
 VerticalHeader > Label.selected {
     -fx-background-color: #3c5c94;
+    -fx-text-fill: white;
+}
+
+VerticalHeader > Label {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+    -fx-border-color: black;
+    -fx-border-width: 0;
+}
+
+HorizontalHeaderColumn > TableColumnHeader.column-header.table-column,
+HorizontalHeaderColumn > TableColumnHeader.column-header.table-column > Label {
+    -fx-background-color: black;
     -fx-text-fill: white;
 }
 
@@ -139,6 +158,18 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 
 .button .ikonli-font-icon {
     -fx-icon-color: white
+}
+
+.master-tab-icon-container {
+    -fx-background-color: #333;
+}
+
+.master-tab-icon-container .ikonli-font-icon{
+    -fx-icon-color: #888;
+}
+
+.master-tab-icon-container HBox:hover .ikonli-font-icon{
+    -fx-icon-color: white;
 }
 
 .master-tab-view {

@@ -1,3 +1,6 @@
+.root {
+    -fx-background-color: white;
+}
 
 .list-cell {
     -fx-background-color: white;
@@ -94,8 +97,8 @@
 
 .spreadsheet-cell {
     -fx-padding: 0 0 0 0.2em;
-    -fx-border-color: #3c5c94;
-    -fx-border-width: 0.3px;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
     -fx-background-color: -fx-table-cell-border-color, white;
 }
 
@@ -142,6 +145,18 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-icon-color: white
 }
 
-.master-tab-view {
+.master-tab-icon-container {
     -fx-background-color: #eee;
+}
+
+.master-tab-icon-container .ikonli-font-icon{
+    -fx-icon-color: #aaa;
+}
+
+.master-tab-icon-container HBox:hover .ikonli-font-icon{
+    -fx-icon-color: black;
+}
+
+.master-tab-view {
+    -fx-background-color: #ddd;
 }

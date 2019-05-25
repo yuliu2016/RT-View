@@ -1,13 +1,25 @@
 package test.ca.warp7.rt.view
 
-import ca.warp7.rt.view.RTView
+import ca.warp7.rt.view.window.MasterTab
 import ca.warp7.rt.view.window.RTWindow
 import javafx.application.Application
 import javafx.stage.Stage
 
 class Test0 : Application() {
     override fun start(primaryStage: Stage) {
-        RTWindow.primary(primaryStage).show()
+        val w = RTWindow.primary(primaryStage)
+        w.masterTabs.addAll(listOf(
+                MasterTab("far-chart-bar", 24),
+                MasterTab("fas-terminal", 20),
+                MasterTab("fas-qrcode", 24),
+                MasterTab("far-images", 24),
+                MasterTab("far-file-code", 24),
+                MasterTab("fas-tasks", 24),
+                MasterTab("fas-cogs", 24)
+        )
+        )
+        w.updateTabs()
+        w.show()
     }
 }
 
