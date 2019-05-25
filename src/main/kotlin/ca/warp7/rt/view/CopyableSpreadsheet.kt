@@ -24,7 +24,6 @@ open class CopyableSpreadsheet(grid: Grid?) : SpreadsheetView(grid) {
                     zoomFactor = 1.0
                 }
         )
-
         return contextMenu
     }
 

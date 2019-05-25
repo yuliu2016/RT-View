@@ -87,6 +87,7 @@ class RTWindow private constructor(
                 setOnKeyPressed {
                     when {
                         it.code == KeyCode.F11 -> stage.isFullScreen = true
+                        it.code == KeyCode.F10 -> toggleTheme()
                     }
                 }
             }
@@ -102,6 +103,22 @@ class RTWindow private constructor(
 
     private fun isPrimary(): Boolean {
         return this === primary
+    }
+
+    private var isLight = true
+
+    private fun toggleTheme() {
+        isLight = !isLight
+        stage.scene.stylesheets.apply {
+            if (isLight) {
+                remove(kDarkCSS)
+                add(kLightCSS)
+            } else {
+                remove(kLightCSS)
+                add(kDarkCSS)
+            }
+        }
+
     }
 
     companion object {
