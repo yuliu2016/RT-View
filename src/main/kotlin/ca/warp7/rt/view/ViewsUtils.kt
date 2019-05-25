@@ -63,7 +63,7 @@ private fun tree(): Node {
 }
 
 fun getSampleGrid(): Grid {
-    val gridBase = GridBase(80, 20)
+    val gridBase = GridBase(80, 10)
     val rows = FXCollections.observableArrayList<ObservableList<SpreadsheetCell>>()
     for (row in 0 until gridBase.rowCount) {
         val currentRow = FXCollections.observableArrayList<SpreadsheetCell>()

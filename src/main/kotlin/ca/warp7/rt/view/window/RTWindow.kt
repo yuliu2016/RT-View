@@ -3,9 +3,6 @@ package ca.warp7.rt.view.window
 import ca.warp7.rt.view.CopyableSpreadsheet
 import ca.warp7.rt.view.dp2px
 import ca.warp7.rt.view.getSampleGrid
-import javafx.collections.FXCollections
-import javafx.collections.ListChangeListener
-import javafx.collections.ObservableList
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -15,9 +12,8 @@ import javafx.scene.input.KeyCode
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import javafx.scene.paint.Color
-import javafx.scene.text.*
 import javafx.stage.Stage
+import org.controlsfx.control.spreadsheet.SpreadsheetView
 import org.kordamp.ikonli.javafx.FontIcon
 
 @Suppress("MemberVisibilityCanBePrivate", "unused", "SpellCheckingInspection")
@@ -31,24 +27,6 @@ class RTWindow private constructor(
     private val tabContainer: VBox
 
     val masterTabs: MutableList<MasterTab>
-
-    private var content: MasterTabView? = null
-
-    private val rtTextIcon by lazy {
-        TextFlow().apply {
-            children.add(Text("R").apply {
-                fill = Color.valueOf("deae5a")
-
-                font = Font.font(font.family, FontWeight.NORMAL, 32.dp2px)
-            })
-            children.add(Text("T").apply {
-                fill = Color.valueOf("5a8ade")
-                font = Font.font(font.family, FontWeight.BOLD, 20.dp2px)
-            })
-            textAlignment = TextAlignment.CENTER
-            prefHeight = 40.dp2px
-        }
-    }
 
     init {
         stage.apply {
@@ -98,6 +76,16 @@ class RTWindow private constructor(
                     when {
                         it.code == KeyCode.F11 -> stage.isFullScreen = true
                         it.code == KeyCode.F10 -> toggleTheme()
+                        it.code == KeyCode.F9 -> toggleSidebar()
+                        it.code == KeyCode.F8 -> {
+                            println("hi")
+                            Stage().apply {
+                                scene = Scene(SpreadsheetView())
+                                width = 500.0
+                                height = 500.0
+                                show()
+                            }
+                        }
                     }
                 }
             }
@@ -110,11 +98,11 @@ class RTWindow private constructor(
         iconContainer.children.apply {
             clear()
             add(rtTextIcon)
-            addAll(masterTabs.map { getIcon(it) })
+            addAll(masterTabs.map { createIcon(it) })
         }
     }
 
-    private fun getIcon(p: MasterTab): Node {
+    private fun createIcon(p: MasterTab): Node {
         val a = FontIcon(p.iconName)
         a.iconSize = p.iconSize.dp2px.toInt()
         val box = HBox()
@@ -146,7 +134,17 @@ class RTWindow private constructor(
                 add(kDarkCSS)
             }
         }
+    }
 
+    private var isSidebarShown = true
+
+    private fun toggleSidebar() {
+        isSidebarShown = !isSidebarShown
+        if (isSidebarShown) {
+            sidebarPane.center = tabContainer
+        } else {
+            sidebarPane.center = null
+        }
     }
 
     companion object {

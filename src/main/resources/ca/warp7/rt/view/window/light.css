@@ -114,8 +114,12 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-text-fill: white;
 }
 
+.table-view .filler {
+    -fx-background-color: white;
+}
+
 .menu-item {
-    -fx-padding: 2 8 2 8;
+    -fx-padding: 3 8 3 8;
 }
 
 .menu-item:focused {

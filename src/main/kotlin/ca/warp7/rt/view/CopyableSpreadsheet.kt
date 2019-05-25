@@ -42,12 +42,14 @@ open class CopyableSpreadsheet(grid: Grid?) : SpreadsheetView(grid) {
         val minCol = allCols.min()
         val maxCol = allCols.max()
         if (minRow != null && maxRow != null && minCol != null && maxCol != null) {
-            for (col in minCol until maxCol) {
-                builder.append(grid.columnHeaders[col])
-                builder.append("\t")
+            if (grid.columnHeaders.isNotEmpty()) {
+                for (col in minCol until maxCol) {
+                    builder.append(grid.columnHeaders[col])
+                    builder.append("\t")
+                }
+                builder.append(grid.columnHeaders[maxCol])
+                builder.append("\n")
             }
-            builder.append(grid.columnHeaders[maxCol])
-            builder.append("\n")
             for (i in minRow..maxRow) {
                 for (j in minCol until maxCol) {
                     builder.append(grid.rows[i][j].item)

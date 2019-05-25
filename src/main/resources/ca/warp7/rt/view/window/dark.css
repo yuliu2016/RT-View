@@ -82,8 +82,8 @@
 .spreadsheet-cell:filled:focused:selected,
 .spreadsheet-cell:filled:focused:selected:hover {
     /*-fx-background-color: #8cb1ff;*/
-    -fx-background-color: #202020;
-    -fx-border-color: #404040;
+    -fx-background-color: #333;
+    -fx-border-color: #555;
     -fx-border-width: 1px;
     -fx-text-fill: white;
 }
@@ -92,12 +92,12 @@
 .spreadsheet-cell:filled:focused {
     /*-fx-background-color: #988490;*/
     -fx-text-fill: white;
-    -fx-background-insets: 0, 0 0 1 0;
+    /*-fx-background-insets: 0, 0 0 1 0;*/
 }
 
 .spreadsheet-cell {
     -fx-padding: 0 0 0 0.2em;
-    -fx-border-color: #404040;
+    -fx-border-color: #555;
     -fx-border-width: 1px;
     -fx-text-fill: white;
     /*-fx-background-color: -fx-table-cell-border-color, white;*/
@@ -110,16 +110,23 @@ VerticalHeader > Label.selected {
 }
 
 VerticalHeader > Label {
-    -fx-background-color: black;
+    -fx-background-color: #333;
     -fx-text-fill: white;
-    -fx-border-color: black;
-    -fx-border-width: 0;
+    -fx-border-color: #555;
+    -fx-border-width: 1px;
 }
 
-HorizontalHeaderColumn > TableColumnHeader.column-header.table-column,
+HorizontalHeaderColumn > TableColumnHeader.column-header.table-column {
+    -fx-background-color: #333;
+    -fx-border-color: #555;
+}
+
 HorizontalHeaderColumn > TableColumnHeader.column-header.table-column > Label {
-    -fx-background-color: black;
     -fx-text-fill: white;
+}
+
+.table-view .filler {
+    -fx-background-color: black;
 }
 
 HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected,
@@ -130,7 +137,7 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .menu-item {
-    -fx-padding: 2 8 2 8;
+    -fx-padding: 3 8 3 8;
 }
 
 .menu-item:focused {
