@@ -211,3 +211,21 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 .button .ikonli-font-icon {
     -fx-icon-color: white
 }
+
+/*NEW*/
+
+.master-tab-icon-container {
+    -fx-background-color: #202020;
+}
+
+.master-tab-icon-container .ikonli-font-icon{
+    -fx-icon-color: #aaa;
+}
+
+.master-tab-icon-container HBox:hover .ikonli-font-icon{
+    -fx-icon-color: #fff;
+}
+
+.master-tab-view {
+    -fx-background-color: #eee;
+}

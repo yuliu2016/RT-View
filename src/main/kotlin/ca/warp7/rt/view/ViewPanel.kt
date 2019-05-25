@@ -28,7 +28,7 @@ internal class ViewPanel : BorderPane() {
         center = sv
 
         val lv = VBox()
-        lv.styleClass.add("master-tab-container")
+        lv.styleClass.add("master-tab-icon-container")
         lv.minWidth = 56.dp2px
         lv.maxWidth = 56.dp2px
         lv.spacing = 16.dp2px

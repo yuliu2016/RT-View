@@ -2,6 +2,6 @@ package ca.warp7.rt.view.window
 
 import javafx.scene.Node
 
-interface TabContent {
+interface MasterTabView {
     val view: Node
 }
