@@ -7,7 +7,7 @@ import javafx.stage.Stage
 class RTView : Stage() {
     init {
         title = "RTView"
-        icons.add(Image(this::class.java.getResourceAsStream("/ca/warp7/rt/view/app_icon.png")))
+        icons.add(Image(this::class.java.getResourceAsStream("/ca/warp7/rt/view/window/app_icon.png")))
         scene = Scene(ViewPanel())
         width = 1120.dp2px
         height = 630.dp2px

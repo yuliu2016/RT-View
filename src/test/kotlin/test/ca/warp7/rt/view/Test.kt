@@ -1,12 +1,13 @@
 package test.ca.warp7.rt.view
 
 import ca.warp7.rt.view.RTView
+import ca.warp7.rt.view.window.RTWindow
 import javafx.application.Application
 import javafx.stage.Stage
 
 class Test0 : Application() {
     override fun start(primaryStage: Stage) {
-        RTView().show()
+        RTWindow.primary(primaryStage).show()
     }
 }
 

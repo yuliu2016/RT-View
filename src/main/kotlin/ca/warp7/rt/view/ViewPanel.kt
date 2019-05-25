@@ -18,7 +18,7 @@ import org.kordamp.ikonli.javafx.FontIcon
 
 internal class ViewPanel : BorderPane() {
     init {
-        stylesheets.add("/ca/warp7/rt/view/light.css")
+        stylesheets.add("/ca/warp7/rt/view/window/light.css")
         val sv = CopyableSpreadsheet(getSampleGrid())
         val p48 = 96.dp2px
         sv.columns.forEach { it.setPrefWidth(p48) }
