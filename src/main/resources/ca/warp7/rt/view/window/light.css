@@ -102,8 +102,14 @@
     -fx-background-color: -fx-table-cell-border-color, white;
 }
 
+VerticalHeader > Label {
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+}
+
 VerticalHeader > Label.selected {
     -fx-background-color: #3c5c94;
+    -fx-border-color: #3c5c94;
     -fx-text-fill: white;
 }
 
@@ -150,17 +156,25 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .master-tab-icon-container {
-    -fx-background-color: #eee;
+    -fx-background-color: #fff;
 }
 
-.master-tab-icon-container .ikonli-font-icon{
-    -fx-icon-color: #aaa;
+.master-tab-icon-container .ikonli-font-icon {
+    -fx-icon-color: #888;
 }
 
-.master-tab-icon-container HBox:hover .ikonli-font-icon{
+.master-tab-icon-container HBox:hover .ikonli-font-icon {
     -fx-icon-color: black;
 }
 
 .master-tab-view {
     -fx-background-color: #ddd;
+}
+
+.master-tab-icon-selected{
+    -fx-background-color: #ddd;
+}
+
+.master-tab-icon-selected .ikonli-font-icon {
+    -fx-icon-color: black;
 }

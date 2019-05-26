@@ -106,6 +106,7 @@
 
 VerticalHeader > Label.selected {
     -fx-background-color: #3c5c94;
+    -fx-border-color: #3c5c94;
     -fx-text-fill: white;
 }
 
@@ -133,6 +134,7 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected,
 HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected > Label {
     /*-fx-background-color: #5a8ade;*/
     -fx-background-color: #3c5c94;
+    -fx-border-color: #3c5c94;
     -fx-text-fill: white;
 }
 
@@ -180,5 +182,13 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .master-tab-view {
-    -fx-background-color: #404040;
+    -fx-background-color: #444;
+}
+
+.master-tab-icon-selected {
+    -fx-background-color: #444;
+}
+
+.master-tab-icon-selected .ikonli-font-icon {
+    -fx-icon-color: white;
 }

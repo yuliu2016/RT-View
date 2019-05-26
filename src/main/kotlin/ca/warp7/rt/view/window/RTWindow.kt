@@ -1,6 +1,6 @@
 package ca.warp7.rt.view.window
 
-import ca.warp7.rt.view.CopyableSpreadsheet
+import ca.warp7.rt.view.DataView
 import ca.warp7.rt.view.dp2px
 import ca.warp7.rt.view.getSampleGrid
 import javafx.geometry.Insets
@@ -43,7 +43,7 @@ class RTWindow private constructor(
         sidebarPane = BorderPane()
         rootPane.left = sidebarPane
 
-        val sv = CopyableSpreadsheet(getSampleGrid())
+        val sv = DataView(getSampleGrid())
         sv.isEditable = false
         sv.columns.forEach { it.setPrefWidth(100.0) }
         rootPane.center = sv
@@ -52,8 +52,7 @@ class RTWindow private constructor(
             styleClass.add("master-tab-icon-container")
             minWidth = 56.dp2px
             maxWidth = 56.dp2px
-            spacing = 16.dp2px
-            padding = Insets(8.dp2px, 0.0, 0.0, 0.0)
+            padding = Insets(4.dp2px, 0.0, 0.0, 0.0)
             alignment = Pos.TOP_CENTER
             children.add(rtTextIcon)
         }
@@ -65,8 +64,6 @@ class RTWindow private constructor(
             minWidth = 384.dp2px
             maxWidth = 384.dp2px
         }
-
-        sidebarPane.center = tabContainer
 
         stage.apply {
             scene = Scene(rootPane).apply {
@@ -98,18 +95,39 @@ class RTWindow private constructor(
         iconContainer.children.apply {
             clear()
             add(rtTextIcon)
-            addAll(masterTabs.map { createIcon(it) })
+            addAll(masterTabs.mapIndexed { i, p -> createIcon(i, p) })
         }
     }
 
-    private fun createIcon(p: MasterTab): Node {
+    var selectedIndex = -1
+
+    private fun createIcon(i: Int, p: MasterTab): Node {
         val a = FontIcon(p.iconName)
         a.iconSize = p.iconSize.dp2px.toInt()
         val box = HBox()
         box.alignment = Pos.CENTER
         box.prefWidth = 56.dp2px
-        box.prefHeight = 40.dp2px
+        box.prefHeight = 56.dp2px
         box.children.add(a)
+        box.setOnMousePressed {
+            iconContainer.children.forEach {
+                it.styleClass.remove("master-tab-icon-selected")
+            }
+            if (i == selectedIndex) {
+                isSidebarShown = !isSidebarShown
+                if (isSidebarShown) {
+                    sidebarPane.center = tabContainer
+                    box.styleClass.add("master-tab-icon-selected")
+                } else {
+                    sidebarPane.center = null
+                }
+            } else {
+                box.styleClass.add("master-tab-icon-selected")
+                isSidebarShown = true
+                sidebarPane.center = tabContainer
+                selectedIndex = i
+            }
+        }
         return box
     }
 
@@ -136,7 +154,7 @@ class RTWindow private constructor(
         }
     }
 
-    private var isSidebarShown = true
+    private var isSidebarShown = false
 
     private fun toggleSidebar() {
         isSidebarShown = !isSidebarShown

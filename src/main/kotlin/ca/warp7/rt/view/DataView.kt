@@ -10,7 +10,7 @@ import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
 import org.controlsfx.control.spreadsheet.Grid
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 
-open class CopyableSpreadsheet(grid: Grid?) : SpreadsheetView(grid) {
+open class DataView(grid: Grid?) : SpreadsheetView(grid) {
 
     override fun getSpreadsheetViewContextMenu(): ContextMenu {
         val contextMenu = ContextMenu()
@@ -42,7 +42,7 @@ open class CopyableSpreadsheet(grid: Grid?) : SpreadsheetView(grid) {
         val minCol = allCols.min()
         val maxCol = allCols.max()
         if (minRow != null && maxRow != null && minCol != null && maxCol != null) {
-            if (grid.columnHeaders.isNotEmpty()) {
+            if (grid.columnHeaders.isNotEmpty() && minCol != maxCol) {
                 for (col in minCol until maxCol) {
                     builder.append(grid.columnHeaders[col])
                     builder.append("\t")

@@ -12,7 +12,7 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import org.controlsfx.control.spreadsheet.Grid
 import org.controlsfx.control.spreadsheet.GridBase
-import org.controlsfx.control.spreadsheet.SpreadsheetCellType.*
+import org.controlsfx.control.spreadsheet.SpreadsheetCellType.STRING
 import org.kordamp.ikonli.javafx.FontIcon
 import tech.tablesaw.api.Table
 import tech.tablesaw.io.csv.CsvReadOptions
@@ -65,7 +65,7 @@ private fun tree(): Node {
 
 fun getSampleGrid(): Grid {
     val options = CsvReadOptions
-            .builder(CopyableSpreadsheet::class.java.getResourceAsStream("/ca/warp7/rt/view/window/test.csv"))
+            .builder(DataView::class.java.getResourceAsStream("/ca/warp7/rt/view/window/test.csv"))
             .missingValueIndicator("")
 
     val df = Table.read().usingOptions(options)
@@ -73,12 +73,12 @@ fun getSampleGrid(): Grid {
 
     val cols = df.columns().mapIndexed { colIndex, column ->
         (0 until df.rowCount()).map { rowIndex ->
-            STRING.createCell(rowIndex, colIndex, 1, 1,
-                    if (column.isMissing(rowIndex)) "" else column.get(rowIndex).toString())
+            if (column.isMissing(rowIndex)) STRING.createCell(rowIndex, colIndex, 1, 1, "")
+            else STRING.createCell(rowIndex, colIndex, 1, 1, column.get(rowIndex).toString())
         }
     }
 
-    for(i in 0 until df.rowCount()) {
+    for (i in 0 until df.rowCount()) {
         grid.rows.add(FXCollections.observableList(cols.map { it[i] }))
     }
 
