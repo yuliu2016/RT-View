@@ -3,7 +3,6 @@ package ca.warp7.rt.view.window
 import ca.warp7.rt.view.DataView
 import ca.warp7.rt.view.dp2px
 import ca.warp7.rt.view.getSampleGrid
-import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.Scene
@@ -12,6 +11,7 @@ import javafx.scene.input.KeyCode
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Color
 import javafx.stage.Stage
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 import org.kordamp.ikonli.javafx.FontIcon
@@ -52,7 +52,6 @@ class RTWindow private constructor(
             styleClass.add("master-tab-icon-container")
             minWidth = 56.dp2px
             maxWidth = 56.dp2px
-            padding = Insets(4.dp2px, 0.0, 0.0, 0.0)
             alignment = Pos.TOP_CENTER
             children.add(rtTextIcon)
         }
@@ -72,16 +71,13 @@ class RTWindow private constructor(
                 setOnKeyPressed {
                     when {
                         it.code == KeyCode.F11 -> stage.isFullScreen = true
-                        it.code == KeyCode.F10 -> toggleTheme()
-                        it.code == KeyCode.F9 -> toggleSidebar()
-                        it.code == KeyCode.F8 -> {
-                            println("hi")
-                            Stage().apply {
-                                scene = Scene(SpreadsheetView())
-                                width = 500.0
-                                height = 500.0
-                                show()
-                            }
+                        it.code == KeyCode.F1 -> toggleTheme()
+                        it.code == KeyCode.F3 -> enterDialog()
+                        it.code == KeyCode.F8 -> Stage().apply {
+                            scene = Scene(SpreadsheetView())
+                            width = 500.0
+                            height = 500.0
+                            show()
                         }
                     }
                 }
@@ -156,13 +152,46 @@ class RTWindow private constructor(
 
     private var isSidebarShown = false
 
-    private fun toggleSidebar() {
-        isSidebarShown = !isSidebarShown
-        if (isSidebarShown) {
-            sidebarPane.center = tabContainer
-        } else {
-            sidebarPane.center = null
+    private val cancelButton by lazy {
+        val a = FontIcon("fas-times")
+        a.iconSize = 24.dp2px.toInt()
+        val box = HBox()
+        box.styleClass.add("master-cancel")
+        box.alignment = Pos.CENTER
+        box.prefWidth = 56.dp2px
+        box.prefHeight = 56.dp2px
+        box.children.add(a)
+        box.setOnMouseClicked {
+            inDialog = false
+            updateTabs()
         }
+        box
+    }
+
+    private val okButton by lazy {
+        val a = FontIcon("fas-check")
+        a.iconSize = 24.dp2px.toInt()
+        val box = HBox()
+        box.styleClass.add("master-ok")
+        box.alignment = Pos.CENTER
+        box.prefWidth = 56.dp2px
+        box.prefHeight = 56.dp2px
+        box.children.add(a)
+        box.setOnMouseClicked {
+            inDialog = false
+            updateTabs()
+        }
+        box
+    }
+
+    private var inDialog = false
+
+    private fun enterDialog() {
+        if (inDialog) return
+        inDialog = true
+        iconContainer.children.clear()
+        iconContainer.children.add(cancelButton)
+        iconContainer.children.add(okButton)
     }
 
     companion object {

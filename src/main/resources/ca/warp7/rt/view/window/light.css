@@ -178,3 +178,11 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 .master-tab-icon-selected .ikonli-font-icon {
     -fx-icon-color: black;
 }
+
+.master-cancel .ikonli-font-icon{
+    -fx-icon-color: red;
+}
+
+.master-ok .ikonli-font-icon{
+    -fx-icon-color: green;
+}
