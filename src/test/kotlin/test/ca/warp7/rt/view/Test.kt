@@ -8,17 +8,17 @@ import javafx.stage.Stage
 class Test0 : Application() {
     override fun start(primaryStage: Stage) {
         val w = RTWindow.primary(primaryStage)
-        w.masterTabs.addAll(listOf(
-                MasterTab("fas-chart-bar", 24),
-                MasterTab("fas-terminal", 20),
-                MasterTab("fas-qrcode", 24),
-                MasterTab("fas-images", 24),
-                MasterTab("fas-file-code", 24),
-                MasterTab("fas-tasks", 24),
-                MasterTab("fas-cogs", 24)
-        )
-        )
-        w.updateTabs()
+        w.doWithMasterTabs {
+            addAll(listOf(
+                    MasterTab("fas-chart-bar", 24),
+                    MasterTab("fas-terminal", 20),
+                    MasterTab("fas-qrcode", 24),
+                    MasterTab("fas-images", 24),
+                    MasterTab("fas-file-code", 24),
+                    MasterTab("fas-tasks", 24),
+                    MasterTab("fas-cogs", 24)
+            ))
+        }
         w.show()
     }
 }

@@ -97,6 +97,7 @@
 
 .spreadsheet-cell {
     -fx-padding: 0 0 0 0.2em;
+    -fx-font-weight: normal;
     -fx-border-color: #ccc;
     -fx-border-width: 1px;
     -fx-background-color: -fx-table-cell-border-color, white;
@@ -179,10 +180,26 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-icon-color: black;
 }
 
+.master-cancel:hover {
+    -fx-background-color: #ccc;
+}
+
+.master-cancel:hover .ikonli-font-icon{
+    -fx-icon-color: #ff0000;
+}
+
 .master-cancel .ikonli-font-icon{
-    -fx-icon-color: red;
+    -fx-icon-color: #ff0000;
+}
+
+.master-ok:hover {
+    -fx-background-color: #ccc;
+}
+
+.master-ok:hover .ikonli-font-icon{
+    -fx-icon-color: #00dd00;
 }
 
 .master-ok .ikonli-font-icon{
-    -fx-icon-color: green;
+    -fx-icon-color: #00dd00;
 }

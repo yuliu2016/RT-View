@@ -11,7 +11,6 @@ import javafx.scene.input.KeyCode
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import javafx.scene.paint.Color
 import javafx.stage.Stage
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 import org.kordamp.ikonli.javafx.FontIcon
@@ -26,12 +25,75 @@ class RTWindow private constructor(
     private val iconContainer: VBox
     private val tabContainer: VBox
 
-    val masterTabs: MutableList<MasterTab>
+    private class StateMachine {
+        var selectedIndex = -1
+        var isLightTheme = false
+        var isSidebarShown = false
+        var isDialog = false
+        var iconNodes: List<Node> = listOf()
+        val masterTabs: MutableList<MasterTab> = mutableListOf()
+    }
+
+    private val state = StateMachine()
+
+    private fun StateMachine.reflectTheme() {
+        stage.scene.stylesheets.apply {
+            if (isLightTheme) {
+                remove(kDarkCSS)
+                add(kLightCSS)
+            } else {
+                remove(kLightCSS)
+                add(kDarkCSS)
+            }
+        }
+    }
+
+    private fun StateMachine.reflect() {
+        if (isDialog) {
+            iconContainer.children.apply {
+                clear()
+                add(cancelButton)
+                add(okButton)
+            }
+            isSidebarShown = true
+        } else {
+            iconContainer.children.apply {
+                clear()
+                add(rtTextIcon)
+                addAll(iconNodes)
+            }
+        }
+        if (isSidebarShown) {
+            sidebarPane.center = tabContainer
+        } else {
+            sidebarPane.center = null
+        }
+    }
+
+    private fun StateMachine.toggleTheme() {
+        isLightTheme = !isLightTheme
+        reflectTheme()
+    }
+
+
+    private fun StateMachine.toggleSidebar() {
+        isSidebarShown = !isSidebarShown
+    }
+
+    private fun StateMachine.toggleDialog() {
+        isDialog = !isDialog
+    }
+
+    private fun StateMachine.enterDialog() {
+        if (isDialog) return
+        state.isDialog = true
+        reflect()
+    }
 
     init {
         stage.apply {
-            title = "Restructured Tables"
-            icons.add(Image(RTWindow::class.java.getResourceAsStream("/ca/warp7/rt/view/window/app_icon.png")))
+            title = kTitle
+            icons.add(Image(RTWindow::class.java.getResourceAsStream(kIcon)))
             width = 1120.dp2px
             height = 630.dp2px
             minHeight = 384.dp2px
@@ -71,8 +133,8 @@ class RTWindow private constructor(
                 setOnKeyPressed {
                     when {
                         it.code == KeyCode.F11 -> stage.isFullScreen = true
-                        it.code == KeyCode.F1 -> toggleTheme()
-                        it.code == KeyCode.F3 -> enterDialog()
+                        it.code == KeyCode.F1 -> state.toggleTheme()
+                        it.code == KeyCode.F3 -> state.enterDialog()
                         it.code == KeyCode.F8 -> Stage().apply {
                             scene = Scene(SpreadsheetView())
                             width = 500.0
@@ -83,19 +145,7 @@ class RTWindow private constructor(
                 }
             }
         }
-
-        masterTabs = mutableListOf()
     }
-
-    fun updateTabs() {
-        iconContainer.children.apply {
-            clear()
-            add(rtTextIcon)
-            addAll(masterTabs.mapIndexed { i, p -> createIcon(i, p) })
-        }
-    }
-
-    var selectedIndex = -1
 
     private fun createIcon(i: Int, p: MasterTab): Node {
         val a = FontIcon(p.iconName)
@@ -109,9 +159,9 @@ class RTWindow private constructor(
             iconContainer.children.forEach {
                 it.styleClass.remove("master-tab-icon-selected")
             }
-            if (i == selectedIndex) {
-                isSidebarShown = !isSidebarShown
-                if (isSidebarShown) {
+            if (i == state.selectedIndex) {
+                state.isSidebarShown = !state.isSidebarShown
+                if (state.isSidebarShown) {
                     sidebarPane.center = tabContainer
                     box.styleClass.add("master-tab-icon-selected")
                 } else {
@@ -119,86 +169,35 @@ class RTWindow private constructor(
                 }
             } else {
                 box.styleClass.add("master-tab-icon-selected")
-                isSidebarShown = true
+                state.isSidebarShown = true
                 sidebarPane.center = tabContainer
-                selectedIndex = i
+                state.selectedIndex = i
             }
         }
         return box
-    }
-
-    fun show() {
-        stage.show()
     }
 
     private fun isPrimary(): Boolean {
         return this === primary
     }
 
-    private var isLight = false
-
-    private fun toggleTheme() {
-        isLight = !isLight
-        stage.scene.stylesheets.apply {
-            if (isLight) {
-                remove(kDarkCSS)
-                add(kLightCSS)
-            } else {
-                remove(kLightCSS)
-                add(kDarkCSS)
-            }
-        }
+    fun show() {
+        stage.show()
     }
 
-    private var isSidebarShown = false
-
-    private val cancelButton by lazy {
-        val a = FontIcon("fas-times")
-        a.iconSize = 24.dp2px.toInt()
-        val box = HBox()
-        box.styleClass.add("master-cancel")
-        box.alignment = Pos.CENTER
-        box.prefWidth = 56.dp2px
-        box.prefHeight = 56.dp2px
-        box.children.add(a)
-        box.setOnMouseClicked {
-            inDialog = false
-            updateTabs()
-        }
-        box
-    }
-
-    private val okButton by lazy {
-        val a = FontIcon("fas-check")
-        a.iconSize = 24.dp2px.toInt()
-        val box = HBox()
-        box.styleClass.add("master-ok")
-        box.alignment = Pos.CENTER
-        box.prefWidth = 56.dp2px
-        box.prefHeight = 56.dp2px
-        box.children.add(a)
-        box.setOnMouseClicked {
-            inDialog = false
-            updateTabs()
-        }
-        box
-    }
-
-    private var inDialog = false
-
-    private fun enterDialog() {
-        if (inDialog) return
-        inDialog = true
-        iconContainer.children.clear()
-        iconContainer.children.add(cancelButton)
-        iconContainer.children.add(okButton)
+    fun doWithMasterTabs(action: MutableList<MasterTab>.() -> Unit) {
+        action(state.masterTabs)
+        state.iconNodes = state.masterTabs.mapIndexed { i, p -> createIcon(i, p) }
+        state.reflect()
     }
 
     companion object {
 
-        const val kMainCSS = "/ca/warp7/rt/view/window/main.css"
-        const val kLightCSS = "/ca/warp7/rt/view/window/light.css"
-        const val kDarkCSS = "/ca/warp7/rt/view/window/dark.css"
+        private const val kTitle = "Restructured Tables"
+        private const val kIcon = "/ca/warp7/rt/view/window/app_icon.png"
+        private const val kMainCSS = "/ca/warp7/rt/view/window/main.css"
+        private const val kLightCSS = "/ca/warp7/rt/view/window/light.css"
+        private const val kDarkCSS = "/ca/warp7/rt/view/window/dark.css"
 
         private var primary: RTWindow? = null
 
