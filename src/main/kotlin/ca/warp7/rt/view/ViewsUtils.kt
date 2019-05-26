@@ -67,22 +67,17 @@ fun getSampleGrid(): Grid {
     val options = CsvReadOptions
             .builder(DataView::class.java.getResourceAsStream("/ca/warp7/rt/view/window/test.csv"))
             .missingValueIndicator("")
-
     val df = Table.read().usingOptions(options)
     val grid = GridBase(df.rowCount(), df.columnCount())
-
     val cols = df.columns().mapIndexed { colIndex, column ->
         (0 until df.rowCount()).map { rowIndex ->
             if (column.isMissing(rowIndex)) STRING.createCell(rowIndex, colIndex, 1, 1, "")
             else STRING.createCell(rowIndex, colIndex, 1, 1, column.get(rowIndex).toString())
         }
     }
-
     for (i in 0 until df.rowCount()) {
         grid.rows.add(FXCollections.observableList(cols.map { it[i] }))
     }
-
     grid.columnHeaders.addAll(df.columns().map { it.name() })
-
     return grid
 }

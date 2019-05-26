@@ -194,26 +194,19 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-icon-color: white;
 }
 
-.master-cancel:hover {
-    -fx-background-color: #555;
-}
 
 .master-cancel:hover .ikonli-font-icon{
-    -fx-icon-color: #ff0000;
+    -fx-icon-color: #f11;
 }
 
 .master-cancel .ikonli-font-icon{
-    -fx-icon-color: #ff0000;
-}
-
-.master-ok:hover {
-    -fx-background-color: #555;
+    -fx-icon-color: #c00;
 }
 
 .master-ok:hover .ikonli-font-icon{
-    -fx-icon-color: #00dd00;
+    -fx-icon-color: #0b0;
 }
 
 .master-ok .ikonli-font-icon{
-    -fx-icon-color: #00dd00;
+    -fx-icon-color: #080;
 }

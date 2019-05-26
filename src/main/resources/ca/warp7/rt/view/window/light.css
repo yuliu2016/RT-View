@@ -169,37 +169,29 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .master-tab-view {
-    -fx-background-color: #ddd;
+    -fx-background-color: #eee;
 }
 
 .master-tab-icon-selected{
-    -fx-background-color: #ddd;
+    -fx-background-color: #eee;
 }
 
 .master-tab-icon-selected .ikonli-font-icon {
     -fx-icon-color: black;
 }
 
-.master-cancel:hover {
-    -fx-background-color: #ccc;
-}
-
 .master-cancel:hover .ikonli-font-icon{
-    -fx-icon-color: #ff0000;
+    -fx-icon-color: #f11;
 }
 
 .master-cancel .ikonli-font-icon{
-    -fx-icon-color: #ff0000;
-}
-
-.master-ok:hover {
-    -fx-background-color: #ccc;
+    -fx-icon-color: #c00;
 }
 
 .master-ok:hover .ikonli-font-icon{
-    -fx-icon-color: #00dd00;
+    -fx-icon-color: #0b0;
 }
 
 .master-ok .ikonli-font-icon{
-    -fx-icon-color: #00dd00;
+    -fx-icon-color: #080;
 }
