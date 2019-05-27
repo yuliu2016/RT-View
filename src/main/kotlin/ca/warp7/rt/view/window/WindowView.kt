@@ -20,41 +20,6 @@ import org.kordamp.ikonli.javafx.FontIcon
 @Suppress("MemberVisibilityCanBePrivate")
 internal class WindowView {
 
-    internal val rootPane: BorderPane = BorderPane()
-    internal val sidebarPane: BorderPane = BorderPane()
-
-    internal val iconContainer: VBox = VBox().apply {
-        styleClass.add("master-tab-icon-container")
-        minWidth = 56.dp2px
-        maxWidth = 56.dp2px
-        alignment = Pos.TOP_CENTER
-    }
-
-    internal val tabContainer: BorderPane = BorderPane().apply {
-        styleClass.add("master-tab-view")
-        minWidth = 384.dp2px
-        maxWidth = 384.dp2px
-    }
-
-    internal val textIcon = HBox().apply {
-        children.add(TextFlow().apply {
-            children.add(Text("R").apply {
-                fill = Color.valueOf("de8a5a")
-                isUnderline = true
-                font = Font.font(font.family, FontWeight.LIGHT, 32.dp2px)
-            })
-            children.add(Text("T").apply {
-                fill = Color.valueOf("5a8ade")
-                font = Font.font(font.family, FontWeight.BOLD, 16.dp2px)
-            })
-        }
-        )
-        alignment = Pos.CENTER
-        prefHeight = 56.dp2px
-        padding = Insets(4.dp2px, 0.0, 0.0, 0.0)
-    }
-
-
     internal val cancelButton = HBox().apply {
         val a = FontIcon("fas-times")
         a.iconSize = 24.dp2px.toInt()
@@ -75,6 +40,10 @@ internal class WindowView {
         children.add(a)
     }
 
+    internal val tabPound = Label("#").apply {
+        styleClass.add("tab-title-pound")
+    }
+
     internal val tabTitle = Label("Restructured Tables").apply {
         styleClass.add("tab-title")
     }
@@ -83,23 +52,52 @@ internal class WindowView {
         prefHeight = 56.dp2px
         alignment = Pos.CENTER_LEFT
         val expander = HBox()
-        padding = Insets(0.0, 0.0, 0.0, 16.dp2px)
+        padding = Insets(0.0, 0.0, 0.0, 12.dp2px)
         HBox.setHgrow(expander, Priority.ALWAYS)
-        children.apply {
-            add(tabTitle)
-            add(expander)
-            add(okButton)
-            add(cancelButton)
-        }
+        children.apply { addAll(tabPound, tabTitle, expander, okButton, cancelButton) }
     }
 
-    init {
-        rootPane.left = sidebarPane
+    internal val iconContainer: VBox = VBox().apply {
+        styleClass.add("master-tab-icon-container")
+        minWidth = 56.dp2px
+        maxWidth = 56.dp2px
+        alignment = Pos.TOP_CENTER
+    }
+
+    internal val tabContainer: BorderPane = BorderPane().apply {
+        styleClass.add("master-tab-view")
+        minWidth = 384.dp2px
+        maxWidth = 384.dp2px
+        top = tabTitleBar
+    }
+
+    internal val sidebarPane: BorderPane = BorderPane().apply {
+        left = iconContainer
+    }
+
+    internal val rootPane: BorderPane = BorderPane().apply {
+        left = sidebarPane
         val sv = DataView(getSampleGrid())
         sv.isEditable = false
         sv.columns.forEach { it.setPrefWidth(100.0) }
-        rootPane.center = sv
-        sidebarPane.left = iconContainer
-        tabContainer.top = tabTitleBar
+        center = sv
+    }
+
+    internal val textIcon = HBox().apply {
+        children.add(TextFlow().apply {
+            children.add(Text("R").apply {
+                fill = Color.valueOf("de8a5a")
+                isUnderline = true
+                font = Font.font(font.family, FontWeight.LIGHT, 32.dp2px)
+            })
+            children.add(Text("T").apply {
+                fill = Color.valueOf("5a8ade")
+                font = Font.font(font.family, FontWeight.BOLD, 16.dp2px)
+            })
+        }
+        )
+        alignment = Pos.CENTER
+        prefHeight = 56.dp2px
+        padding = Insets(4.dp2px, 0.0, 0.0, 0.0)
     }
 }

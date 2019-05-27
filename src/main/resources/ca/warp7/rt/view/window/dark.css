@@ -223,3 +223,9 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-font-size: 24;
     -fx-font-weight: lighter;
 }
+
+.tab-title-pound {
+    -fx-text-fill: #888;
+    -fx-font-size: 24;
+    -fx-font-weight: lighter;
+}

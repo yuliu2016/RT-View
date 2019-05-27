@@ -1,15 +1,10 @@
 package ca.warp7.rt.view.window
 
-import ca.warp7.rt.view.dp2px
-import javafx.geometry.Insets
-import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.Scene
-import javafx.scene.control.Label
+import javafx.scene.control.TextArea
+import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
-import javafx.scene.layout.HBox
-import javafx.scene.layout.Priority
-import javafx.scene.paint.Color
 import javafx.stage.Stage
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 
@@ -42,12 +37,22 @@ class RTWindow private constructor(
             view.okButton.isVisible = true
             view.cancelButton.isVisible = true
             view.tabTitle.text = "Enter Formula"
+            view.iconContainer.children.apply {
+                clear()
+                add(view.textIcon)
+            }
+            view.tabPound.text = ""
+            view.tabContainer.center = TextField().apply {
+            }
         } else {
-            view.iconContainer.children.forEach {
-                it.styleClass.remove("master-tab-icon-selected")
+            view.iconContainer.children.apply {
+                clear()
+                add(view.textIcon)
+                addAll(state.iconNodes)
+                forEach { it.styleClass.remove("master-tab-icon-selected") }
             }
             if (selectedIndex != -1) {
-                view.tabTitle.text = "#" + state.masterTabs[selectedIndex].title.replace(" ", "")
+                view.tabTitle.text = state.masterTabs[selectedIndex].title.replace(" ", "")
                 selectedIconBox?.styleClass?.add("master-tab-icon-selected")
             }
             if (isSidebarShown) {
@@ -55,8 +60,10 @@ class RTWindow private constructor(
             } else {
                 view.sidebarPane.center = null
             }
+            view.tabPound.text = "#"
             view.okButton.isVisible = false
             view.cancelButton.isVisible = false
+            view.tabContainer.center = null
         }
     }
 
@@ -96,6 +103,7 @@ class RTWindow private constructor(
                     it.code == KeyCode.F11 -> stage.isFullScreen = true
                     it.code == KeyCode.F1 -> state.toggleTheme()
                     it.code == KeyCode.F3 -> state.enterDialog()
+                    it.code == KeyCode.ESCAPE -> state.cancelSignal()
                     it.code == KeyCode.F8 -> Stage().apply {
                         scene = Scene(SpreadsheetView())
                         width = 500.0
