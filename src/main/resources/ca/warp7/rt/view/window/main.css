@@ -1,5 +1,5 @@
 .text {
-    -fx-font-family: "Roboto", "Segoe UI", "Arial", sans-serif;
+    -fx-font-family: /*"Roboto", */"Segoe UI", "Arial", sans-serif;
     -fx-font-smoothing-type: gray;
 }
 

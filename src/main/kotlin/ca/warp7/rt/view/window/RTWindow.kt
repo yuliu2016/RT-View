@@ -1,8 +1,6 @@
 package ca.warp7.rt.view.window
 
-import ca.warp7.rt.view.DataView
 import ca.warp7.rt.view.dp2px
-import ca.warp7.rt.view.getSampleGrid
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -40,37 +38,16 @@ class RTWindow private constructor(
             view.iconContainer.children.forEach {
                 it.styleClass.remove("master-tab-icon-selected")
             }
-            view.tabContainer.children.clear()
-            view.tabContainer.children.add(HBox().apply {
-                val t = HBox(Label("Enter Formula").apply {
-                    textFill = Color.WHITE
-                    style = "-fx-font-size: 24"
-                }).apply {
-                    padding = Insets(0.0, 0.0, 0.0, 16.dp2px)
-                    alignment = Pos.CENTER_LEFT
-                }
-                HBox.setHgrow(t, Priority.ALWAYS)
-                children.add(t)
-                children.addAll(view.okButton, view.cancelButton)
-            })
             view.sidebarPane.center = view.tabContainer
+            view.okButton.isVisible = true
+            view.cancelButton.isVisible = true
+            view.tabTitle.text = "Enter Formula"
         } else {
-            view.tabContainer.children.clear()
-            view.tabContainer.children.add(HBox().apply {
-                val t = HBox(Label("Data Viewer").apply {
-                    textFill = Color.WHITE
-                    style = "-fx-font-size: 24"
-                }).apply {
-                    padding = Insets(0.0, 0.0, 0.0, 16.dp2px)
-                    alignment = Pos.CENTER_LEFT
-                }
-                prefHeight = 56.dp2px
-                children.add(t)
-            })
             view.iconContainer.children.forEach {
                 it.styleClass.remove("master-tab-icon-selected")
             }
             if (selectedIndex != -1) {
+                view.tabTitle.text = "#" + state.masterTabs[selectedIndex].title.replace(" ", "")
                 selectedIconBox?.styleClass?.add("master-tab-icon-selected")
             }
             if (isSidebarShown) {
@@ -78,6 +55,8 @@ class RTWindow private constructor(
             } else {
                 view.sidebarPane.center = null
             }
+            view.okButton.isVisible = false
+            view.cancelButton.isVisible = false
         }
     }
 
@@ -109,12 +88,6 @@ class RTWindow private constructor(
 
     init {
         stage.initialize()
-        view.rootPane.left = view.sidebarPane
-        val sv = DataView(getSampleGrid())
-        sv.isEditable = false
-        sv.columns.forEach { it.setPrefWidth(100.0) }
-        view.rootPane.center = sv
-        view.sidebarPane.left = view.iconContainer
         stage.scene = Scene(view.rootPane).apply {
             stylesheets.add(kMainCSS)
             stylesheets.add(kDarkCSS)
@@ -167,7 +140,7 @@ class RTWindow private constructor(
             iconNodes = state.masterTabs.mapIndexed { i, p -> createIcon(i, p) }
             view.iconContainer.children.apply {
                 clear()
-                add(view.rtTextIcon)
+                add(view.textIcon)
                 addAll(iconNodes)
             }
             reflect()
@@ -180,7 +153,7 @@ class RTWindow private constructor(
 
         fun primary(stage: Stage): RTWindow {
             assert(primary == null) {
-                "Cannot create a non-null primary window"
+                "A primary window already exists; cannot create another one"
             }
             val win = RTWindow(stage)
             primary = win

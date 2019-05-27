@@ -180,22 +180,32 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-icon-color: black;
 }
 
-.master-cancel:hover .ikonli-font-icon{
-    -fx-icon-color: #f11;
+.master-cancel:hover {
+    -fx-background-color: #ddd;
 }
+
+/*.master-cancel:hover .ikonli-font-icon{*/
+/*    -fx-icon-color: #f11;*/
+/*}*/
 
 .master-cancel .ikonli-font-icon{
-    -fx-icon-color: #c00;
+    -fx-icon-color: #f00;
 }
 
-.master-ok:hover .ikonli-font-icon{
-    -fx-icon-color: #0b0;
+.master-ok:hover {
+    -fx-background-color: #ddd;
 }
+
+/*.master-ok:hover .ikonli-font-icon{*/
+/*    -fx-icon-color: #0b0;*/
+/*}*/
 
 .master-ok .ikonli-font-icon{
-    -fx-icon-color: #080;
+    -fx-icon-color: #0b0;
 }
 
 .tab-title {
     -fx-text-fill: black;
+    -fx-font-size: 24;
+    -fx-font-weight: lighter;
 }

@@ -28,23 +28,6 @@ internal fun Stage.initialize() {
 
 private const val kTitle = "Restructured Tables"
 private const val kIcon = "/ca/warp7/rt/view/window/app_icon.png"
-
-
-internal fun VBox.asIconContainer(): VBox {
-    styleClass.add("master-tab-icon-container")
-    minWidth = 56.dp2px
-    maxWidth = 56.dp2px
-    alignment = Pos.TOP_CENTER
-    return this
-}
-
-internal fun VBox.asTabContainer(): VBox {
-    styleClass.add("master-tab-view")
-    minWidth = 384.dp2px
-    maxWidth = 384.dp2px
-    return this
-}
-
 internal const val kMainCSS = "/ca/warp7/rt/view/window/main.css"
 internal const val kLightCSS = "/ca/warp7/rt/view/window/light.css"
 internal const val kDarkCSS = "/ca/warp7/rt/view/window/dark.css"

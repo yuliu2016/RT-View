@@ -1,10 +1,14 @@
 package ca.warp7.rt.view.window
 
+import ca.warp7.rt.view.DataView
 import ca.warp7.rt.view.dp2px
+import ca.warp7.rt.view.getSampleGrid
 import javafx.geometry.Insets
 import javafx.geometry.Pos
+import javafx.scene.control.Label
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
@@ -13,14 +17,26 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import org.kordamp.ikonli.javafx.FontIcon
 
+@Suppress("MemberVisibilityCanBePrivate")
 internal class WindowView {
 
     internal val rootPane: BorderPane = BorderPane()
     internal val sidebarPane: BorderPane = BorderPane()
-    internal val tabContainer: VBox = VBox().asTabContainer()
-    internal val iconContainer: VBox = VBox().asIconContainer()
 
-    internal val rtTextIcon = HBox().apply {
+    internal val iconContainer: VBox = VBox().apply {
+        styleClass.add("master-tab-icon-container")
+        minWidth = 56.dp2px
+        maxWidth = 56.dp2px
+        alignment = Pos.TOP_CENTER
+    }
+
+    internal val tabContainer: BorderPane = BorderPane().apply {
+        styleClass.add("master-tab-view")
+        minWidth = 384.dp2px
+        maxWidth = 384.dp2px
+    }
+
+    internal val textIcon = HBox().apply {
         children.add(TextFlow().apply {
             children.add(Text("R").apply {
                 fill = Color.valueOf("de8a5a")
@@ -39,7 +55,7 @@ internal class WindowView {
     }
 
 
-    internal val cancelButton= HBox().apply {
+    internal val cancelButton = HBox().apply {
         val a = FontIcon("fas-times")
         a.iconSize = 24.dp2px.toInt()
         styleClass.add("master-cancel")
@@ -57,5 +73,33 @@ internal class WindowView {
         prefWidth = 56.dp2px
         prefHeight = 56.dp2px
         children.add(a)
+    }
+
+    internal val tabTitle = Label("Restructured Tables").apply {
+        styleClass.add("tab-title")
+    }
+
+    internal val tabTitleBar = HBox().apply {
+        prefHeight = 56.dp2px
+        alignment = Pos.CENTER_LEFT
+        val expander = HBox()
+        padding = Insets(0.0, 0.0, 0.0, 16.dp2px)
+        HBox.setHgrow(expander, Priority.ALWAYS)
+        children.apply {
+            add(tabTitle)
+            add(expander)
+            add(okButton)
+            add(cancelButton)
+        }
+    }
+
+    init {
+        rootPane.left = sidebarPane
+        val sv = DataView(getSampleGrid())
+        sv.isEditable = false
+        sv.columns.forEach { it.setPrefWidth(100.0) }
+        rootPane.center = sv
+        sidebarPane.left = iconContainer
+        tabContainer.top = tabTitleBar
     }
 }
