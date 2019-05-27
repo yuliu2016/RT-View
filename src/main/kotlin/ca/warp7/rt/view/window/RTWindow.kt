@@ -1,10 +1,13 @@
 package ca.warp7.rt.view.window
 
+import ca.warp7.rt.view.dp2px
+import javafx.geometry.Insets
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.Scene
-import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
+import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 
@@ -36,13 +39,20 @@ class RTWindow private constructor(
             view.sidebarPane.center = view.tabContainer
             view.okButton.isVisible = true
             view.cancelButton.isVisible = true
-            view.tabTitle.text = "Enter Formula"
+            view.tabTitle.text = "Add Formula"
             view.iconContainer.children.apply {
                 clear()
                 add(view.textIcon)
             }
             view.tabPound.text = ""
-            view.tabContainer.center = TextField().apply {
+            view.tabContainer.center = VBox().apply {
+                alignment = Pos.TOP_LEFT
+                padding = Insets(12.dp2px)
+                children.add(
+                        TextField().apply {
+                            promptText = "Enter Formula"
+                        }
+                )
             }
         } else {
             view.iconContainer.children.apply {
