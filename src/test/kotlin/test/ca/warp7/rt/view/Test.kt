@@ -10,13 +10,13 @@ class Test0 : Application() {
         val w = RTWindow.primary(primaryStage)
         w.doWithMasterTabs {
             addAll(listOf(
-                    MasterTab("fas-chart-bar", 24),
-                    MasterTab("fas-terminal", 20),
-                    MasterTab("fas-qrcode", 24),
-                    MasterTab("fas-images", 24),
-                    MasterTab("fas-file-code", 24),
-                    MasterTab("fas-tasks", 24),
-                    MasterTab("fas-cogs", 24)
+                    MasterTab("Table List", "fas-chart-bar", 24),
+                    MasterTab("Search Prompt", "fas-terminal", 20),
+                    MasterTab("App Scanner", "fas-qrcode", 24),
+                    MasterTab("Photos and Media", "fas-images", 24),
+                    MasterTab("Scripts", "fas-file-code", 24),
+                    MasterTab("Alliance Selection", "fas-tasks", 24),
+                    MasterTab("Settings", "fas-cogs", 24)
             ))
         }
         w.show()

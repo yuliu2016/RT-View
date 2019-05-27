@@ -195,3 +195,7 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 .master-ok .ikonli-font-icon{
     -fx-icon-color: #080;
 }
+
+.tab-title {
+    -fx-text-fill: black;
+}

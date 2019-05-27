@@ -9,13 +9,9 @@ import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.scene.input.KeyCode
-import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
-import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
-import javafx.scene.text.Font
-import javafx.scene.text.FontWeight
 import javafx.stage.Stage
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 
@@ -24,24 +20,10 @@ class RTWindow private constructor(
         private val stage: Stage
 ) {
 
-    private val rootPane: BorderPane
-    private val sidebarPane: BorderPane
-    private val iconContainer: VBox
-    private val tabContainer: VBox
+    private val view = WindowView()
+    private val state = WindowState()
 
-    private class StateMachine {
-        var selectedIndex = -1
-        var isLightTheme = false
-        var isSidebarShown = false
-        var isDialog = false
-        var iconNodes: List<Node> = listOf()
-        val masterTabs: MutableList<MasterTab> = mutableListOf()
-        var selectedIconBox: Node? = null
-    }
-
-    private val state = StateMachine()
-
-    private fun StateMachine.reflectTheme() {
+    private fun WindowState.reflectTheme() {
         stage.scene.stylesheets.apply {
             if (isLightTheme) {
                 remove(kDarkCSS)
@@ -53,13 +35,13 @@ class RTWindow private constructor(
         }
     }
 
-    private fun StateMachine.reflect() {
+    private fun WindowState.reflect() {
         if (isDialog) {
-            iconContainer.children.forEach {
+            view.iconContainer.children.forEach {
                 it.styleClass.remove("master-tab-icon-selected")
             }
-            tabContainer.children.clear()
-            tabContainer.children.add(HBox().apply {
+            view.tabContainer.children.clear()
+            view.tabContainer.children.add(HBox().apply {
                 val t = HBox(Label("Enter Formula").apply {
                     textFill = Color.WHITE
                     style = "-fx-font-size: 24"
@@ -69,12 +51,12 @@ class RTWindow private constructor(
                 }
                 HBox.setHgrow(t, Priority.ALWAYS)
                 children.add(t)
-                children.addAll(okButton, cancelButton)
+                children.addAll(view.okButton, view.cancelButton)
             })
-            sidebarPane.center = tabContainer
+            view.sidebarPane.center = view.tabContainer
         } else {
-            tabContainer.children.clear()
-            tabContainer.children.add(HBox().apply {
+            view.tabContainer.children.clear()
+            view.tabContainer.children.add(HBox().apply {
                 val t = HBox(Label("Data Viewer").apply {
                     textFill = Color.WHITE
                     style = "-fx-font-size: 24"
@@ -85,59 +67,55 @@ class RTWindow private constructor(
                 prefHeight = 56.dp2px
                 children.add(t)
             })
-            iconContainer.children.forEach {
+            view.iconContainer.children.forEach {
                 it.styleClass.remove("master-tab-icon-selected")
             }
             if (selectedIndex != -1) {
                 selectedIconBox?.styleClass?.add("master-tab-icon-selected")
             }
             if (isSidebarShown) {
-                sidebarPane.center = tabContainer
+                view.sidebarPane.center = view.tabContainer
             } else {
-                sidebarPane.center = null
+                view.sidebarPane.center = null
             }
         }
     }
 
-    private fun StateMachine.toggleTheme() {
+    private fun WindowState.toggleTheme() {
         isLightTheme = !isLightTheme
         reflectTheme()
     }
 
 
-    private fun StateMachine.toggleSidebar() {
+    private fun WindowState.toggleSidebar() {
         isSidebarShown = !isSidebarShown
     }
 
-    private fun StateMachine.enterDialog() {
+    private fun WindowState.enterDialog() {
         if (isDialog) return
         state.isDialog = true
         reflect()
     }
 
-    private fun StateMachine.okSignal() {
+    private fun WindowState.okSignal() {
         isDialog = false
         reflect()
     }
 
-    private fun StateMachine.cancelSignal() {
+    private fun WindowState.cancelSignal() {
         isDialog = false
         reflect()
     }
 
     init {
         stage.initialize()
-        rootPane = BorderPane()
-        sidebarPane = BorderPane()
-        rootPane.left = sidebarPane
+        view.rootPane.left = view.sidebarPane
         val sv = DataView(getSampleGrid())
         sv.isEditable = false
         sv.columns.forEach { it.setPrefWidth(100.0) }
-        rootPane.center = sv
-        iconContainer = VBox().asIconContainer()
-        sidebarPane.left = iconContainer
-        tabContainer = VBox().asTabContainer()
-        stage.scene = Scene(rootPane).apply {
+        view.rootPane.center = sv
+        view.sidebarPane.left = view.iconContainer
+        stage.scene = Scene(view.rootPane).apply {
             stylesheets.add(kMainCSS)
             stylesheets.add(kDarkCSS)
             setOnKeyPressed {
@@ -154,8 +132,8 @@ class RTWindow private constructor(
                 }
             }
         }
-        okButton.setOnMouseClicked { state.okSignal() }
-        cancelButton.setOnMouseClicked { state.cancelSignal() }
+        view.okButton.setOnMouseClicked { state.okSignal() }
+        view.cancelButton.setOnMouseClicked { state.cancelSignal() }
     }
 
     private fun createIcon(i: Int, p: MasterTab): Node {
@@ -187,9 +165,9 @@ class RTWindow private constructor(
         state.apply {
             action(masterTabs)
             iconNodes = state.masterTabs.mapIndexed { i, p -> createIcon(i, p) }
-            iconContainer.children.apply {
+            view.iconContainer.children.apply {
                 clear()
-                add(rtTextIcon)
+                add(view.rtTextIcon)
                 addAll(iconNodes)
             }
             reflect()
