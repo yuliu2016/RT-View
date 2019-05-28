@@ -1,5 +1,6 @@
 package ca.warp7.rt.view.window
 
+import ca.warp7.rt.view.Combo
 import ca.warp7.rt.view.dp2px
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -105,12 +106,16 @@ class RTWindow private constructor(
 
     init {
         stage.initialize()
+        stage.fullScreenExitKeyCombination = Combo(KeyCode.F11)
         stage.scene = Scene(view.rootPane).apply {
             stylesheets.add(kMainCSS)
             stylesheets.add(kDarkCSS)
             setOnKeyPressed {
                 when {
-                    it.code == KeyCode.F11 -> stage.isFullScreen = true
+                    it.code == KeyCode.F11 -> {
+                        state.isFullScreen = !state.isFullScreen
+                        stage.isFullScreen = state.isFullScreen
+                    }
                     it.code == KeyCode.F1 -> state.toggleTheme()
                     it.code == KeyCode.F3 -> state.enterDialog()
                     it.code == KeyCode.ESCAPE -> state.cancelSignal()

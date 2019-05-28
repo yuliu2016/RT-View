@@ -217,8 +217,7 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .text-field {
-    /*-fx-font-weight: bold;*/
-    -fx-background-color: transparent;
+    -fx-background-color: #ddd;
     -fx-border-color: gray;
     -fx-border-radius: 6;
     -fx-font-size: 16;
@@ -227,6 +226,7 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-text-fill: black;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
+    -fx-highlight-fill: #5a8ade;
     -fx-font-family: 'Roboto Mono', 'Courier New', monospace;
 }
 
