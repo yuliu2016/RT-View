@@ -63,8 +63,12 @@ class RTWindow private constructor(
                 forEach { it.styleClass.remove("master-tab-icon-selected") }
             }
             if (selectedIndex != -1) {
-                view.tabTitle.text = state.masterTabs[selectedIndex].title.replace(" ", "")
+                val selected = state.masterTabs[selectedIndex]
+                view.tabTitle.text = selected.title.replace(" ", "")
+                view.tabContainer.center = selected.component()
                 selectedIconBox?.styleClass?.add("master-tab-icon-selected")
+            } else {
+                view.tabContainer.center = null
             }
             if (isSidebarShown) {
                 view.sidebarPane.center = view.tabContainer
@@ -74,7 +78,6 @@ class RTWindow private constructor(
             view.tabPound.text = "#"
             view.okButton.isVisible = false
             view.cancelButton.isVisible = false
-            view.tabContainer.center = null
         }
     }
 
@@ -83,10 +86,6 @@ class RTWindow private constructor(
         reflectTheme()
     }
 
-
-    private fun WindowState.toggleSidebar() {
-        isSidebarShown = !isSidebarShown
-    }
 
     private fun WindowState.enterDialog() {
         if (isDialog) return
