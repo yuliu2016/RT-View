@@ -37,32 +37,6 @@ fun menuItem(t: String,
     return item
 }
 
-@Suppress("unused")
-private fun tree(): Node {
-    val t = TreeView<String>()
-    val rootItem = TreeItem("Tutorials")
-
-    val webItem = TreeItem("Web Tutorials")
-    webItem.children.add(TreeItem("HTML  Tutorial"))
-    webItem.children.add(TreeItem("HTML5 Tutorial"))
-    webItem.children.add(TreeItem("CSS Tutorial"))
-    webItem.children.add(TreeItem("SVG Tutorial"))
-    rootItem.children.add(webItem)
-
-    val javaItem = TreeItem("Java Tutorials")
-    javaItem.children.add(TreeItem("Java Language"))
-    javaItem.children.add(TreeItem("Java Collections"))
-    javaItem.children.add(TreeItem("Java Concurrency"))
-    rootItem.children.add(javaItem)
-
-    t.root = rootItem
-    t.isShowRoot = false
-    t.minHeight = 128.dp2px
-
-    VBox.setVgrow(t, Priority.ALWAYS)
-    return t
-}
-
 fun getSampleGrid(): Grid {
     val options = CsvReadOptions
             .builder(DataView::class.java.getResourceAsStream("/ca/warp7/rt/view/window/test.csv"))

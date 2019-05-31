@@ -232,20 +232,32 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 
 .text-field {
     /*-fx-font-weight: bold;*/
-    -fx-padding: 6;
+    -fx-padding: 4;
     -fx-background-color: #333;
     -fx-border-color: #aaa;
-    -fx-border-radius: 4;
+    -fx-border-radius: 0;
+    -fx-background-radius: 4;
     -fx-font-size: 16;
-    -fx-border-width: 2;
+    -fx-border-width: 0 0 2 0;
     -fx-prompt-text-fill: #888;
     -fx-text-fill: white;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
     -fx-highlight-fill: #5a8ade;
+    -fx-font-weight: bold;
+    -fx-border-insets: 6;
     -fx-font-family: 'Roboto Mono', 'Courier New', monospace;
 }
 
 .text-field:focused {
     -fx-border-color: #5a8ade;
+}
+
+.split-pane {
+    -fx-background-color: transparent;
+}
+
+.split-pane-divider {
+    -fx-background-color: #888;
+    -fx-padding: 2;
 }
