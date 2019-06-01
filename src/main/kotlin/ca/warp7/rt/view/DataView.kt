@@ -5,7 +5,6 @@ import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyCombination.SHIFT_DOWN
 import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
 import org.controlsfx.control.spreadsheet.Grid
 import org.controlsfx.control.spreadsheet.SpreadsheetView

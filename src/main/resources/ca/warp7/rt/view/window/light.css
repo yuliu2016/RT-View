@@ -241,3 +241,18 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 .split-pane {
     -fx-background-color: inherit;
 }
+
+.split-pane-divider {
+    -fx-background-color: #bbb;
+    -fx-padding: 1;
+}
+
+.split-pane-section {
+    -fx-background-color: #ddd;
+}
+
+.split-pane-section .label {
+    -fx-text-fill: #444;
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+}

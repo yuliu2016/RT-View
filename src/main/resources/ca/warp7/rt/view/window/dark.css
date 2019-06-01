@@ -259,5 +259,15 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 
 .split-pane-divider {
     -fx-background-color: #888;
-    -fx-padding: 2;
+    -fx-padding: 1;
+}
+
+.split-pane-section {
+    -fx-background-color: #555;
+}
+
+.split-pane-section .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
 }

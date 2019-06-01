@@ -108,7 +108,6 @@ class RTWindow private constructor(
         stage.fullScreenExitKeyCombination = Combo(KeyCode.F11)
         stage.scene = Scene(view.rootPane).apply {
             stylesheets.add(kMainCSS)
-            stylesheets.add(kDarkCSS)
             setOnKeyPressed {
                 when {
                     it.code == KeyCode.F11 -> {
@@ -129,6 +128,7 @@ class RTWindow private constructor(
         }
         view.okButton.setOnMouseClicked { state.okSignal() }
         view.cancelButton.setOnMouseClicked { state.cancelSignal() }
+        state.reflectTheme()
     }
 
     private fun createIcon(i: Int, p: MasterTab): Node {

@@ -4,7 +4,7 @@ import javafx.scene.Node
 
 internal class WindowState {
     var selectedIndex = -1
-    var isLightTheme = false
+    var isLightTheme = true
     var isSidebarShown = false
     var isDialog = false
     var iconNodes: List<Node> = listOf()
