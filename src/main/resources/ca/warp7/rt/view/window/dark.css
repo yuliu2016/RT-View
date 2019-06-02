@@ -271,3 +271,19 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-font-weight: bold;
     -fx-font-size: 16;
 }
+
+.label {
+    -fx-text-fill: white;
+}
+
+.action-item .ikonli-font-icon {
+    -fx-icon-color: white
+}
+
+.action-item .label {
+    -fx-text-fill: white;
+}
+
+.action-item:hover {
+    -fx-background-color: #555;
+}

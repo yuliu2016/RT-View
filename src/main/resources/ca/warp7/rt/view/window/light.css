@@ -256,3 +256,19 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-font-weight: bold;
     -fx-font-size: 16;
 }
+
+.label {
+    -fx-text-fill: black;
+}
+
+.action-item .ikonli-font-icon {
+    -fx-icon-color: black
+}
+
+.action-item .label {
+    -fx-text-fill: black;
+}
+
+.action-item:hover {
+    -fx-background-color: #ddd;
+}
