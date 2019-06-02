@@ -1,14 +1,16 @@
 package test.ca.warp7.rt.view
 
 import ca.warp7.rt.view.dp2px
-import ca.warp7.rt.view.hbox
+import ca.warp7.rt.view.fxkt.*
 import ca.warp7.rt.view.window.MasterTab
 import ca.warp7.rt.view.window.RTWindow
 import javafx.application.Application
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import javafx.scene.input.ScrollEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
@@ -22,6 +24,7 @@ class Test0 : Application() {
             styleClass.add("split-pane-section")
             prefHeight = 28.dp2px
             minHeight = 28.dp2px
+            maxHeight = 28.dp2px
             padding = Insets(0.0, 0.0, 0.0, 8.dp2px)
             children.add(Label(t.toUpperCase()))
             alignment = Pos.CENTER_LEFT
@@ -30,15 +33,15 @@ class Test0 : Application() {
 
     fun transformBar(t: String, ic: String): HBox {
         return hbox {
-            prefHeight = 32.dp2px
-            alignment = Pos.CENTER_LEFT
-            styleClass.add("action-item")
+            height(28.dp2px)
+            align(Pos.CENTER_LEFT)
+            styleClass("action-item")
             +hbox {
                 +FontIcon(ic).apply {
                     iconSize = 18
                 }
-                minWidth = 32.dp2px
-                alignment = Pos.CENTER
+                node.minWidth = 32.dp2px
+                align(Pos.CENTER)
             }
             +Label(t)
         }
@@ -52,36 +55,60 @@ class Test0 : Application() {
                     MasterTab("Dashboard", "fas-chart-bar", 24) {
                         SplitPane().apply {
                             items.addAll(
-                                    hbox {
-                                        +Button("Change Scope")
+                                    vbox {
+                                        maxHeight = 56.dp2px
+                                        minHeight = 56.dp2px
+                                        children.add(hbox {
+                                            node.spacing = 6.dp2px
+                                            align(Pos.CENTER)
+                                            pad(8.dp2px, 8.dp2px, 8.dp2px, 8.dp2px)
+                                            +TextField().apply {
+                                                alignment = Pos.CENTER
+                                                promptText = "Type"
+                                            }
+                                            +FontIcon("fas-arrow-right")
+                                            +TextField().apply {
+                                                alignment = Pos.CENTER
+                                                promptText = "Value"
+                                            }
+                                            +Button("", FontIcon("fas-sync"))
+                                        })
                                     },
-                                    VBox(sectionBar("Tables")).apply {
+
+                                    VBox(sectionBar("TABLES")).apply {
                                         minHeight = 24.dp2px
                                     },
-                                    VBox(sectionBar("Transform")).apply {
+                                    VBox(sectionBar("ACTIONS")).apply {
                                         minHeight = 24.dp2px
                                         val sp = ScrollPane(VBox().apply {
                                             children.addAll(
-                                                    transformBar("Select", "fas-table"),
+                                                    transformBar("Duplicate", "fas-clone"),
+                                                    transformBar("Rename", "fas-font"),
+                                                    transformBar("Selection", "fas-table"),
+                                                    transformBar("Pivot", "fas-random"),
                                                     transformBar("Sort", "fas-sort"),
                                                     transformBar("Filter", "fas-filter"),
                                                     transformBar("Highlight", "fas-sun"),
                                                     transformBar("Format", "fas-paint-brush"),
                                                     transformBar("Formulas", "fas-superscript"),
-                                                    transformBar("Script", "fas-file-code")
-
+                                                    transformBar("Processor", "fas-file-code")
                                             )
                                         })
+                                        onScroll = EventHandler<ScrollEvent> { event ->
+                                            val deltaY = event.deltaY * 6
+                                            val width = sp.content.boundsInLocal.width
+                                            sp.vvalue += -deltaY / width
+                                        }
                                         sp.isFitToWidth = true
                                         VBox.setVgrow(sp, Priority.ALWAYS)
                                         children.add(sp)
                                     },
-                                    VBox(sectionBar("Summary")).apply {
+                                    VBox(sectionBar("SUMMARY")).apply {
                                         minHeight = 24.dp2px
                                     }
                             )
                             orientation = Orientation.VERTICAL
-                            setDividerPositions(0.1, 0.4, 0.7)
+                            setDividerPositions(0.0, 0.4, 0.8)
                         }
                     },
                     MasterTab("Terminal", "fas-terminal", 20) {
@@ -103,18 +130,14 @@ class Test0 : Application() {
                     MasterTab("Media", "fas-images", 24) {
                         VBox()
                     },
-                    MasterTab("Scripts", "fas-file-code", 24) {
-                        VBox()
-                    },
                     MasterTab("Checklist", "fas-tasks", 24) {
                         VBox()
                     },
                     MasterTab("Settings", "fas-cogs", 24) {
-                        VBox(
-                                Label("Hi")
-                        ).apply {
-                            padding = Insets(12.dp2px)
-                        }
+                        Accordion(
+                                TitledPane("TBA Key", TextField()),
+                                TitledPane("TBA Key", TextField())
+                        )
                     }
             ))
         }

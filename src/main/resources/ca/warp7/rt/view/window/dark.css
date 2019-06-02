@@ -198,10 +198,6 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-background-color: #555;
 }
 
-/*.master-cancel:hover .ikonli-font-icon{*/
-/*    -fx-icon-color: #f11;*/
-/*}*/
-
 .master-cancel .ikonli-font-icon{
     -fx-icon-color: #f00;
 }
@@ -209,10 +205,6 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 .master-ok:hover {
     -fx-background-color: #555;
 }
-
-/*.master-ok:hover .ikonli-font-icon{*/
-/*    -fx-icon-color: #0b0;*/
-/*}*/
 
 .master-ok .ikonli-font-icon{
     -fx-icon-color: #0b0;
@@ -231,22 +223,19 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .text-field {
-    /*-fx-font-weight: bold;*/
-    -fx-padding: 4;
+    -fx-padding: 2;
     -fx-background-color: #333;
     -fx-border-color: #aaa;
     -fx-border-radius: 0;
     -fx-background-radius: 4;
-    -fx-font-size: 16;
     -fx-border-width: 0 0 2 0;
     -fx-prompt-text-fill: #888;
     -fx-text-fill: white;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
     -fx-highlight-fill: #5a8ade;
-    -fx-font-weight: bold;
-    -fx-border-insets: 6;
-    -fx-font-family: 'Roboto Mono', 'Courier New', monospace;
+    -fx-font-weight: lighter;
+    -fx-border-insets: 4;
 }
 
 .text-field:focused {
@@ -270,10 +259,6 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-font-size: 16;
-}
-
-.label {
-    -fx-text-fill: white;
 }
 
 .action-item .ikonli-font-icon {
