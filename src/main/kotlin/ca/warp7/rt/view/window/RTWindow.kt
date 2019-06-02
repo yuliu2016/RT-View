@@ -154,17 +154,26 @@ class RTWindow private constructor(
 
     fun show() {
         stage.show()
+        state.apply {
+            if (masterTabs.isNotEmpty()) {
+                isSidebarShown = true
+                selectedIndex = 0
+                selectedIconBox = iconNodes.first()
+            }
+            reflect()
+        }
     }
 
     fun doWithMasterTabs(action: MutableList<MasterTab>.() -> Unit) {
         state.apply {
             action(masterTabs)
-            iconNodes = state.masterTabs.mapIndexed { i, p -> createIcon(i, p) }
+            iconNodes = masterTabs.mapIndexed { i, p -> createIcon(i, p) }
             view.iconContainer.children.apply {
                 clear()
                 add(view.textIcon)
                 addAll(iconNodes)
             }
+            isSidebarShown = true
             reflect()
         }
     }

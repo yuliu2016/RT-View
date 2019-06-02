@@ -261,6 +261,10 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-font-size: 16;
 }
 
+.split-pane-section .ikonli-font-icon {
+    -fx-icon-color: white
+}
+
 .action-item .ikonli-font-icon {
     -fx-icon-color: white
 }

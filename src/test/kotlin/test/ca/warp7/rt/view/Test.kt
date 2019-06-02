@@ -22,11 +22,15 @@ class Test0 : Application() {
     fun sectionBar(t: String): HBox {
         return HBox().apply {
             styleClass.add("split-pane-section")
-            prefHeight = 28.dp2px
-            minHeight = 28.dp2px
-            maxHeight = 28.dp2px
-            padding = Insets(0.0, 0.0, 0.0, 8.dp2px)
+            prefHeight = 32.dp2px
+            minHeight = 32.dp2px
+            maxHeight = 32.dp2px
+            spacing = 16.dp2px
+            padding = Insets(0.0, 8.dp2px, 0.0, 8.dp2px)
             children.add(Label(t.toUpperCase()))
+            children.add(HBox().apply {
+                HBox.setHgrow(this, Priority.ALWAYS)
+            })
             alignment = Pos.CENTER_LEFT
         }
     }
@@ -75,23 +79,43 @@ class Test0 : Application() {
                                         })
                                     },
 
-                                    VBox(sectionBar("TABLES")).apply {
-                                        minHeight = 24.dp2px
+                                    VBox(sectionBar("DATA TREE").apply {
+                                        children.addAll(
+                                                FontIcon("fas-plus").apply {
+                                                    iconSize = 18
+                                                }
+                                        )
+                                    }).apply {
+                                        minHeight = 32.dp2px
+                                        val itm = TreeItem<String>("Event/2019onwin")
+                                        itm.children.addAll(TreeItem("Raw Data"), TreeItem("Team Pivot"))
+                                        itm.isExpanded = true
+                                        children.add(
+                                                TreeView<String>(itm)
+                                        )
                                     },
-                                    VBox(sectionBar("ACTIONS")).apply {
-                                        minHeight = 24.dp2px
+                                    VBox(sectionBar("TABLE: ").apply {
+                                        children.addAll(
+                                                FontIcon("fas-copy").apply {
+                                                    iconSize = 18
+                                                },
+                                                FontIcon("fas-folder-open").apply {
+                                                    iconSize = 18
+                                                },
+                                                FontIcon("fas-download").apply {
+                                                    iconSize = 18
+                                                }
+                                        )
+                                    }).apply {
+                                        minHeight = 32.dp2px
                                         val sp = ScrollPane(VBox().apply {
                                             children.addAll(
-                                                    transformBar("Duplicate", "fas-clone"),
-                                                    transformBar("Rename", "fas-font"),
-                                                    transformBar("Selection", "fas-table"),
+                                                    transformBar("Properties", "fas-info-circle"),
                                                     transformBar("Pivot", "fas-random"),
                                                     transformBar("Sort", "fas-sort"),
                                                     transformBar("Filter", "fas-filter"),
                                                     transformBar("Highlight", "fas-sun"),
-                                                    transformBar("Format", "fas-paint-brush"),
-                                                    transformBar("Formulas", "fas-superscript"),
-                                                    transformBar("Processor", "fas-file-code")
+                                                    transformBar("Formulas", "fas-superscript")
                                             )
                                         })
                                         onScroll = EventHandler<ScrollEvent> { event ->
@@ -103,12 +127,12 @@ class Test0 : Application() {
                                         VBox.setVgrow(sp, Priority.ALWAYS)
                                         children.add(sp)
                                     },
-                                    VBox(sectionBar("SUMMARY")).apply {
-                                        minHeight = 24.dp2px
+                                    VBox(sectionBar("SUMMARY: ")).apply {
+                                        minHeight = 32.dp2px
                                     }
                             )
                             orientation = Orientation.VERTICAL
-                            setDividerPositions(0.0, 0.4, 0.8)
+                            setDividerPositions(0.1, 0.4, 0.7)
                         }
                     },
                     MasterTab("Terminal", "fas-terminal", 20) {
