@@ -2,9 +2,9 @@
 
 package ca.warp7.rt.view.fxkt
 
-import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.control.TextField
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
@@ -13,62 +13,58 @@ import javafx.scene.layout.VBox
 @DslMarker
 annotation class FXKtDSL
 
+// CREATORS
+
 @FXKtDSL
-interface FXKtBuilder<T: Node> {
-    val node: T
-    operator fun Node.unaryPlus()
+inline fun hbox(builder: HBox.() -> Unit): HBox = HBox().apply(builder)
+
+@FXKtDSL
+inline fun vbox(builder: VBox.() -> Unit): VBox = VBox().apply(builder)
+
+@FXKtDSL
+inline fun textField(builder: TextField.() -> Unit): TextField = TextField().apply(builder)
+
+// PROPERTY SETTERS
+
+@FXKtDSL
+fun Node.styleClass(sc: String) {
+    styleClass.add(sc);
+    properties["FXKtStyleClass"] = sc
 }
 
-class PaneBuilder<T: Pane>(
-        override val node: T
-): FXKtBuilder<T> {
-    override fun Node.unaryPlus() {
-        node.children.add(this)
+@FXKtDSL
+fun Node.noStyleClass() {
+    styleClass.remove(properties["FXKtStyleClass"] ?: "")
+}
+
+@FXKtDSL
+fun HBox.align(pos: Pos) {
+    alignment = pos
+}
+
+@FXKtDSL
+fun VBox.align(pos: Pos) {
+    alignment = pos
+}
+
+@FXKtDSL
+class PaneModifier(private val pane: Pane) {
+    operator fun Node.unaryPlus() {
+        pane.children.add(this)
     }
 }
 
-@JvmName("hBoxAlign")
-fun FXKtBuilder<HBox>.align(alignment: Pos) {
-    node.alignment = alignment
+@FXKtDSL
+inline fun Pane.modify(modifier: PaneModifier.() -> Unit) {
+    PaneModifier(this).apply(modifier)
 }
 
-@JvmName("vBoxAlign")
-fun FXKtBuilder<VBox>.align(alignment: Pos) {
-    node.alignment = alignment
-    node.prefWidth
+@FXKtDSL
+fun Pane.add(node: Node) {
+    children.add(node)
 }
 
-fun FXKtBuilder<*>.styleClass(sc: String) {
-    node.styleClass.add(sc);
-    node.properties["FXKtStyleClass"] = sc
-}
-
-fun FXKtBuilder<*>.noStyleClass() {
-    node.styleClass.remove(node.properties["FXKtStyleClass"] ?: "")
-}
-
-fun <T: Region> FXKtBuilder<T>.pad(top: Double, right:Double, bottom:Double, left:Double) {
-    node.padding = Insets(top, right, bottom, left)
-}
-
-fun <T: Region> FXKtBuilder<T>.width(width: Double) {
-    node.prefWidth = width
-}
-
-fun <T: Region> FXKtBuilder<T>.height(height: Double) {
-    node.prefHeight = height
-}
-
-
-
-inline fun hbox(builder: FXKtBuilder<HBox>.() -> Unit): HBox {
-    return PaneBuilder(HBox()).apply(builder).node
-}
-
-inline fun vbox(builder: VBox.() -> Unit): VBox {
-    return VBox().apply(builder)
-}
-
-fun Pane.add(vararg nodes: Node) {
-    children.addAll(nodes)
+@FXKtDSL
+fun Region.height(height: Double) {
+    prefHeight = height
 }

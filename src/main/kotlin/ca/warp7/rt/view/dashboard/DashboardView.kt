@@ -37,34 +37,38 @@ internal class DashboardView {
             height(28.dp2px)
             align(Pos.CENTER_LEFT)
             styleClass("action-item")
-            +hbox {
-                +FontIcon(ic).apply {
-                    iconSize = 18
+            modify {
+                +hbox {
+                    add(FontIcon(ic).apply {
+                        iconSize = 18
+                    })
+                    minWidth = 32.dp2px
+                    align(Pos.CENTER)
                 }
-                node.minWidth = 32.dp2px
-                align(Pos.CENTER)
+                +Label(t)
             }
-            +Label(t)
         }
     }
 
     internal val contextBar = vbox {
         maxHeight = 56.dp2px
         minHeight = 56.dp2px
-        children.add(hbox {
-            node.spacing = 6.dp2px
+        add(hbox {
+            spacing = 6.dp2px
             align(Pos.CENTER)
-            pad(8.dp2px, 8.dp2px, 8.dp2px, 8.dp2px)
-            +TextField().apply {
-                alignment = Pos.CENTER
-                promptText = "Type"
+            padding = Insets(8.dp2px, 8.dp2px, 8.dp2px, 8.dp2px)
+            modify {
+                +textField {
+                    alignment = Pos.CENTER
+                    promptText = "Type"
+                }
+                +FontIcon("fas-arrow-right")
+                +textField {
+                    alignment = Pos.CENTER
+                    promptText = "Value"
+                }
+                +Button("", FontIcon("fas-sync"))
             }
-            +FontIcon("fas-arrow-right")
-            +TextField().apply {
-                alignment = Pos.CENTER
-                promptText = "Value"
-            }
-            +Button("", FontIcon("fas-sync"))
         })
     }
 
