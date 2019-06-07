@@ -53,7 +53,6 @@ internal class WindowView {
     internal val tabTitleBar = hbox {
         prefHeight = 48.dp2px
         alignment = Pos.CENTER_LEFT
-        padding = Insets(0.0, 16.dp2px, 0.0, 16.dp2px)
         HBox.setHgrow(tabTitleContainer, Priority.ALWAYS)
         children.apply { addAll(tabTitleContainer) }
     }

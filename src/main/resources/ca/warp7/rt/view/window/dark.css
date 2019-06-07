@@ -214,8 +214,8 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 
 .tab-title {
     -fx-text-fill: white;
-    -fx-font-size: 28;
-    -fx-font-weight: normal;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
 }
 
 .text-field {
@@ -271,5 +271,9 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .action-item:hover {
+    -fx-background-color: #555;
+}
+
+.section-icon-button:hover {
     -fx-background-color: #555;
 }

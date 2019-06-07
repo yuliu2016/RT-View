@@ -2,6 +2,7 @@ package ca.warp7.rt.view.dashboard
 
 import ca.warp7.rt.view.dp2px
 import ca.warp7.rt.view.fxkt.*
+import ca.warp7.rt.view.window.boxIcon
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Orientation
@@ -11,6 +12,8 @@ import javafx.scene.input.ScrollEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
+import org.kordamp.ikonli.Ikon
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 import org.kordamp.ikonli.javafx.FontIcon
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -19,11 +22,10 @@ internal class DashboardView {
     private fun sectionBar(t: String): HBox {
         return HBox().apply {
             styleClass.add("split-pane-section")
-            prefHeight = 32.dp2px
-            minHeight = 32.dp2px
-            maxHeight = 32.dp2px
-            spacing = 16.dp2px
-            padding = Insets(0.0, 8.dp2px, 0.0, 8.dp2px)
+            prefHeight = 36.dp2px
+            minHeight = 36.dp2px
+            maxHeight = 36.dp2px
+            padding = Insets(0.0, 0.0, 0.0, 8.dp2px)
             children.add(Label(t.toUpperCase()))
             children.add(HBox().apply {
                 HBox.setHgrow(this, Priority.ALWAYS)
@@ -32,21 +34,30 @@ internal class DashboardView {
         }
     }
 
-    private fun transformBar(t: String, ic: String): HBox {
+    private fun transformBar(t: String, ic: Ikon): HBox {
         return hbox {
-            height(28.dp2px)
+            height(36.dp2px)
             align(Pos.CENTER_LEFT)
             styleClass("action-item")
             modify {
                 +hbox {
-                    add(FontIcon(ic).apply {
-                        iconSize = 18
-                    })
-                    minWidth = 32.dp2px
+                    add(fontIcon(ic, 17))
+                    minWidth = 36.dp2px
                     align(Pos.CENTER)
                 }
                 +Label(t)
             }
+        }
+    }
+
+    private fun sectionIconButton(ic: Ikon): VBox {
+        return vbox {
+            modify {
+                +fontIcon(ic, 17)
+            }
+            styleClass("section-icon-button")
+            align(Pos.CENTER)
+            minWidth = 40.dp2px
         }
     }
 
@@ -77,24 +88,20 @@ internal class DashboardView {
     }
 
     internal val tableSection = VBox(sectionBar("TABLE: ").apply {
-        children.addAll(
-                FontIcon("fas-code-branch").apply {
-                    iconSize = 18
-                },
-                FontIcon("fas-sync").apply {
-                    iconSize = 17
-                }
-        )
+        modify {
+            +sectionIconButton(FontAwesomeSolid.INFO_CIRCLE)
+            +sectionIconButton(FontAwesomeSolid.CODE_BRANCH)
+            +sectionIconButton(FontAwesomeSolid.SYNC)
+        }
     }).apply {
         minHeight = 32.dp2px
         val sp = ScrollPane(VBox().apply {
             children.addAll(
-                    transformBar("Properties", "fas-info-circle"),
-                    transformBar("Pivot", "fas-random"),
-                    transformBar("Formulas", "fas-superscript"),
-                    transformBar("Filter", "fas-filter"),
-                    transformBar("Sort", "fas-sort"),
-                    transformBar("Highlight", "fas-sun")
+                    transformBar("Pivot", FontAwesomeSolid.RANDOM),
+                    transformBar("Formulas", FontAwesomeSolid.SUPERSCRIPT),
+                    transformBar("Filter", FontAwesomeSolid.FILTER),
+                    transformBar("Sort", FontAwesomeSolid.SORT),
+                    transformBar("Highlight", FontAwesomeSolid.SUN)
             )
         })
         onScroll = EventHandler<ScrollEvent> { event ->
@@ -113,6 +120,6 @@ internal class DashboardView {
 
     val splitPane = SplitPane(vbox{},dataTreeSection, tableSection, summarySection).apply {
         orientation = Orientation.VERTICAL
-        setDividerPositions(0.0, 0.4, 0.7)
+        setDividerPositions(0.0, 1.0 / 3, 2.0 / 3)
     }
 }

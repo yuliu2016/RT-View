@@ -21,10 +21,33 @@ open class DataView(grid: Grid?) : SpreadsheetView(grid) {
                     icon(FontAwesomeRegular.COPY, 16)
                     modify {
                         item {
-                            name("Copy With Headers")
+                            name("Tab-Delimited With Headers")
                             accelerator = Combo(KeyCode.C, SHORTCUT_DOWN)
-                            setOnAction { copyData()
-                            }
+                            setOnAction { copyData() }
+                        }
+                        item {
+                            name("Tab-Delimited")
+                        }
+                        item {
+                            name("Comma-Delimited With Headers")
+                        }
+                        item {
+                            name("Comma-Delimited")
+                        }
+                        item {
+                            name("Krangl DataFrame")
+                        }
+                        item {
+                            name("Python Dictionary of List Columns")
+                        }
+                        item {
+                            name("Python List of List Columns")
+                        }
+                        item {
+                            name("Python List of List Rows")
+                        }
+                        item {
+                            name("Python List of Dictionary Rows")
                         }
                     }
                 }
@@ -51,18 +74,6 @@ open class DataView(grid: Grid?) : SpreadsheetView(grid) {
                 }
             }
         }
-//
-//        val contextMenu = ContextMenu()
-//
-//        contextMenu.items.addAll(
-//                menuItem("Copy Data", "far-copy:16:1e2e4a", Combo(KeyCode.C, SHORTCUT_DOWN)) { copyData() },
-//                menuItem("Zoom In", "fas-search-plus:16:1e2e4a", Combo(KeyCode.EQUALS)) { incrementZoom() },
-//                menuItem("Zoom Out", "fas-search-minus:16:1e2e4a", Combo(KeyCode.MINUS)) { decrementZoom() },
-//                menuItem("Reset Zoom", null, Combo(KeyCode.DIGIT0)) {
-//                    zoomFactor = 1.0
-//                }
-//        )
-//        return contextMenu
     }
 
     private fun copyData() {

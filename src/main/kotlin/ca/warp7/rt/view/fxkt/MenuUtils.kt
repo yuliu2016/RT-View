@@ -22,12 +22,12 @@ fun Menu.name(name: String) {
 
 @FXKtDSL
 fun Menu.icon(icon: Ikon, iconSize: Int) {
-    graphic = FontIcon(icon).apply { setIconSize(iconSize) }
+    graphic = fontIcon(icon, iconSize)
 }
 
 @FXKtDSL
 fun MenuItem.icon(icon: Ikon, iconSize: Int) {
-    graphic = FontIcon(icon).apply { setIconSize(iconSize) }
+    graphic = fontIcon(icon, iconSize)
 }
 
 @FXKtDSL

@@ -175,7 +175,7 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 .master-tab-icon-selected{
     -fx-background-color: #ddd;
     -fx-background-insets: 6;
-    -fx-background-radius: 22;
+    -fx-background-radius: 12;
 }
 
 .master-tab-icon-selected .ikonli-font-icon {
@@ -200,8 +200,8 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 
 .tab-title {
     -fx-text-fill: black;
-    -fx-font-size: 28;
-    -fx-font-weight: normal;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
 }
 
 .text-field {
@@ -257,5 +257,11 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .action-item:hover {
-    -fx-background-color: #ddd;
+    -fx-background-color: #ccc;
+}
+
+.section-icon-button:hover {
+    -fx-background-color: #ccc;
+    -fx-background-insets: 2 0 2 0;
+    -fx-background-radius: 8;
 }

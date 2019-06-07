@@ -46,6 +46,7 @@ class RTWindow private constructor(
                 add(view.textIcon)
             }
             view.tabTitleContainer.align(Pos.CENTER_LEFT)
+            view.tabTitleContainer.padding = Insets(0.0, 16.dp2px, 0.0, 16.dp2px)
             view.tabContainer.center = VBox().apply {
                 alignment = Pos.TOP_LEFT
                 padding = Insets(12.dp2px)
@@ -77,6 +78,7 @@ class RTWindow private constructor(
             }
             view.tabTitleContainer.align(Pos.CENTER)
             view.tabTitleBar.children.removeAll(view.okButton, view.cancelButton)
+            view.tabTitleBar.padding = Insets(0.0)
         }
     }
 
