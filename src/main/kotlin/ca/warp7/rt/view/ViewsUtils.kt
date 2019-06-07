@@ -17,26 +17,6 @@ import org.kordamp.ikonli.javafx.FontIcon
 import tech.tablesaw.api.Table
 import tech.tablesaw.io.csv.CsvReadOptions
 
-typealias Combo = KeyCodeCombination
-
-fun menuItem(t: String,
-             icon: String?,
-             combo: KeyCombination,
-             onAction: (event: ActionEvent) -> Unit): MenuItem {
-
-    val item = MenuItem()
-    item.text = t
-    if (icon != null) {
-        val fontIcon = FontIcon()
-        fontIcon.iconLiteral = icon
-        item.graphic = fontIcon
-    }
-    item.isMnemonicParsing = true
-    item.accelerator = combo
-    item.setOnAction { onAction.invoke(it) }
-    return item
-}
-
 fun getSampleGrid(): Grid {
     val options = CsvReadOptions
             .builder(DataView::class.java.getResourceAsStream("/ca/warp7/rt/view/window/test.csv"))

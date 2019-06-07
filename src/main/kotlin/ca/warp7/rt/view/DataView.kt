@@ -1,29 +1,68 @@
 package ca.warp7.rt.view
 
+import ca.warp7.rt.view.fxkt.*
 import javafx.scene.control.ContextMenu
-import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
 import org.controlsfx.control.spreadsheet.Grid
 import org.controlsfx.control.spreadsheet.SpreadsheetView
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 
 open class DataView(grid: Grid?) : SpreadsheetView(grid) {
 
     override fun getSpreadsheetViewContextMenu(): ContextMenu {
-        val contextMenu = ContextMenu()
-
-        contextMenu.items.addAll(
-                menuItem("Copy Data", "far-copy:16:1e2e4a", Combo(KeyCode.C, SHORTCUT_DOWN)) { copyData() },
-                SeparatorMenuItem(),
-                menuItem("Zoom In", "fas-search-plus:16:1e2e4a", Combo(KeyCode.EQUALS)) { incrementZoom() },
-                menuItem("Zoom Out", "fas-search-minus:16:1e2e4a", Combo(KeyCode.MINUS)) { decrementZoom() },
-                menuItem("Reset Zoom", null, Combo(KeyCode.DIGIT0)) {
-                    zoomFactor = 1.0
+        return ContextMenu().apply {
+            modify {
+                submenu {
+                    name("Copy")
+                    icon(FontAwesomeRegular.COPY, 16)
+                    modify {
+                        item {
+                            name("Copy With Headers")
+                            accelerator = Combo(KeyCode.C, SHORTCUT_DOWN)
+                            setOnAction { copyData()
+                            }
+                        }
+                    }
                 }
-        )
-        return contextMenu
+                submenu {
+                    name("Zoom")
+                    icon(FontAwesomeSolid.SEARCH_PLUS, 16)
+                    modify {
+                        item {
+                            name("Zoom In")
+                            accelerator = Combo(KeyCode.EQUALS)
+                            setOnAction { incrementZoom() }
+                        }
+                        item {
+                            name("Zoom Out")
+                            accelerator = Combo(KeyCode.MINUS)
+                            setOnAction { decrementZoom() }
+                        }
+                        item {
+                            name("Reset Zoom")
+                            accelerator = Combo(KeyCode.DIGIT0)
+                            setOnAction { zoomFactor = 1.0 }
+                        }
+                    }
+                }
+            }
+        }
+//
+//        val contextMenu = ContextMenu()
+//
+//        contextMenu.items.addAll(
+//                menuItem("Copy Data", "far-copy:16:1e2e4a", Combo(KeyCode.C, SHORTCUT_DOWN)) { copyData() },
+//                menuItem("Zoom In", "fas-search-plus:16:1e2e4a", Combo(KeyCode.EQUALS)) { incrementZoom() },
+//                menuItem("Zoom Out", "fas-search-minus:16:1e2e4a", Combo(KeyCode.MINUS)) { decrementZoom() },
+//                menuItem("Reset Zoom", null, Combo(KeyCode.DIGIT0)) {
+//                    zoomFactor = 1.0
+//                }
+//        )
+//        return contextMenu
     }
 
     private fun copyData() {
