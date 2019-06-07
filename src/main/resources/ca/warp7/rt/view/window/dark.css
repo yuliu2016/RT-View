@@ -187,7 +187,9 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .master-tab-icon-selected {
-    -fx-background-color: #444;
+    -fx-background-color: #555;
+    -fx-background-insets: 6;
+    -fx-background-radius: 22;
 }
 
 .master-tab-icon-selected .ikonli-font-icon {
@@ -212,14 +214,8 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 
 .tab-title {
     -fx-text-fill: white;
-    -fx-font-size: 24;
-    -fx-font-weight: lighter;
-}
-
-.tab-title-pound {
-    -fx-text-fill: #888;
-    -fx-font-size: 24;
-    -fx-font-weight: lighter;
+    -fx-font-size: 28;
+    -fx-font-weight: normal;
 }
 
 .text-field {
@@ -252,7 +248,8 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .split-pane-section {
-    -fx-background-color: #555;
+    -fx-border-color: #888;
+    -fx-border-width: 0 0 1 0;
 }
 
 .split-pane-section .label {

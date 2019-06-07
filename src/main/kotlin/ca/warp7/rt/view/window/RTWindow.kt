@@ -2,6 +2,8 @@ package ca.warp7.rt.view.window
 
 import ca.warp7.rt.view.Combo
 import ca.warp7.rt.view.dp2px
+import ca.warp7.rt.view.fxkt.align
+import ca.warp7.rt.view.fxkt.modify
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -38,14 +40,13 @@ class RTWindow private constructor(
                 it.styleClass.remove("master-tab-icon-selected")
             }
             view.sidebarPane.center = view.tabContainer
-            view.okButton.isVisible = true
-            view.cancelButton.isVisible = true
+            view.tabTitleBar.children.addAll(view.okButton, view.cancelButton)
             view.tabTitle.text = "Add Formula"
             view.iconContainer.children.apply {
                 clear()
                 add(view.textIcon)
             }
-            view.tabPound.text = ""
+            view.tabTitleContainer.align(Pos.CENTER_LEFT)
             view.tabContainer.center = VBox().apply {
                 alignment = Pos.TOP_LEFT
                 padding = Insets(12.dp2px)
@@ -75,9 +76,8 @@ class RTWindow private constructor(
             } else {
                 view.sidebarPane.center = null
             }
-            view.tabPound.text = "#"
-            view.okButton.isVisible = false
-            view.cancelButton.isVisible = false
+            view.tabTitleContainer.align(Pos.CENTER)
+            view.tabTitleBar.children.removeAll(view.okButton, view.cancelButton)
         }
     }
 

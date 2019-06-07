@@ -67,37 +67,22 @@ internal class DashboardView {
                     alignment = Pos.CENTER
                     promptText = "Value"
                 }
-                +Button("", FontIcon("fas-sync"))
+                +Button("", FontIcon("fas-plus"))
             }
         })
     }
 
-    internal val dataTreeSection = VBox(sectionBar("DATA TREE").apply {
-        children.addAll(
-                FontIcon("fas-plus").apply {
-                    iconSize = 18
-                }
-        )
-    }).apply {
+    internal val dataTreeSection = VBox(sectionBar("DATA TREE")).apply {
         minHeight = 32.dp2px
-        val itm = TreeItem<String>("Event/2019onwin")
-        itm.children.addAll(TreeItem("Raw Data"), TreeItem("Team Pivot"))
-        itm.isExpanded = true
-        children.add(
-                TreeView<String>(itm)
-        )
     }
 
     internal val tableSection = VBox(sectionBar("TABLE: ").apply {
         children.addAll(
-                FontIcon("fas-copy").apply {
+                FontIcon("fas-code-branch").apply {
                     iconSize = 18
                 },
-                FontIcon("fas-folder-open").apply {
-                    iconSize = 18
-                },
-                FontIcon("fas-download").apply {
-                    iconSize = 18
+                FontIcon("fas-sync").apply {
+                    iconSize = 17
                 }
         )
     }).apply {
@@ -106,10 +91,10 @@ internal class DashboardView {
             children.addAll(
                     transformBar("Properties", "fas-info-circle"),
                     transformBar("Pivot", "fas-random"),
-                    transformBar("Sort", "fas-sort"),
+                    transformBar("Formulas", "fas-superscript"),
                     transformBar("Filter", "fas-filter"),
-                    transformBar("Highlight", "fas-sun"),
-                    transformBar("Formulas", "fas-superscript")
+                    transformBar("Sort", "fas-sort"),
+                    transformBar("Highlight", "fas-sun")
             )
         })
         onScroll = EventHandler<ScrollEvent> { event ->
@@ -126,8 +111,8 @@ internal class DashboardView {
         minHeight = 32.dp2px
     }
 
-    val splitPane = SplitPane(contextBar, dataTreeSection, tableSection, summarySection).apply {
+    val splitPane = SplitPane(vbox{},dataTreeSection, tableSection, summarySection).apply {
         orientation = Orientation.VERTICAL
-        setDividerPositions(0.1, 0.4, 0.7)
+        setDividerPositions(0.0, 0.4, 0.7)
     }
 }

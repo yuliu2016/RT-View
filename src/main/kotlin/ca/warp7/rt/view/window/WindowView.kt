@@ -2,6 +2,10 @@ package ca.warp7.rt.view.window
 
 import ca.warp7.rt.view.DataView
 import ca.warp7.rt.view.dp2px
+import ca.warp7.rt.view.fxkt.add
+import ca.warp7.rt.view.fxkt.align
+import ca.warp7.rt.view.fxkt.hbox
+import ca.warp7.rt.view.fxkt.vbox
 import ca.warp7.rt.view.getSampleGrid
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -17,48 +21,48 @@ import org.kordamp.ikonli.javafx.FontIcon
 @Suppress("MemberVisibilityCanBePrivate")
 internal class WindowView {
 
-    internal val cancelButton = HBox().apply {
+    internal val cancelButton = hbox {
         val a = FontIcon("fas-times")
         a.iconSize = 24.dp2px.toInt()
         styleClass.add("master-cancel")
-        alignment = Pos.CENTER
-        prefWidth = 56.dp2px
-        prefHeight = 56.dp2px
-        children.add(a)
+        align(Pos.CENTER)
+        prefWidth = 48.dp2px
+        prefHeight = 48.dp2px
+        add(a)
     }
 
-    internal val okButton = HBox().apply {
+    internal val okButton = hbox {
         val a = FontIcon("fas-check")
         a.iconSize = 24.dp2px.toInt()
         styleClass.add("master-ok")
-        alignment = Pos.CENTER
-        prefWidth = 56.dp2px
-        prefHeight = 56.dp2px
-        children.add(a)
-    }
-
-    internal val tabPound = Label("#").apply {
-        styleClass.add("tab-title-pound")
+        align(Pos.CENTER)
+        prefWidth = 48.dp2px
+        prefHeight = 48.dp2px
+        add(a)
     }
 
     internal val tabTitle = Label("Restructured Tables").apply {
         styleClass.add("tab-title")
     }
 
-    internal val tabTitleBar = HBox().apply {
-        prefHeight = 56.dp2px
-        alignment = Pos.CENTER_LEFT
-        val expander = HBox()
-        padding = Insets(0.0, 0.0, 0.0, 12.dp2px)
-        HBox.setHgrow(expander, Priority.ALWAYS)
-        children.apply { addAll(tabPound, tabTitle, expander, okButton, cancelButton) }
+    internal val tabTitleContainer = hbox {
+        add(tabTitle)
+        align(Pos.CENTER)
     }
 
-    internal val iconContainer: VBox = VBox().apply {
+    internal val tabTitleBar = hbox {
+        prefHeight = 48.dp2px
+        alignment = Pos.CENTER_LEFT
+        padding = Insets(0.0, 16.dp2px, 0.0, 16.dp2px)
+        HBox.setHgrow(tabTitleContainer, Priority.ALWAYS)
+        children.apply { addAll(tabTitleContainer) }
+    }
+
+    internal val iconContainer: VBox = vbox {
         styleClass.add("master-tab-icon-container")
         minWidth = 56.dp2px
         maxWidth = 56.dp2px
-        alignment = Pos.TOP_CENTER
+        align(Pos.TOP_CENTER)
     }
 
     internal val tabContainer: BorderPane = BorderPane().apply {

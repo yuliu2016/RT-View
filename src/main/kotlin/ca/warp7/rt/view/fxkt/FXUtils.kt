@@ -28,7 +28,7 @@ inline fun textField(builder: TextField.() -> Unit): TextField = TextField().app
 
 @FXKtDSL
 fun Node.styleClass(sc: String) {
-    styleClass.add(sc);
+    styleClass.add(sc)
     properties["FXKtStyleClass"] = sc
 }
 
