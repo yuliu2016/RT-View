@@ -1,4 +1,4 @@
-package ca.warp7.rt.view
+package ca.warp7.rt.view.fxkt
 
 import javafx.stage.Screen
 

@@ -27,7 +27,7 @@ dependencies {
     // Kotlin Coroutines
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.2.1")
     // Table Library
-    implementation(group = "tech.tablesaw", name = "tablesaw-core", version = "0.33.2")
+    implementation(group = "de.mpicbg.scicomp", name = "krangl", version = "0.11")
     
     implementation(group = "org.kordamp.ikonli", name = "ikonli-javafx", version = "2.4.0")
     implementation(group = "org.kordamp.ikonli", name = "ikonli-fontawesome5-pack", version = "2.4.0")

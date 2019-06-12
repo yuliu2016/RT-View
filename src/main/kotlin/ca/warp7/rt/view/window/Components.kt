@@ -1,17 +1,9 @@
 package ca.warp7.rt.view.window
 
-import ca.warp7.rt.view.dp2px
-import javafx.geometry.Insets
+import ca.warp7.rt.view.fxkt.dp2px
 import javafx.geometry.Pos
 import javafx.scene.image.Image
-import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
-import javafx.scene.layout.VBox
-import javafx.scene.paint.Color
-import javafx.scene.text.Font
-import javafx.scene.text.FontWeight
-import javafx.scene.text.Text
-import javafx.scene.text.TextFlow
 import javafx.stage.Stage
 import org.kordamp.ikonli.javafx.FontIcon
 

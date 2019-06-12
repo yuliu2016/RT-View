@@ -1,22 +1,14 @@
 package test.ca.warp7.rt.view
 
 import ca.warp7.rt.view.dashboard.DashboardView
-import ca.warp7.rt.view.dp2px
-import ca.warp7.rt.view.fxkt.*
+import ca.warp7.rt.view.fxkt.dp2px
 import ca.warp7.rt.view.window.MasterTab
 import ca.warp7.rt.view.window.RTWindow
 import javafx.application.Application
-import javafx.event.EventHandler
 import javafx.geometry.Insets
-import javafx.geometry.Orientation
-import javafx.geometry.Pos
 import javafx.scene.control.*
-import javafx.scene.input.ScrollEvent
-import javafx.scene.layout.HBox
-import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
-import org.kordamp.ikonli.javafx.FontIcon
 
 class Test0 : Application() {
 

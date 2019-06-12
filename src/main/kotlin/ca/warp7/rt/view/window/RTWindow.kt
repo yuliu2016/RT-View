@@ -1,6 +1,6 @@
 package ca.warp7.rt.view.window
 
-import ca.warp7.rt.view.dp2px
+import ca.warp7.rt.view.fxkt.dp2px
 import ca.warp7.rt.view.fxkt.Combo
 import ca.warp7.rt.view.fxkt.align
 import javafx.geometry.Insets

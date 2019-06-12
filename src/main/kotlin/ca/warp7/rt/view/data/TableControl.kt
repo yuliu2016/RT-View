@@ -1,4 +1,4 @@
-package ca.warp7.rt.view
+package ca.warp7.rt.view.data
 
 import ca.warp7.rt.view.fxkt.*
 import javafx.scene.control.ContextMenu
@@ -6,12 +6,11 @@ import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
-import org.controlsfx.control.spreadsheet.Grid
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 
-open class DataView(grid: Grid?) : SpreadsheetView(grid) {
+class TableControl(private val pane: DataPane) : SpreadsheetView(pane.model.toGrid()) {
 
     override fun getSpreadsheetViewContextMenu(): ContextMenu {
         return ContextMenu().apply {
@@ -23,31 +22,39 @@ open class DataView(grid: Grid?) : SpreadsheetView(grid) {
                         item {
                             name("Tab-Delimited With Headers")
                             accelerator = Combo(KeyCode.C, SHORTCUT_DOWN)
-                            setOnAction { copyData() }
+                            setOnAction { pane.copy.tabDelimitedHeaders() }
                         }
                         item {
                             name("Tab-Delimited")
+                            setOnAction { pane.copy.tabDelimited() }
                         }
                         item {
                             name("Comma-Delimited With Headers")
+                            setOnAction { pane.copy.commaDelimitedHeaders() }
                         }
                         item {
                             name("Comma-Delimited")
+                            setOnAction { pane.copy.commaDelimited() }
                         }
                         item {
                             name("Krangl DataFrame")
+                            setOnAction { pane.copy.kranglDataFrame() }
                         }
                         item {
                             name("Python Dictionary of List Columns")
+                            setOnAction { pane.copy.pyDLC() }
                         }
                         item {
                             name("Python List of List Columns")
+                            setOnAction { pane.copy.pyLLC() }
                         }
                         item {
                             name("Python List of List Rows")
+                            setOnAction { pane.copy.pyLLR() }
                         }
                         item {
                             name("Python List of Dictionary Rows")
+                            setOnAction { pane.copy.phLDR() }
                         }
                     }
                 }
@@ -74,42 +81,5 @@ open class DataView(grid: Grid?) : SpreadsheetView(grid) {
                 }
             }
         }
-    }
-
-    private fun copyData() {
-        val allRows = mutableSetOf<Int>()
-        val allCols = mutableSetOf<Int>()
-        for (p in selectionModel.selectedCells) {
-            val modelRow = getModelRow(p.row)
-            val modelCol = getModelColumn(p.column)
-            allRows.add(modelRow)
-            allCols.add(modelCol)
-        }
-        val builder = StringBuilder()
-        val minRow = allRows.min()
-        val maxRow = allRows.max()
-        val minCol = allCols.min()
-        val maxCol = allCols.max()
-        if (minRow != null && maxRow != null && minCol != null && maxCol != null) {
-            if (grid.columnHeaders.isNotEmpty() && minCol != maxCol) {
-                for (col in minCol until maxCol) {
-                    builder.append(grid.columnHeaders[col])
-                    builder.append("\t")
-                }
-                builder.append(grid.columnHeaders[maxCol])
-                builder.append("\n")
-            }
-            for (i in minRow..maxRow) {
-                for (j in minCol until maxCol) {
-                    builder.append(grid.rows[i][j].item)
-                    builder.append("\t")
-                }
-                builder.append(grid.rows[i][maxCol].item)
-                builder.append("\n")
-            }
-        }
-        val content = ClipboardContent()
-        content.putString(builder.toString())
-        Clipboard.getSystemClipboard().setContent(content)
     }
 }

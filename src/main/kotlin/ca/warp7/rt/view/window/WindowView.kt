@@ -1,12 +1,12 @@
 package ca.warp7.rt.view.window
 
-import ca.warp7.rt.view.DataView
-import ca.warp7.rt.view.dp2px
+import ca.warp7.rt.view.data.DataPane
+import ca.warp7.rt.view.fxkt.dp2px
 import ca.warp7.rt.view.fxkt.add
 import ca.warp7.rt.view.fxkt.align
 import ca.warp7.rt.view.fxkt.hbox
 import ca.warp7.rt.view.fxkt.vbox
-import ca.warp7.rt.view.getSampleGrid
+import ca.warp7.rt.view.data.getSampleGrid
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
@@ -77,7 +77,7 @@ internal class WindowView {
 
     internal val rootPane: BorderPane = BorderPane().apply {
         left = sidebarPane
-        val sv = DataView(getSampleGrid())
+        val sv = DataPane(getSampleGrid()).control
         sv.isEditable = false
         sv.columns.forEach { it.setPrefWidth(100.0) }
         center = sv

@@ -1,8 +1,7 @@
 package ca.warp7.rt.view.dashboard
 
-import ca.warp7.rt.view.dp2px
+import ca.warp7.rt.view.fxkt.dp2px
 import ca.warp7.rt.view.fxkt.*
-import ca.warp7.rt.view.window.boxIcon
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Orientation
