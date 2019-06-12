@@ -5,6 +5,7 @@ import javafx.scene.control.ContextMenu
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
@@ -76,6 +77,33 @@ class TableControl(private val pane: DataPane) : SpreadsheetView(pane.model.toGr
                             name("Reset Zoom")
                             accelerator = Combo(KeyCode.DIGIT0)
                             setOnAction { zoomFactor = 1.0 }
+                        }
+                    }
+                }
+                submenu {
+                    name("Sort")
+                    icon(FontAwesomeSolid.SORT, 16)
+                    modify {
+                        item {
+                            name("Set Ascending")
+                            accelerator = Combo(KeyCode.EQUALS, KeyCombination.ALT_DOWN)
+                        }
+                        item {
+                            name("Set Descending")
+                            accelerator = Combo(KeyCode.MINUS, KeyCombination.ALT_DOWN)
+                        }
+                        item {
+                            name("Add Ascending")
+                        }
+                        item {
+                            name("Add Descending")
+                        }
+                        item {
+                            name("Clear Selected Columns")
+                        }
+                        item {
+                            name("Clear All")
+                            Combo(KeyCode.DIGIT0, KeyCombination.ALT_DOWN)
                         }
                     }
                 }
