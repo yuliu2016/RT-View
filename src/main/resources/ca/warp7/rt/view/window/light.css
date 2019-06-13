@@ -201,7 +201,6 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 .tab-title {
     -fx-text-fill: black;
     -fx-font-size: 20;
-    -fx-font-weight: bold;
 }
 
 .text-field {

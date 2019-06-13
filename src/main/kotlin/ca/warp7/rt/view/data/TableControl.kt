@@ -65,17 +65,17 @@ class TableControl(private val pane: DataPane) : SpreadsheetView(pane.model.toGr
                     modify {
                         item {
                             name("Zoom In")
-                            accelerator = Combo(KeyCode.EQUALS)
+                            accelerator = Combo(KeyCode.EQUALS, SHORTCUT_DOWN)
                             setOnAction { incrementZoom() }
                         }
                         item {
                             name("Zoom Out")
-                            accelerator = Combo(KeyCode.MINUS)
+                            accelerator = Combo(KeyCode.MINUS, SHORTCUT_DOWN)
                             setOnAction { decrementZoom() }
                         }
                         item {
                             name("Reset Zoom")
-                            accelerator = Combo(KeyCode.DIGIT0)
+                            accelerator = Combo(KeyCode.DIGIT0, SHORTCUT_DOWN)
                             setOnAction { zoomFactor = 1.0 }
                         }
                     }
@@ -86,11 +86,13 @@ class TableControl(private val pane: DataPane) : SpreadsheetView(pane.model.toGr
                     modify {
                         item {
                             name("Set Ascending")
-                            accelerator = Combo(KeyCode.EQUALS, KeyCombination.ALT_DOWN)
+                            accelerator = Combo(KeyCode.EQUALS)
+                            setOnAction { pane.model.sort(SortType.Ascending) }
                         }
                         item {
                             name("Set Descending")
-                            accelerator = Combo(KeyCode.MINUS, KeyCombination.ALT_DOWN)
+                            accelerator = Combo(KeyCode.MINUS)
+                            setOnAction { pane.model.sort(SortType.Descending) }
                         }
                         item {
                             name("Add Ascending")

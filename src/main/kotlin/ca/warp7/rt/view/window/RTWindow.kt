@@ -40,7 +40,7 @@ class RTWindow private constructor(
             }
             view.sidebarPane.center = view.tabContainer
             view.tabTitleBar.children.addAll(view.okButton, view.cancelButton)
-            view.tabTitle.text = "Add Formula"
+            view.tabTitle.text = "ADD FORMULA"
             view.iconContainer.children.apply {
                 clear()
                 add(view.textIcon)
@@ -65,7 +65,7 @@ class RTWindow private constructor(
             }
             if (selectedIndex != -1) {
                 val selected = state.masterTabs[selectedIndex]
-                view.tabTitle.text = selected.title.replace(" ", "")
+                view.tabTitle.text = selected.title.toUpperCase()
                 view.tabContainer.center = selected.component()
                 selectedIconBox?.styleClass?.add("master-tab-icon-selected")
             } else {

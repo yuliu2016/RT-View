@@ -9,6 +9,7 @@ import javafx.geometry.Insets
 import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
 
 class Test0 : Application() {
 
@@ -20,7 +21,7 @@ class Test0 : Application() {
                     MasterTab("Dashboard", "fas-chart-bar", 24) {
                         DashboardView().splitPane
                     },
-                    MasterTab("Terminal", "fas-terminal", 20) {
+                    MasterTab("Data Lookup", "fas-search", 24) {
                         VBox(TextField()).apply {
                             padding = hpad
                         }
@@ -35,10 +36,11 @@ class Test0 : Application() {
                         VBox()
                     },
                     MasterTab("Settings", "fas-cogs", 24) {
-                        Accordion(
-                                TitledPane("TBA Key", TextField()),
-                                TitledPane("TBA Key", TextField())
-                        )
+                        val k = ((0..10).map {
+                            TitledPane("TBA Key", TextField())
+                        }).toTypedArray()
+
+                        Accordion(*k)
                     }
             ))
         }
