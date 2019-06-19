@@ -6,6 +6,6 @@ import org.kordamp.ikonli.javafx.FontIcon
 @FXKtDSL
 fun fontIcon(ic: Ikon, size: Int): FontIcon {
     return FontIcon(ic).apply {
-        iconSize = size
+        iconSize = size.dp2px.toInt()
     }
 }

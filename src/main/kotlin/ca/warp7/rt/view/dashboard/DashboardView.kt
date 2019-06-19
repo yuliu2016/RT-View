@@ -113,7 +113,7 @@ internal class DashboardView {
         children.add(sp)
     }
 
-    val summarySection = VBox(sectionBar("SUMMARY: ")).apply {
+    val summarySection = VBox(sectionBar("PROPERTIES: ")).apply {
         minHeight = 32.dp2px
     }
 

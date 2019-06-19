@@ -1,14 +1,14 @@
 package ca.warp7.rt.view.window
 
-import ca.warp7.rt.view.fxkt.dp2px
-import ca.warp7.rt.view.fxkt.Combo
-import ca.warp7.rt.view.fxkt.align
+import ca.warp7.rt.view.fxkt.*
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
+import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import org.controlsfx.control.spreadsheet.SpreadsheetView
@@ -61,13 +61,13 @@ class RTWindow private constructor(
                 clear()
                 add(view.textIcon)
                 addAll(state.iconNodes)
-                forEach { it.styleClass.remove("master-tab-icon-selected") }
+                forEach { it.noStyleClass() }
             }
             if (selectedIndex != -1) {
                 val selected = state.masterTabs[selectedIndex]
                 view.tabTitle.text = selected.title.toUpperCase()
                 view.tabContainer.center = selected.component()
-                selectedIconBox?.styleClass?.add("master-tab-icon-selected")
+                view.iconContainer.children[selectedIndex + 1]?.styleClass("master-tab-icon-selected")
             } else {
                 view.tabContainer.center = null
             }
@@ -109,7 +109,7 @@ class RTWindow private constructor(
         stage.fullScreenExitKeyCombination = Combo(KeyCode.F11)
         stage.scene = Scene(view.rootPane).apply {
             stylesheets.add(kMainCSS)
-            setOnKeyPressed {
+            onKeyPressed = EventHandler {
                 when {
                     it.code == KeyCode.F11 -> {
                         state.isFullScreen = !state.isFullScreen
@@ -127,30 +127,30 @@ class RTWindow private constructor(
                 }
             }
         }
-        view.okButton.setOnMouseClicked { state.okSignal() }
-        view.cancelButton.setOnMouseClicked { state.cancelSignal() }
+        view.okButton.onMouseClicked = EventHandler { state.okSignal() }
+        view.cancelButton.onMouseClicked = EventHandler { state.cancelSignal() }
         state.reflectTheme()
     }
 
     private fun createIcon(i: Int, p: MasterTab): Node {
-        val box = boxIcon(p.iconName, p.iconSize)
-        box.setOnMousePressed {
-            state.apply {
-                if (!isDialog) {
-                    if (i == selectedIndex) {
-                        isSidebarShown = false
-                        selectedIndex = -1
-                        selectedIconBox = null
-                    } else {
-                        isSidebarShown = true
-                        selectedIndex = i
-                        selectedIconBox = box
-                    }
-                    reflect()
-                }
-            }
+        val box = boxIcon(p.icon)
+        box.onMousePressed = EventHandler {
+            state.selectTab(i)
         }
         return box
+    }
+
+    private fun WindowState.selectTab(i: Int) {
+        if (!isDialog) {
+            if (i == selectedIndex) {
+                isSidebarShown = false
+                selectedIndex = -1
+            } else {
+                isSidebarShown = true
+                selectedIndex = i
+            }
+            reflect()
+        }
     }
 
     fun show() {
@@ -159,7 +159,6 @@ class RTWindow private constructor(
             if (masterTabs.isNotEmpty()) {
                 isSidebarShown = true
                 selectedIndex = 0
-                selectedIconBox = iconNodes.first()
             }
             reflect()
         }
@@ -168,6 +167,14 @@ class RTWindow private constructor(
     fun doWithMasterTabs(action: MutableList<MasterTab>.() -> Unit) {
         state.apply {
             action(masterTabs)
+            masterTabs.forEachIndexed { i, tab ->
+                val shortcut = tab.shortcut
+                if (shortcut != null) {
+                    stage.scene.accelerators.putIfAbsent(shortcut, Runnable {
+                        state.selectTab(i)
+                    })
+                }
+            }
             iconNodes = masterTabs.mapIndexed { i, p -> createIcon(i, p) }
             view.iconContainer.children.apply {
                 clear()

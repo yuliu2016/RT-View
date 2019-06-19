@@ -1,41 +1,45 @@
 package test.ca.warp7.rt.view
 
 import ca.warp7.rt.view.dashboard.DashboardView
+import ca.warp7.rt.view.fxkt.Combo
 import ca.warp7.rt.view.fxkt.dp2px
+import ca.warp7.rt.view.fxkt.fontIcon
 import ca.warp7.rt.view.window.MasterTab
 import ca.warp7.rt.view.window.RTWindow
 import javafx.application.Application
 import javafx.geometry.Insets
 import javafx.scene.control.*
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 
 class Test0 : Application() {
 
     override fun start(primaryStage: Stage) {
         val w = RTWindow.primary(primaryStage)
         w.doWithMasterTabs {
-            val hpad = Insets(0.0, 12.dp2px, 0.0, 12.dp2px)
             addAll(listOf(
-                    MasterTab("Dashboard", "fas-chart-bar", 24) {
+                    MasterTab("Dashboard", fontIcon(FontAwesomeSolid.CHART_BAR, 24), Combo(KeyCode.E, SHORTCUT_DOWN)) {
                         DashboardView().splitPane
                     },
-                    MasterTab("Data Lookup", "fas-search", 24) {
+                    MasterTab("Control F", fontIcon(FontAwesomeSolid.SEARCH, 24), Combo(KeyCode.F, SHORTCUT_DOWN)) {
                         VBox(TextField()).apply {
-                            padding = hpad
+                            padding = Insets(0.0, 12.dp2px, 0.0, 12.dp2px)
                         }
                     },
-                    MasterTab("Scanner", "fas-qrcode", 24) {
+                    MasterTab("Scanner", fontIcon(FontAwesomeSolid.QRCODE, 24)) {
                         VBox()
                     },
-                    MasterTab("Media", "fas-images", 24) {
+                    MasterTab("Media", fontIcon(FontAwesomeSolid.IMAGES, 24)) {
                         VBox()
                     },
-                    MasterTab("Checklist", "fas-tasks", 24) {
+                    MasterTab("Checklist", fontIcon(FontAwesomeSolid.TASKS, 24)) {
                         VBox()
                     },
-                    MasterTab("Settings", "fas-cogs", 24) {
+                    MasterTab("Settings", fontIcon(FontAwesomeSolid.COGS, 24)) {
                         val k = ((0..10).map {
                             TitledPane("TBA Key", TextField())
                         }).toTypedArray()
