@@ -21,25 +21,25 @@ class Test0 : Application() {
         val w = RTWindow.primary(primaryStage)
         w.doWithMasterTabs {
             addAll(listOf(
-                    MasterTab("Dashboard", fontIcon(FontAwesomeSolid.BULLSEYE, 24), Combo(KeyCode.E, SHORTCUT_DOWN)) {
+                    MasterTab("Dashboard", fontIcon(FontAwesomeSolid.BULLSEYE, 24), Combo(KeyCode.D, SHORTCUT_DOWN)) {
                         DashboardView().splitPane
                     },
                     MasterTab("Control F", fontIcon(FontAwesomeSolid.SEARCH, 24), Combo(KeyCode.F, SHORTCUT_DOWN)) {
                         ControlFView().pane
                     },
-                    MasterTab("View Parameters", fontIcon(FontAwesomeSolid.EXCHANGE_ALT, 24)) {
+                    MasterTab("View Parameters", fontIcon(FontAwesomeSolid.EXCHANGE_ALT, 24), Combo(KeyCode.R, SHORTCUT_DOWN)) {
                         ParamsView().tableSection
                     },
-                    MasterTab("Extensions", fontIcon(FontAwesomeSolid.CUBES, 28)) {
+                    MasterTab("Extensions", fontIcon(FontAwesomeSolid.CUBES, 28), Combo(KeyCode.E, SHORTCUT_DOWN)) {
                         ExtensionsView().pane
-                    },
-                    MasterTab("Settings", fontIcon(FontAwesomeSolid.COGS, 24)) {
-                        val k = ((0..16).map {
-                            TitledPane("TBA Key", TextField())
-                        }).toTypedArray()
-
-                        Accordion(*k)
-                    }
+                    }//,
+//                    MasterTab("Settings", fontIcon(FontAwesomeSolid.COGS, 24)) {
+//                        val k = ((0..16).map {
+//                            TitledPane("TBA Key", TextField())
+//                        }).toTypedArray()
+//
+//                        Accordion(*k)
+//                    }
             ))
         }
         w.show()

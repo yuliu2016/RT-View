@@ -20,30 +20,30 @@
 }
 
 .scroll-bar .increment-button {
-    -fx-opacity: 0;
-    -fx-pref-height: 0;
-    -fx-pref-width: 0;
-}
-
-.scroll-bar .decrement-button {
-    -fx-opacity: 0;
-    -fx-pref-height: 0;
-    -fx-pref-width: 0;
-}
-
-.scroll-bar {
-    -fx-pref-width: 10;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
     -fx-background-color: transparent;
 }
 
-.scroll-bar .track-background {
-    visibility: hidden;
+.scroll-bar .decrement-button {
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
 }
 
-.scroll-bar .track {
-    visibility: hidden;
+.scroll-bar {
+    -fx-pref-width: 16;
+    -fx-background-color: transparent;
 }
 
+.scroll-bar .thumb {
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
+.corner {
+    -fx-background-color: transparent;
+}
 
 .status-item {
     -fx-padding: 5 15 5 15;

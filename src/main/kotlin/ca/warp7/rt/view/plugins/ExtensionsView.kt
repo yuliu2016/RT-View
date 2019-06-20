@@ -49,7 +49,6 @@ class ExtensionsView {
             +pluginBar("Tableau Integration", "tableau.jar", fontIcon(CUBE, 22))
             +pluginBar("Match Predictor", "predictor.py", fontIcon(CUBE, 22))
             +pluginBar("Python Integration", "pyext.jar", fontIcon(PYTHON, 25))
-            +pluginBar("Krangl Integration", "krangl.jar", fontIcon(CUBE, 22))
             +pluginBar("Quick Summary", "", fontIcon(CALCULATOR, 22))
             +pluginBar("External Media", "", fontIcon(LINK, 22))
             +pluginBar("Speed View", "", fontIcon(BOLT, 22))

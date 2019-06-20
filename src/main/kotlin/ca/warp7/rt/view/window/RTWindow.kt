@@ -172,11 +172,9 @@ class RTWindow private constructor(
             action(masterTabs)
             masterTabs.forEachIndexed { i, tab ->
                 val shortcut = tab.shortcut
-                if (shortcut != null) {
-                    stage.scene.accelerators.putIfAbsent(shortcut, Runnable {
-                        state.selectTab(i)
-                    })
-                }
+                stage.scene.accelerators.putIfAbsent(shortcut, Runnable {
+                    state.selectTab(i)
+                })
             }
             iconNodes = masterTabs.mapIndexed { i, p -> createIcon(i, p) }
             view.iconContainer.children.apply {

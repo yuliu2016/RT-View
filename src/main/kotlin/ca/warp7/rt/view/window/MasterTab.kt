@@ -7,6 +7,6 @@ import org.kordamp.ikonli.javafx.FontIcon
 class MasterTab(
         val title: String,
         val icon: FontIcon,
-        val shortcut: KeyCodeCombination? = null,
+        val shortcut: KeyCodeCombination,
         val component: () -> Node
 )

@@ -49,7 +49,19 @@
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #ddd;
+    -fx-background-color: #ccc;
+}
+
+.scroll-bar .thumb:pressed {
+    -fx-background-color: #aaa;
+}
+
+.scroll-bar .increment-button:hover {
+    -fx-background-color: #bbb;
+}
+
+.scroll-bar .decrement-button:hover {
+    -fx-background-color: #bbb;
 }
 
 .status-bar {
@@ -70,11 +82,6 @@
 
 .split-pane-divider {
     -fx-padding: 0 0 0 1;
-}
-
-
-.scroll-pane .thumb {
-    -fx-background-color: #888;
 }
 
 /* NORMAL CELL */
@@ -257,6 +264,10 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 
 .action-item:hover {
     -fx-background-color: #ddd;
+}
+
+.action-item:pressed {
+    -fx-background-color: #ccc;
 }
 
 .section-icon-button:hover {
