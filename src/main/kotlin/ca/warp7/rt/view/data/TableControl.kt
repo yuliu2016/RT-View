@@ -2,9 +2,6 @@ package ca.warp7.rt.view.data
 
 import ca.warp7.rt.view.fxkt.*
 import javafx.scene.control.ContextMenu
-import javafx.scene.control.RadioMenuItem
-import javafx.scene.input.Clipboard
-import javafx.scene.input.ClipboardContent
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
@@ -103,23 +100,19 @@ class TableControl(private val pane: DataPane) : SpreadsheetView(pane.model.toGr
                             setOnAction { pane.copy.commaDelimited() }
                         }
                         item {
-                            name("Krangl DataFrame")
-                            setOnAction { pane.copy.kranglDataFrame() }
+                            name("Python Dict of List Cols")
+                            setOnAction { pane.copy.dictOfListColumns() }
                         }
                         item {
-                            name("Python Dictionary of List Columns")
-                            setOnAction { pane.copy.pyDLC() }
-                        }
-                        item {
-                            name("Python List of List Columns")
-                            setOnAction { pane.copy.pyLLC() }
+                            name("Python List of List Cols")
+                            setOnAction { pane.copy.listOfListColumns() }
                         }
                         item {
                             name("Python List of List Rows")
                             setOnAction { pane.copy.pyLLR() }
                         }
                         item {
-                            name("Python List of Dictionary Rows")
+                            name("Python List of Dict Rows")
                             setOnAction { pane.copy.phLDR() }
                         }
                     }

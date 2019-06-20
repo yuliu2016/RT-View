@@ -5,21 +5,27 @@ import javafx.scene.input.ClipboardContent
 
 class CopyAgent(private val pane: DataPane) {
 
-    private fun copy(string: String) {
-        val content = ClipboardContent()
-        content.putString(string)
-        Clipboard.getSystemClipboard().setContent(content)
+    private fun copyString(string: String) {
+
     }
 
-    private fun copyData(delimiter: Char, headers: Boolean) {
+    private inline fun copyWithMinMax(block: (minRow: Int, maxRow: Int, minCol: Int, maxCol: Int) -> String) {
         val se = pane.getSelection()
-        val builder = StringBuilder()
         val minRow = se.rows.min()
         val maxRow = se.rows.max()
         val minCol = se.cols.min()
         val maxCol = se.cols.max()
-        val grid = pane.control.grid
         if (minRow != null && maxRow != null && minCol != null && maxCol != null) {
+            val content = ClipboardContent()
+            content.putString(block(minRow, maxRow, minCol, maxCol))
+            Clipboard.getSystemClipboard().setContent(content)
+        }
+    }
+
+    private fun copyDelimited(delimiter: Char, headers: Boolean) {
+        copyWithMinMax { minRow, maxRow, minCol, maxCol ->
+            val grid = pane.control.grid
+            val builder = StringBuilder()
             if (headers && grid.columnHeaders.isNotEmpty() && minCol != maxCol) {
                 for (col in minCol until maxCol) {
                     builder.append(grid.columnHeaders[col])
@@ -36,35 +42,57 @@ class CopyAgent(private val pane: DataPane) {
                 builder.append(grid.rows[i][maxCol].item)
                 builder.append("\n")
             }
+            builder.toString()
         }
-        copy(builder.toString())
     }
 
     fun tabDelimitedHeaders() {
-        copyData('\t', true)
+        copyDelimited('\t', true)
     }
 
     fun tabDelimited() {
-        copyData('\t', false)
+        copyDelimited('\t', false)
     }
 
     fun commaDelimitedHeaders() {
-        copyData(',', true)
+        copyDelimited(',', true)
     }
 
     fun commaDelimited() {
-        copyData(',', false)
+        copyDelimited(',', false)
     }
 
-    fun kranglDataFrame() {
-
+    fun dictOfListColumns() {
+        copyWithMinMax { minRow, maxRow, minCol, maxCol ->
+            val grid = pane.control.grid
+            val builder = StringBuilder()
+            builder.append('{')
+            if (grid.columnHeaders.isNotEmpty() && minCol != maxCol) {
+                for (col in minCol..maxCol) {
+                    builder.append("\n\"")
+                            .append(grid.columnHeaders[col])
+                            .append("\": [")
+                    for (row in minRow..maxRow) {
+                        val item = grid.rows[row][col].item
+                        if (item is String && item.isEmpty()) builder.append("None")
+                        else builder.append("\"").append(item).append("\"")
+                        if (row != maxRow) {
+                            builder.append(", ")
+                        }
+                    }
+                    builder.append("]")
+                    if (col != maxCol) {
+                        builder.append(",")
+                    }
+                }
+                builder.append("\n")
+            }
+            builder.append('}')
+            builder.toString()
+        }
     }
 
-    fun pyDLC() {
-
-    }
-
-    fun pyLLC() {
+    fun listOfListColumns() {
 
     }
 
