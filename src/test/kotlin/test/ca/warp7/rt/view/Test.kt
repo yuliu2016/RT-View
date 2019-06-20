@@ -1,9 +1,11 @@
 package test.ca.warp7.rt.view
 
+import ca.warp7.rt.view.cf.ControlFView
 import ca.warp7.rt.view.dashboard.DashboardView
 import ca.warp7.rt.view.fxkt.Combo
 import ca.warp7.rt.view.fxkt.dp2px
 import ca.warp7.rt.view.fxkt.fontIcon
+import ca.warp7.rt.view.parameters.ParamsView
 import ca.warp7.rt.view.window.MasterTab
 import ca.warp7.rt.view.window.RTWindow
 import javafx.application.Application
@@ -22,25 +24,20 @@ class Test0 : Application() {
         val w = RTWindow.primary(primaryStage)
         w.doWithMasterTabs {
             addAll(listOf(
-                    MasterTab("Dashboard", fontIcon(FontAwesomeSolid.CHART_BAR, 24), Combo(KeyCode.E, SHORTCUT_DOWN)) {
+                    MasterTab("Dashboard", fontIcon(FontAwesomeSolid.BULLSEYE, 24), Combo(KeyCode.E, SHORTCUT_DOWN)) {
                         DashboardView().splitPane
                     },
                     MasterTab("Control F", fontIcon(FontAwesomeSolid.SEARCH, 24), Combo(KeyCode.F, SHORTCUT_DOWN)) {
-                        VBox(TextField()).apply {
-                            padding = Insets(0.0, 12.dp2px, 0.0, 12.dp2px)
-                        }
+                        ControlFView().pane
                     },
-                    MasterTab("Scanner", fontIcon(FontAwesomeSolid.QRCODE, 24)) {
-                        VBox()
+                    MasterTab("View Parameters", fontIcon(FontAwesomeSolid.EXCHANGE_ALT, 24)) {
+                        ParamsView().tableSection
                     },
-                    MasterTab("Media", fontIcon(FontAwesomeSolid.IMAGES, 24)) {
-                        VBox()
-                    },
-                    MasterTab("Checklist", fontIcon(FontAwesomeSolid.TASKS, 24)) {
+                    MasterTab("Plugins", fontIcon(FontAwesomeSolid.CUBES, 28)) {
                         VBox()
                     },
                     MasterTab("Settings", fontIcon(FontAwesomeSolid.COGS, 24)) {
-                        val k = ((0..10).map {
+                        val k = ((0..16).map {
                             TitledPane("TBA Key", TextField())
                         }).toTypedArray()
 

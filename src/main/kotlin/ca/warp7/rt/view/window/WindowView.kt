@@ -66,8 +66,8 @@ internal class WindowView {
 
     internal val tabContainer: BorderPane = BorderPane().apply {
         styleClass.add("master-tab-view")
-        minWidth = 384.dp2px
-        maxWidth = 384.dp2px
+        minWidth = 328.dp2px
+        maxWidth = 328.dp2px
         top = tabTitleBar
     }
 

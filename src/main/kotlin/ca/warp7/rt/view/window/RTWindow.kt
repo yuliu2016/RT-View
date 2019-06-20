@@ -133,7 +133,10 @@ class RTWindow private constructor(
     }
 
     private fun createIcon(i: Int, p: MasterTab): Node {
-        val box = boxIcon(p.icon)
+        val box = HBox(p.icon)
+        box.alignment = Pos.CENTER
+        box.prefWidth = 56.dp2px
+        box.prefHeight = 56.dp2px
         box.onMousePressed = EventHandler {
             state.selectTab(i)
         }
