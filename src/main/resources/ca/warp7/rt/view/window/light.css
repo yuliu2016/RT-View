@@ -256,7 +256,7 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .action-item:hover {
-    -fx-background-color: #ccc;
+    -fx-background-color: #ddd;
 }
 
 .section-icon-button:hover {

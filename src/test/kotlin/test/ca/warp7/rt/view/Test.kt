@@ -3,19 +3,16 @@ package test.ca.warp7.rt.view
 import ca.warp7.rt.view.cf.ControlFView
 import ca.warp7.rt.view.dashboard.DashboardView
 import ca.warp7.rt.view.fxkt.Combo
-import ca.warp7.rt.view.fxkt.dp2px
 import ca.warp7.rt.view.fxkt.fontIcon
 import ca.warp7.rt.view.parameters.ParamsView
+import ca.warp7.rt.view.plugins.ExtensionsView
 import ca.warp7.rt.view.window.MasterTab
 import ca.warp7.rt.view.window.RTWindow
 import javafx.application.Application
-import javafx.geometry.Insets
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
-import javafx.scene.layout.VBox
 import javafx.stage.Stage
-import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 
 class Test0 : Application() {
@@ -33,8 +30,8 @@ class Test0 : Application() {
                     MasterTab("View Parameters", fontIcon(FontAwesomeSolid.EXCHANGE_ALT, 24)) {
                         ParamsView().tableSection
                     },
-                    MasterTab("Plugins", fontIcon(FontAwesomeSolid.CUBES, 28)) {
-                        VBox()
+                    MasterTab("Extensions", fontIcon(FontAwesomeSolid.CUBES, 28)) {
+                        ExtensionsView().pane
                     },
                     MasterTab("Settings", fontIcon(FontAwesomeSolid.COGS, 24)) {
                         val k = ((0..16).map {

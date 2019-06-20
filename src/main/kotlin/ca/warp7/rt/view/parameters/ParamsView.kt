@@ -32,24 +32,7 @@ class ParamsView {
         }
     }
 
-    private fun sectionIconButton(ic: Ikon): VBox {
-        return vbox {
-            modify {
-                +fontIcon(ic, 17)
-            }
-            styleClass("section-icon-button")
-            align(Pos.CENTER)
-            minWidth = 40.dp2px
-        }
-    }
-
-    internal val tableSection = VBox(sectionBar("TABLE: ").apply {
-        modify {
-            +sectionIconButton(FontAwesomeSolid.INFO_CIRCLE)
-            +sectionIconButton(FontAwesomeSolid.CODE_BRANCH)
-            +sectionIconButton(FontAwesomeSolid.SYNC)
-        }
-    }).apply {
+    internal val tableSection = VBox(sectionBar("TABLE: ")).apply {
         minHeight = 32.dp2px
         val sp = ScrollPane(VBox().apply {
             children.addAll(
