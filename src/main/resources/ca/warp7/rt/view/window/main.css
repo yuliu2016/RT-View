@@ -12,7 +12,12 @@
 .tree-view {
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
+    -fx-background-color: transparent;
     -fx-border-width: 0;
+}
+
+.tree-cell {
+    -fx-background-color: transparent;
 }
 
 .table-view {

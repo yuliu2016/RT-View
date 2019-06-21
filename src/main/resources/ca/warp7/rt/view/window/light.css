@@ -26,10 +26,6 @@
 }
 
 
-.tree-cell {
-    -fx-background-color: #eee;
-}
-
 .tree-view:focused .tree-cell:filled:selected {
     -fx-background-color: #5a8ade;
     -fx-text-fill: white;
@@ -40,7 +36,7 @@
 }
 
 .tree-cell:hover:filled {
-    -fx-background-color: #ccc;
+    -fx-background-color: #ddd;
 }
 
 .tree-cell:selected:filled {

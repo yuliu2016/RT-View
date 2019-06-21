@@ -25,9 +25,12 @@
     -fx-icon-color: white;
 }
 
+.tree-cell .arrow {
+    -fx-background-color: white;
+}
 
 .tree-cell {
-    -fx-background-color: #eee;
+    -fx-text-fill: white;
 }
 
 .tree-view:focused .tree-cell:filled:selected {
@@ -40,11 +43,11 @@
 }
 
 .tree-cell:hover:filled {
-    -fx-background-color: #ccc;
+    -fx-background-color: #555;
 }
 
 .tree-cell:selected:filled {
-    -fx-background-color: #bbb;
+    -fx-background-color: #666;
     -fx-text-fill: black;
 }
 

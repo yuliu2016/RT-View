@@ -48,11 +48,12 @@ class ExtensionsView {
             +pluginBar("Excel Integration", "excel.jar", fontIcon(FILE_EXCEL, 22))
             +pluginBar("Tableau Integration", "tableau.jar", fontIcon(CUBE, 22))
             +pluginBar("Match Predictor", "predictor.py", fontIcon(CUBE, 22))
+            +pluginBar("Scout Rotation Generator", "rotgen.py", fontIcon(CUBE, 22))
             +pluginBar("Python Integration", "pyext.jar", fontIcon(PYTHON, 25))
             +pluginBar("Quick Summary", "", fontIcon(CALCULATOR, 22))
             +pluginBar("External Media", "", fontIcon(LINK, 22))
             +pluginBar("Speed View", "", fontIcon(BOLT, 22))
-            +pluginBar("RT-Router", "", fontIcon(COMPASS, 22))
+            +pluginBar("Router", "", fontIcon(COMPASS, 22))
             +pluginBar("Extension Loader", "", fontIcon(SYNC, 22))
         }
     }).apply {
