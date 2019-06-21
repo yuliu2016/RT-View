@@ -27,25 +27,26 @@ class ViewModel(private val df: DataFrame, private val pane: DataPane) {
 
     fun setSort(type: SortType) {
         val selection = pane.getSelection()
-        val grid = pane.control.grid
-        val name = grid.columnHeaders[selection.cols.first()]
-        sortColumns.clear()
-        sortColumns.add(SortColumn(type, name))
-        applySort()
+        if (selection.cols.isNotEmpty()) {
+            val grid = pane.control.grid
+            val name = grid.columnHeaders[selection.cols.first()]
+            sortColumns.clear()
+            sortColumns.add(SortColumn(type, name))
+            applySort()
+        }
+
     }
 
     private fun applySort() {
         val grid = pane.control.grid
         val totalOrderComparator = sortColumns.map {
-            df[it.columnName].run {
-                when (it.sortType) {
-                    SortType.Ascending -> ascendingComparator()
-                    SortType.Descending -> descendingComparator()
-                }
+            when (it.sortType) {
+                SortType.Ascending -> df[it.columnName].ascendingComparator()
+                SortType.Descending -> df[it.columnName].descendingComparator()
             }
         }.reduce { a, b -> a.then(b) }
-        val newIndices = (0 until df.nrow).sortedWith(totalOrderComparator)
-        grid.rows.setAll(newIndices.map { referenceOrder[it] })
+        val sortedOrder = (0 until df.nrow).sortedWith(totalOrderComparator)
+        grid.rows.setAll(sortedOrder.map { referenceOrder[it] })
     }
 
     private fun DataCol.ascendingComparator(): java.util.Comparator<Int> {

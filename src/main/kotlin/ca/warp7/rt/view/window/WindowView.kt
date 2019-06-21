@@ -16,6 +16,7 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.*
+import krangl.emptyDataFrame
 import org.kordamp.ikonli.javafx.FontIcon
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -77,7 +78,7 @@ internal class WindowView {
 
     internal val rootPane: BorderPane = BorderPane().apply {
         left = sidebarPane
-        val sv = DataPane(getSampleGrid()).control
+        val sv = DataPane(emptyDataFrame()).control
         sv.isEditable = false
         sv.columns.forEach { it.setPrefWidth(100.0) }
         center = sv
