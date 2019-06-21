@@ -2,14 +2,16 @@ package ca.warp7.rt.view.data
 
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.scene.control.SelectionMode
 import krangl.*
-import org.controlsfx.control.spreadsheet.*
+import org.controlsfx.control.spreadsheet.Grid
+import org.controlsfx.control.spreadsheet.GridBase
+import org.controlsfx.control.spreadsheet.SpreadsheetCell
+import org.controlsfx.control.spreadsheet.SpreadsheetCellType
 
 class ViewModel(private val df: DataFrame, private val pane: DataPane) {
 
     private val sortColumns: MutableList<SortColumn> = mutableListOf()
-    private var rowsCache: List<ObservableList<SpreadsheetCell>>? = null
+    private var referenceOrder: List<ObservableList<SpreadsheetCell>> = listOf()
 
     fun toGrid(): Grid {
         val grid = GridBase(df.nrow, df.ncol)
@@ -19,40 +21,31 @@ class ViewModel(private val df: DataFrame, private val pane: DataPane) {
             })
         })
         grid.columnHeaders.addAll(df.cols.map { it.name })
-        rowsCache = grid.rows.toList()
+        referenceOrder = grid.rows.toList()
         return grid
     }
 
-
-    fun sort(type: SortType) {
+    fun setSort(type: SortType) {
         val selection = pane.getSelection()
         val grid = pane.control.grid
         val name = grid.columnHeaders[selection.cols.first()]
         sortColumns.clear()
         sortColumns.add(SortColumn(type, name))
-        val comparator = sortColumns
-                .map {
-                    df[it.columnName].run {
-                        when (it.sortType) {
-                            SortType.Ascending -> ascendingComparator()
-                            SortType.Descending -> descendingComparator()
-                        }
-                    }
+        applySort()
+    }
+
+    private fun applySort() {
+        val grid = pane.control.grid
+        val totalOrderComparator = sortColumns.map {
+            df[it.columnName].run {
+                when (it.sortType) {
+                    SortType.Ascending -> ascendingComparator()
+                    SortType.Descending -> descendingComparator()
                 }
-                .reduce { a, b -> a.then(b) }
-        val newIndices = (0 until df.nrow).sortedWith(comparator)
-//        val newGrid = GridBase(grid.rowCount, grid.columnCount)
-//        newGrid.rows.addAll(newIndices.map { cGrid!!.rows[it] })
-//        newGrid.columnHeaders.addAll(df.cols.map { it.name })
-//        pane.control.grid = newGrid
-        val std = rowsCache!!.run {
-            newIndices.map { get(it) }
-        }
-        pane.control.selectionModel.selectRange(selection.minRow,
-                pane.control.columns[selection.minCol], selection.maxRow,
-                pane.control.columns[selection.maxCol])
-        grid.rows.clear()
-        grid.rows.addAll(std)
+            }
+        }.reduce { a, b -> a.then(b) }
+        val newIndices = (0 until df.nrow).sortedWith(totalOrderComparator)
+        grid.rows.setAll(newIndices.map { referenceOrder[it] })
     }
 
     private fun DataCol.ascendingComparator(): java.util.Comparator<Int> {

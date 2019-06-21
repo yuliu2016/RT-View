@@ -56,12 +56,12 @@ class TableControl(private val pane: DataPane) : SpreadsheetView(pane.model.toGr
                         item {
                             name("Set Ascending")
                             accelerator = Combo(KeyCode.EQUALS)
-                            setOnAction { pane.model.sort(SortType.Ascending) }
+                            setOnAction { pane.model.setSort(SortType.Ascending) }
                         }
                         item {
                             name("Set Descending")
                             accelerator = Combo(KeyCode.MINUS)
-                            setOnAction { pane.model.sort(SortType.Descending) }
+                            setOnAction { pane.model.setSort(SortType.Descending) }
                         }
                         item {
                             name("Add Ascending")

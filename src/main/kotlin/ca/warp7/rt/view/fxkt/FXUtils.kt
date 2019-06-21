@@ -8,10 +8,7 @@ import javafx.scene.control.ContextMenu
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
 import javafx.scene.control.TextField
-import javafx.scene.layout.HBox
-import javafx.scene.layout.Pane
-import javafx.scene.layout.Region
-import javafx.scene.layout.VBox
+import javafx.scene.layout.*
 
 // CREATORS
 
@@ -20,6 +17,16 @@ inline fun hbox(builder: HBox.() -> Unit): HBox = HBox().apply(builder)
 
 @FXKtDSL
 inline fun vbox(builder: VBox.() -> Unit): VBox = VBox().apply(builder)
+
+@FXKtDSL
+fun HBox.hgrow() = add(hbox {
+    HBox.setHgrow(this, Priority.ALWAYS)
+})
+
+@FXKtDSL
+fun VBox.vgrow() = add(vbox {
+    VBox.setVgrow(this, Priority.ALWAYS)
+})
 
 @FXKtDSL
 inline fun textField(builder: TextField.() -> Unit): TextField = TextField().apply(builder)

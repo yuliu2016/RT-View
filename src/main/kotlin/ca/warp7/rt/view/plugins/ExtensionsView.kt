@@ -27,7 +27,7 @@ class ExtensionsView {
                     add(Label(t).apply {
                         style = "-fx-font-weight:bold"
                     })
-                    val st = if (k.isEmpty()) "v2019.6.20" else "$k - v2019.6.20"
+                    val st = if (k.isEmpty()) "v2019.6.20" else "/$k - v2019.6.20"
                     add(Label(st).apply {
                         style = "-fx-font-size:15"
                     })

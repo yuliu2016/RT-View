@@ -5,10 +5,6 @@ import javafx.scene.input.ClipboardContent
 
 class CopyAgent(private val pane: DataPane) {
 
-    private fun copyString(string: String) {
-
-    }
-
     private inline fun copyWithMinMax(block: (minRow: Int, maxRow: Int, minCol: Int, maxCol: Int) -> String) {
         val se = pane.getSelection()
         val minRow = se.rows.min()
