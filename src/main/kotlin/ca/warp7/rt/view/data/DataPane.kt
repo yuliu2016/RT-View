@@ -3,7 +3,7 @@ package ca.warp7.rt.view.data
 import krangl.DataFrame
 
 class DataPane(df: DataFrame) {
-    val model = ViewModel(df, this)
+    var model = ViewModel(df, this)
     val copy = CopyAgent(this)
     val control = TableControl(this)
 
@@ -16,5 +16,11 @@ class DataPane(df: DataFrame) {
             selection.cols.add(modelCol)
         }
         return selection
+    }
+
+    fun setData(df: DataFrame) {
+        model = ViewModel(df, this)
+        control.grid = model.toGrid()
+        control.columns.forEach { it.setPrefWidth(100.0) }
     }
 }

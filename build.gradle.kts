@@ -3,6 +3,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    application
     `maven-publish`
     kotlin("jvm") version "1.3.40"
 }
@@ -11,6 +12,7 @@ val kProjectVersion = "0.0.1"
 
 group = "ca.warp7.rt.view"
 version = kProjectVersion
+application.mainClassName = "ca.warp7.rt.view.Launcher"
 
 repositories {
     mavenCentral()

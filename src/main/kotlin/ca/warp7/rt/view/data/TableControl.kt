@@ -11,6 +11,11 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 
 class TableControl(private val pane: DataPane) : SpreadsheetView(pane.model.toGrid()) {
 
+    init {
+        isEditable = false
+        columns.forEach { it.setPrefWidth(100.0) }
+    }
+
     override fun getSpreadsheetViewContextMenu(): ContextMenu {
         return ContextMenu().apply {
             modify {

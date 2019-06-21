@@ -8,6 +8,6 @@ internal class WindowState {
     var isSidebarShown = false
     var isDialog = false
     var iconNodes: List<Node> = listOf()
-    val masterTabs: MutableList<MasterTab> = mutableListOf()
+    val activities: MutableList<TabActivity> = mutableListOf()
     var isFullScreen = false
 }

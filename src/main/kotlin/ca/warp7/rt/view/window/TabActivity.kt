@@ -9,8 +9,7 @@ abstract class TabActivity(val title: String,
                            val icon: FontIcon,
                            val shortcut: KeyCodeCombination) {
 
-    protected lateinit var dataPane: DataPane
-        private set
+    internal lateinit var dataPane: DataPane
 
     internal var contentView: Node? = null
 

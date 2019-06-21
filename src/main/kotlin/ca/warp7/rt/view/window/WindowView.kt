@@ -78,10 +78,6 @@ internal class WindowView {
 
     internal val rootPane: BorderPane = BorderPane().apply {
         left = sidebarPane
-        val sv = DataPane(emptyDataFrame()).control
-        sv.isEditable = false
-        sv.columns.forEach { it.setPrefWidth(100.0) }
-        center = sv
     }
 
     internal val textIcon = HBox().apply {

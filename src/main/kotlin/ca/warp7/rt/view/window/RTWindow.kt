@@ -1,6 +1,11 @@
 package ca.warp7.rt.view.window
 
+import ca.warp7.rt.view.cf.ControlFActivity
+import ca.warp7.rt.view.dashboard.DashboardActivity
+import ca.warp7.rt.view.data.DataPane
 import ca.warp7.rt.view.fxkt.*
+import ca.warp7.rt.view.parameters.ParamsActivity
+import ca.warp7.rt.view.plugins.ExtensionsActivity
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -11,6 +16,7 @@ import javafx.scene.input.KeyCode
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
+import krangl.emptyDataFrame
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 
 @Suppress("MemberVisibilityCanBePrivate", "unused", "SpellCheckingInspection")
@@ -19,6 +25,7 @@ class RTWindow private constructor(
 ) {
 
     private val view = WindowView()
+    private val dataPane = DataPane(emptyDataFrame())
     private val state = WindowState()
 
     private fun WindowState.reflectTheme() {
@@ -64,9 +71,9 @@ class RTWindow private constructor(
                 forEach { it.noStyleClass() }
             }
             if (selectedIndex != -1) {
-                val selected = state.masterTabs[selectedIndex]
+                val selected = state.activities[selectedIndex]
                 view.tabTitle.text = selected.title.toUpperCase()
-                view.tabContainer.center = selected.component()
+                view.tabContainer.center = selected.contentView
                 view.iconContainer.children[selectedIndex + 1]?.styleClass("master-tab-icon-selected")
             } else {
                 view.tabContainer.center = null
@@ -107,6 +114,7 @@ class RTWindow private constructor(
     init {
         stage.initialize()
         stage.fullScreenExitKeyCombination = Combo(KeyCode.F11)
+        view.rootPane.center = dataPane.control
         stage.scene = Scene(view.rootPane).apply {
             stylesheets.add(kMainCSS)
             onKeyPressed = EventHandler {
@@ -132,8 +140,8 @@ class RTWindow private constructor(
         state.reflectTheme()
     }
 
-    private fun createIcon(i: Int, p: MasterTab): Node {
-        val box = HBox(p.icon)
+    private fun createIcon(i: Int, activity: TabActivity): Node {
+        val box = HBox(activity.icon)
         box.alignment = Pos.CENTER
         box.prefWidth = 56.dp2px
         box.prefHeight = 56.dp2px
@@ -159,7 +167,7 @@ class RTWindow private constructor(
     fun show() {
         stage.show()
         state.apply {
-            if (masterTabs.isNotEmpty()) {
+            if (activities.isNotEmpty()) {
                 isSidebarShown = true
                 selectedIndex = 0
             }
@@ -167,16 +175,16 @@ class RTWindow private constructor(
         }
     }
 
-    fun doWithMasterTabs(action: MutableList<MasterTab>.() -> Unit) {
+    fun doWithActivities(action: MutableList<TabActivity>.() -> Unit) {
         state.apply {
-            action(masterTabs)
-            masterTabs.forEachIndexed { i, tab ->
+            action(activities)
+            activities.forEachIndexed { i, tab ->
                 val shortcut = tab.shortcut
                 stage.scene.accelerators.putIfAbsent(shortcut, Runnable {
                     state.selectTab(i)
                 })
             }
-            iconNodes = masterTabs.mapIndexed { i, p -> createIcon(i, p) }
+            iconNodes = activities.mapIndexed { i, p -> createIcon(i, p) }
             view.iconContainer.children.apply {
                 clear()
                 add(view.textIcon)
@@ -196,6 +204,17 @@ class RTWindow private constructor(
                 "A primary window already exists; cannot create another one"
             }
             val win = RTWindow(stage)
+            win.doWithActivities {
+                listOf(
+                        DashboardActivity(),
+                        ControlFActivity(),
+                        ParamsActivity(),
+                        ExtensionsActivity()
+                ).forEach {
+                    it.dataPane = win.dataPane
+                    add(it)
+                }
+            }
             primary = win
             return win
         }

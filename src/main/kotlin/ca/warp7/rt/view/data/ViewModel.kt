@@ -58,7 +58,9 @@ class ViewModel(private val df: DataFrame, private val pane: DataPane) {
                     va === vb -> 0
                     va == null -> 1 // a > b
                     vb == null -> -1 // a < b
-                    else -> va.compareTo(vb)
+                    else -> {
+                        va.compareTo(vb)
+                    }
                 }
             }
             is IntCol -> Comparator { a, b ->
