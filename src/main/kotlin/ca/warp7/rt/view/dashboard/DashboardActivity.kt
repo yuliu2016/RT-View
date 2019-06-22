@@ -20,6 +20,7 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintStream
+import kotlin.system.measureTimeMillis
 
 class DashboardActivity : TabActivity(
         "Dashboard",
@@ -36,6 +37,7 @@ class DashboardActivity : TabActivity(
 
     private val indexMap: MutableMap<String, List<Table>> = mutableMapOf(
             "local/csv" to g,
+            "year/2019" to listOf(),
             "event/2019onto3" to g,
             "event/2019onwin" to g,
             "event/2019oncmp1" to g,
@@ -56,9 +58,11 @@ class DashboardActivity : TabActivity(
             val res: File? = chooser.showOpenDialog(view.openButton.scene.window)
             if (res != null && res.extension.toLowerCase() == "csv") {
                 try {
-                    val data = DataFrame.readDelim(res.inputStream(),
-                            CSVFormat.DEFAULT.withHeader().withNullString(""))
-                    dataPane.setData(data)
+                    println(measureTimeMillis {
+                        val data = DataFrame.readDelim(res.inputStream(),
+                                CSVFormat.DEFAULT.withHeader().withNullString(""))
+                        dataPane.setData(data)
+                    } / 1000.0)
                 } catch (e: Exception) {
                     val out = ByteArrayOutputStream()
                     val out1 = PrintStream(out.buffered())
@@ -82,37 +86,6 @@ class DashboardActivity : TabActivity(
             }
         })
 
-        view.indexTree.cellFactory = Callback {
-            object : TreeCell<IndexItem>() {
-                override fun updateItem(item: IndexItem?, empty: Boolean) {
-                    super.updateItem(item, empty)
-                    if (item == null || empty) {
-                        graphic = null
-                    } else {
-                        graphic = TextFlow().apply {
-                            alignment = Pos.CENTER_LEFT
-                            modify {
-                                +fontIcon(when (item.type) {
-                                    IndexItem.Type.Root -> FontAwesomeSolid.DATABASE
-                                    IndexItem.Type.Folder -> FontAwesomeSolid.FOLDER
-                                    IndexItem.Type.Source -> FontAwesomeSolid.TABLE
-                                    IndexItem.Type.Derivation -> FontAwesomeSolid.EYE
-                                }, 18)
-                                val a = item.message.substringBeforeLast("/", "")
-                                if (a.isEmpty()) {
-                                    +Text("   " + item.message)
-                                } else {
-                                    +Text("   $a/")
-                                    +Text( item.message.substringAfterLast('/', "")).apply {
-                                        style = "-fx-font-weight:bold"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
         ri.isExpanded = true
         ri.graphic = fontIcon(FontAwesomeSolid.DATABASE, 18)
         view.indexTree.root = ri
