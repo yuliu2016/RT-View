@@ -6,6 +6,10 @@
     -fx-text-fill: white;
 }
 
+.ikonli-font-icon {
+    -fx-icon-color: white;
+}
+
 .list-cell {
     -fx-background-color: white;
     -fx-padding: 0;

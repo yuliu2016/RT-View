@@ -81,12 +81,7 @@ internal class DashboardView {
     }
 
     val propertiesSection = vbox {
-        add(sectionBar("PROPERTIES").apply {
-            modify {
-                +sectionIconButton(FontAwesomeSolid.CODE_BRANCH)
-                +sectionIconButton(FontAwesomeSolid.SYNC)
-            }
-        })
+        add(sectionBar("PROPERTIES"))
         add(vbox {
             padding = Insets(8.dp2px)
             modify {
@@ -145,15 +140,15 @@ internal class DashboardView {
                 }
                 +hbox {
                     align(Pos.CENTER_LEFT)
-                    prefHeight = 32.dp2px
+                    prefHeight = 36.dp2px
                     add(CheckBox())
                     add(Label("Lock Table from Editing"))
                 }
                 +hbox vb@ {
-                    prefHeight = 32.dp2px
+                    prefHeight = 36.dp2px
                     align(Pos.CENTER)
                     spacing = 8.dp2px
-                    add(Button("Duplicate").apply {
+                    add(Button("Derive").apply {
                         prefWidth = 500.0
                     })
                     add(Button("Update").apply {
@@ -173,6 +168,6 @@ internal class DashboardView {
     val splitPane = splitPane {
         addFixed(vbox {}, indexTreeSection, propertiesSection)
         orientation = Orientation.VERTICAL
-        setDividerPositions(0.0, 0.6)
+        setDividerPositions(0.0, 0.7)
     }
 }

@@ -207,8 +207,8 @@ class RTWindow private constructor(
             win.doWithActivities {
                 listOf(
                         DashboardActivity(),
-                        ControlFActivity(),
                         ParamsActivity(),
+                        ControlFActivity(),
                         ExtensionsActivity()
                 ).forEach {
                     it.dataPane = win.dataPane
