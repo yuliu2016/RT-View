@@ -2,6 +2,10 @@
     -fx-background-color: black;
 }
 
+.label {
+    -fx-text-fill: white;
+}
+
 .list-cell {
     -fx-background-color: white;
     -fx-padding: 0;
@@ -168,12 +172,13 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .button {
-    -fx-background-color: #3c5c94;
+    -fx-background-color: #666;
     -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
 .button:hover {
-    -fx-background-color: #5a8ade;
+    -fx-background-color: #888;
 }
 
 .button .ikonli-font-icon {

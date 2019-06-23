@@ -2,6 +2,7 @@ package ca.warp7.rt.view.plugins
 
 import ca.warp7.rt.view.fxkt.*
 import javafx.event.EventHandler
+import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane

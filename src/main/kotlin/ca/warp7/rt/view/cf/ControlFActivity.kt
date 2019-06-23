@@ -8,7 +8,7 @@ import javafx.scene.input.KeyCombination
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 
 class ControlFActivity : TabActivity(
-        "Control F",
+        "Find in Table",
         fontIcon(FontAwesomeSolid.SEARCH, 24),
         Combo(KeyCode.F, KeyCombination.SHORTCUT_DOWN)
 ) {

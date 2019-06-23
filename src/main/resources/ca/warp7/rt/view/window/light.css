@@ -147,16 +147,13 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .button {
-    -fx-background-color: #3c5c94;
-    -fx-text-fill: white;
+    -fx-background-color: #ddd;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
 }
 
 .button:hover {
-    -fx-background-color: #5a8ade;
-}
-
-.button .ikonli-font-icon {
-    -fx-icon-color: white
+    -fx-background-color: #bbb;
 }
 
 .master-tab-icon-container {

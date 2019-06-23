@@ -16,14 +16,26 @@ inline fun hbox(builder: HBox.() -> Unit): HBox = HBox().apply(builder)
 inline fun vbox(builder: VBox.() -> Unit): VBox = VBox().apply(builder)
 
 @FXKtDSL
-fun HBox.hgrow() = add(hbox {
+fun HBox.hspace() = add(hbox {
     HBox.setHgrow(this, Priority.ALWAYS)
 })
 
 @FXKtDSL
-fun VBox.vgrow() = add(vbox {
+fun VBox.vspace() = add(vbox {
     VBox.setVgrow(this, Priority.ALWAYS)
 })
+
+@FXKtDSL
+fun Node.hgrow(): Node {
+    HBox.setHgrow(this, Priority.ALWAYS)
+    return this
+}
+
+@FXKtDSL
+fun Node.vgrow(): Node {
+    VBox.setVgrow(this, Priority.ALWAYS)
+    return this
+}
 
 @FXKtDSL
 inline fun textField(builder: TextField.() -> Unit): TextField = TextField().apply(builder)

@@ -87,6 +87,86 @@ internal class DashboardView {
                 +sectionIconButton(FontAwesomeSolid.SYNC)
             }
         })
+        add(vbox {
+            padding = Insets(8.dp2px)
+            modify {
+                +hbox {
+                    align(Pos.CENTER_LEFT)
+                    prefHeight = 36.dp2px
+                    spacing = 8.dp2px
+                    add(Label("Name:").apply {
+                        style = "-fx-font-weight: bold"
+                        minWidth = 88.dp2px
+                    })
+                    val tf = TextField("Raw Data")
+                    tf.hgrow()
+                    add(tf)
+                }
+                +hbox {
+                    align(Pos.CENTER_LEFT)
+                    prefHeight = 36.dp2px
+                    spacing = 8.dp2px
+                    add(Label("Source:").apply {
+                        style = "-fx-font-weight: bold"
+                        minWidth = 88.dp2px
+                    })
+                    add(Label("Team 865"))
+                }
+                +hbox {
+                    align(Pos.CENTER_LEFT)
+                    prefHeight = 36.dp2px
+                    spacing = 8.dp2px
+                    add(Label("Dependency:").apply {
+                        style = "-fx-font-weight: bold"
+                        minWidth = 88.dp2px
+                    })
+                    add(Label("N/A"))
+                }
+                +hbox {
+                    align(Pos.CENTER_LEFT)
+                    prefHeight = 36.dp2px
+                    spacing = 8.dp2px
+                    add(Label("Manager:").apply {
+                        style = "-fx-font-weight: bold"
+                        minWidth = 88.dp2px
+                    })
+                    add(fontIcon(FontAwesomeSolid.QRCODE, 22))
+                    add(Label("Android App Integration"))
+                }
+                +hbox {
+                    align(Pos.CENTER_LEFT)
+                    prefHeight = 36.dp2px
+                    spacing = 8.dp2px
+                    add(Label("Adapter:").apply {
+                        style = "-fx-font-weight: bold"
+                        minWidth = 88.dp2px
+                    })
+                    add(Label("QR Protocol Decoder v5"))
+                }
+                +hbox {
+                    align(Pos.CENTER_LEFT)
+                    prefHeight = 32.dp2px
+                    add(CheckBox())
+                    add(Label("Lock Table from Editing"))
+                }
+                +hbox vb@ {
+                    prefHeight = 32.dp2px
+                    align(Pos.CENTER)
+                    spacing = 8.dp2px
+                    add(Button("Duplicate").apply {
+                        prefWidth = 500.0
+                    })
+                    add(Button("Update").apply {
+//                        style = "-fx-background-color:#080"
+                        prefWidth = 500.0
+                    })
+                    add(Button("Delete").apply {
+//                        style = "-fx-background-color:#c11"
+                        prefWidth = 500.0
+                    })
+                }
+            }
+        })
         minHeight = 32.dp2px
     }
 

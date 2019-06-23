@@ -8,7 +8,7 @@ import javafx.scene.input.KeyCombination
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 
 class ParamsActivity: TabActivity(
-        "View Parameters",
+        "Parameters",
         fontIcon(FontAwesomeSolid.EXCHANGE_ALT, 24),
         Combo(KeyCode.R, KeyCombination.SHORTCUT_DOWN)
 ) {
