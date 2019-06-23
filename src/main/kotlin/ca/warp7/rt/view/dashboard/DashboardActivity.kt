@@ -16,7 +16,11 @@ import krangl.DataFrame
 import krangl.emptyDataFrame
 import krangl.readDelim
 import org.apache.commons.csv.CSVFormat
+import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands
+import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands.*
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.*
+import org.kordamp.ikonli.javafx.FontIcon
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintStream
@@ -24,18 +28,29 @@ import kotlin.system.measureTimeMillis
 
 class DashboardActivity : TabActivity(
         "Dashboard",
-        fontIcon(FontAwesomeSolid.BULLSEYE, 24),
+        fontIcon(BULLSEYE, 24),
         Combo(KeyCode.D, KeyCombination.SHORTCUT_DOWN)
 ) {
     private val view = DashboardView()
 
-    class Table(val name: String, val deriv: Boolean)
+    val g get()  = listOf(
+            IndexItem("Raw Data", fontIcon(QRCODE, 18)),
+            IndexItem("Verified Data", fontIcon(QRCODE, 18)),
+            IndexItem("TBA Match Schedule", fontIcon(CUBE, 18)),
+            IndexItem("TBA Match Data", fontIcon(CUBE, 18)),
+            IndexItem("TBA Team Rankings", fontIcon(CUBE, 18)),
+            IndexItem("TBA Team OPRs", fontIcon(CUBE, 18)),
+            IndexItem("1st Pick List", fontIcon(RANDOM, 18)),
+            IndexItem("2nd Pick List", fontIcon(RANDOM, 18)),
+            IndexItem("Top 10 List", fontIcon(RANDOM, 18)),
+            IndexItem("Auto List", fontIcon(PYTHON, 21)),
+            IndexItem("Cycle Matrix", fontIcon(PYTHON, 21)),
+            IndexItem("Predicted Rankings", fontIcon(PYTHON, 21)),
+            IndexItem("Team Pivot", fontIcon(EYE, 18)),
+            IndexItem("Notes", fontIcon(CLIPBOARD, 18))
+    )
 
-    val k = listOf("Raw Data", "Match Schedule", "TBA Data")
-    val p = listOf("Team Pivot", "Auto List", "Cycle Matrix")
-    val g = k.map { Table(it, false) } + p.map { Table(it, true) }
-
-    private val indexMap: MutableMap<String, List<Table>> = mutableMapOf(
+    private val indexMap: MutableMap<String, List<IndexItem>> = mutableMapOf(
             "local/csv" to g,
             "year/2019" to listOf(),
             "event/2019onto3" to g,
@@ -75,19 +90,18 @@ class DashboardActivity : TabActivity(
             dataPane.setData(emptyDataFrame())
         }
 
-        val ri = TreeItem(IndexItem("C:/Users/Yu/RT2019.1/data", IndexItem.Type.Root))
+        val ri = TreeItem(IndexItem("C:/Users/Yu/RT2019/Tables", fontIcon(DATABASE, 17)))
 
 
         ri.children.addAll(indexMap.map {
-            TreeItem(IndexItem(it.key, IndexItem.Type.Folder)).apply {
+            TreeItem(IndexItem(it.key, fontIcon(FOLDER, 17))).apply {
                 children.addAll(it.value.map {
-                    TreeItem(IndexItem(it.name, if (it.deriv) IndexItem.Type.Derivation else IndexItem.Type.Source))
+                    TreeItem(it)
                 })
             }
         })
 
         ri.isExpanded = true
-        ri.graphic = fontIcon(FontAwesomeSolid.DATABASE, 18)
         view.indexTree.root = ri
     }
 }

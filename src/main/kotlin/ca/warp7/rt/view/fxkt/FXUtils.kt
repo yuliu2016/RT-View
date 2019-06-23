@@ -4,10 +4,7 @@ package ca.warp7.rt.view.fxkt
 
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.control.ContextMenu
-import javafx.scene.control.Menu
-import javafx.scene.control.MenuItem
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.layout.*
 
 // CREATORS
@@ -30,6 +27,15 @@ fun VBox.vgrow() = add(vbox {
 
 @FXKtDSL
 inline fun textField(builder: TextField.() -> Unit): TextField = TextField().apply(builder)
+
+@FXKtDSL
+inline fun splitPane(builder: SplitPane.() -> Unit): SplitPane = SplitPane().apply(builder)
+
+@FXKtDSL
+fun SplitPane.addFixed(vararg  node: Node) {
+    node.forEach { SplitPane.setResizableWithParent(it, false) }
+    items.addAll(node)
+}
 
 @FXKtDSL
 inline fun Pane.modify(modifier: Modifier<Node>.() -> Unit) {

@@ -14,13 +14,13 @@ import org.kordamp.ikonli.javafx.FontIcon
 class ExtensionsView {
     private fun pluginBar(t: String, k: String, ic: FontIcon): HBox {
         return hbox {
-            height(54.dp2px)
+            height(48.dp2px)
             align(Pos.CENTER_LEFT)
             styleClass("action-item")
             modify {
                 +hbox {
                     add(ic)
-                    minWidth = 54.dp2px
+                    minWidth = 56.dp2px
                     align(Pos.CENTER)
                 }
                 +vbox {
@@ -30,7 +30,7 @@ class ExtensionsView {
                     })
                     val st = if (k.isEmpty()) "v2019.6.20" else "/$k - v2019.6.20"
                     add(Label(st).apply {
-                        style = "-fx-font-size:15"
+                        style = "-fx-font-size:14"
                     })
                 }
             }
@@ -55,7 +55,7 @@ class ExtensionsView {
             +pluginBar("External Media", "", fontIcon(LINK, 22))
             +pluginBar("Speed View", "", fontIcon(BOLT, 22))
             +pluginBar("Router", "", fontIcon(COMPASS, 22))
-            +pluginBar("Extension Loader", "", fontIcon(SYNC, 22))
+            +pluginBar("Extension Loader", "", fontIcon(SYNC, 20))
         }
     }).apply {
         isFitToWidth = true

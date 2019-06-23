@@ -7,11 +7,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import javafx.scene.text.Text
-import javafx.scene.text.TextFlow
-import javafx.util.Callback
 import org.kordamp.ikonli.Ikon
-import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -44,21 +40,17 @@ internal class DashboardView {
         override fun updateItem(item: IndexItem?, empty: Boolean) {
             super.updateItem(item, empty)
             super.updateItem(item, empty)
+
             if (item == null || empty) {
                 graphic = null
             } else {
+                alignment = Pos.CENTER_LEFT
                 graphic = hbox {
                     alignment = Pos.CENTER_LEFT
-
                     modify {
                         +hbox {
-                            add(fontIcon(when (item.type) {
-                                IndexItem.Type.Root -> FontAwesomeSolid.DATABASE
-                                IndexItem.Type.Folder -> FontAwesomeSolid.FOLDER
-                                IndexItem.Type.Source -> FontAwesomeSolid.TABLE
-                                IndexItem.Type.Derivation -> FontAwesomeSolid.EYE
-                            }, 18))
-                            prefWidth = 27.dp2px
+                            add(item.icon)
+                            prefWidth = 24.dp2px
                             alignment = Pos.CENTER
                         }
 
@@ -78,7 +70,7 @@ internal class DashboardView {
         }
     }
 
-    internal val dataTreeSection = vbox {
+    internal val indexTreeSection = vbox {
         add(sectionBar("INDEX TREE").apply {
             add(sectionIconButton(FontAwesomeSolid.MOUSE_POINTER))
             add(openButton)
@@ -89,7 +81,7 @@ internal class DashboardView {
     }
 
     val propertiesSection = vbox {
-        add(sectionBar("TABLE PROPERTIES").apply {
+        add(sectionBar("PROPERTIES").apply {
             modify {
                 +sectionIconButton(FontAwesomeSolid.CODE_BRANCH)
                 +sectionIconButton(FontAwesomeSolid.SYNC)
@@ -98,7 +90,8 @@ internal class DashboardView {
         minHeight = 32.dp2px
     }
 
-    val splitPane = SplitPane(vbox {}, dataTreeSection, propertiesSection).apply {
+    val splitPane = splitPane {
+        addFixed(vbox {}, indexTreeSection, propertiesSection)
         orientation = Orientation.VERTICAL
         setDividerPositions(0.0, 0.6)
     }
