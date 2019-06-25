@@ -1,30 +1,21 @@
 package ca.warp7.rt.view.dashboard
 
-import ca.warp7.rt.view.fxkt.*
+import ca.warp7.rt.view.fxkt.Combo
+import ca.warp7.rt.view.fxkt.fontIcon
 import ca.warp7.rt.view.window.TabActivity
-import javafx.geometry.Pos
-import javafx.scene.control.Label
-import javafx.scene.control.TreeCell
 import javafx.scene.control.TreeItem
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
-import javafx.scene.text.Text
-import javafx.scene.text.TextFlow
 import javafx.stage.FileChooser
-import javafx.util.Callback
 import krangl.DataFrame
 import krangl.emptyDataFrame
 import krangl.readDelim
 import org.apache.commons.csv.CSVFormat
-import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands
-import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands.*
-import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
+import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands.PYTHON
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.*
-import org.kordamp.ikonli.javafx.FontIcon
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintStream
-import kotlin.system.measureTimeMillis
 
 class DashboardActivity : TabActivity(
         "Dashboard",
@@ -73,11 +64,9 @@ class DashboardActivity : TabActivity(
             val res: File? = chooser.showOpenDialog(view.openButton.scene.window)
             if (res != null && res.extension.toLowerCase() == "csv") {
                 try {
-                    println(measureTimeMillis {
-                        val data = DataFrame.readDelim(res.inputStream(),
-                                CSVFormat.DEFAULT.withHeader().withNullString(""))
-                        dataPane.setData(data)
-                    } / 1000.0)
+                    val data = DataFrame.readDelim(res.inputStream().reader().buffered(),
+                            CSVFormat.DEFAULT.withHeader().withNullString(""))
+                    dataPane.setData(data)
                 } catch (e: Exception) {
                     val out = ByteArrayOutputStream()
                     val out1 = PrintStream(out.buffered())

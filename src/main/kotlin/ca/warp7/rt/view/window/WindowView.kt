@@ -1,12 +1,10 @@
 package ca.warp7.rt.view.window
 
-import ca.warp7.rt.view.data.DataPane
 import ca.warp7.rt.view.fxkt.dp2px
 import ca.warp7.rt.view.fxkt.add
 import ca.warp7.rt.view.fxkt.align
 import ca.warp7.rt.view.fxkt.hbox
 import ca.warp7.rt.view.fxkt.vbox
-import ca.warp7.rt.view.data.getSampleGrid
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
@@ -16,7 +14,6 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.*
-import krangl.emptyDataFrame
 import org.kordamp.ikonli.javafx.FontIcon
 
 @Suppress("MemberVisibilityCanBePrivate")

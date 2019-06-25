@@ -11,6 +11,7 @@ object Registry {
     private val registryFile = File(home, ".rt-registry.txt")
 
     fun parse(lines: List<String>) {
+        map.clear()
         lines.map { it.trim() }
                 .filter { it.isNotEmpty() && !it.startsWith("//") && it.contains("=") }
                 .map { it.split("=") }
@@ -18,14 +19,7 @@ object Registry {
     }
 
     fun join(): String {
-        val builder = StringBuilder()
-        map.forEach {
-            builder.append(it.key)
-                    .append("=")
-                    .append(it.value)
-                    .append("\n\n")
-        }
-        return builder.toString()
+        return map.entries.joinToString("\n\n") { "${it.key}=${it.value}" }
     }
 
     fun save() {
