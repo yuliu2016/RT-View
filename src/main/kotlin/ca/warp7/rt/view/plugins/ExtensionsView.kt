@@ -1,13 +1,22 @@
 package ca.warp7.rt.view.plugins
 
 import ca.warp7.rt.view.fxkt.*
+import ca.warp7.rt.view.registry.Registry
+import ca.warp7.rt.view.window.kLightCSS
+import ca.warp7.rt.view.window.kMainCSS
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
+import javafx.scene.Scene
+import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
+import javafx.scene.control.TextArea
+import javafx.scene.input.KeyCode
 import javafx.scene.layout.HBox
-import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands
+import javafx.stage.Modality
+import javafx.stage.Screen
+import javafx.stage.Stage
 import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands.PYTHON
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.*
 import org.kordamp.ikonli.javafx.FontIcon
@@ -55,8 +64,48 @@ class ExtensionsView {
             +pluginBar("Quick Summary", "", fontIcon(CALCULATOR, 22))
             +pluginBar("External Media", "", fontIcon(LINK, 22))
             +pluginBar("Speed View", "", fontIcon(BOLT, 22))
-            +pluginBar("Router", "", fontIcon(COMPASS, 22))
-            +pluginBar("Extension Loader", "", fontIcon(SYNC, 20))
+            +pluginBar("App Registry", "", fontIcon(COMPASS, 22)).apply {
+                setOnMouseClicked {
+                    val stage = Stage()
+                    stage.title = "App Registry"
+                    stage.scene = Scene(vbox {
+                        val b = Screen.getPrimary().visualBounds
+                        prefWidth = b.width * 0.7
+                        prefHeight = b.height * 0.7
+                        val ta = TextArea(Registry.join()).apply {
+                            style = """-fx-background-insets: 0; -fx-border-insets:0; -fx-focus-color: transparent; 
+                                |-fx-faint-focus-color:transparent; -fx-font-family:'Roboto Mono', 'Courier New', 
+                                |monospace; -fx-font-size:24""".trimMargin()
+                        }
+                        val discard = Button("Discard").apply {
+                            setOnAction {
+                                stage.close()
+                            }
+                        }
+                        val save = Button("Save").apply {
+                            setOnAction {
+                                Registry.parse(ta.text.split("\n"))
+                                Registry.save()
+                                stage.close()
+                            }
+                        }
+                        add(ta.vgrow())
+                        add(hbox {
+                            spacing = 16.0
+                            padding = Insets(8.0)
+                            align(Pos.CENTER_RIGHT)
+                            add(discard)
+                            add(save)
+                        })
+                    }).apply {
+                        accelerators[Combo(KeyCode.ESCAPE)] = Runnable { stage.close() }
+                    }
+                    stage.centerOnScreen()
+                    stage.isResizable = false
+                    stage.initModality(Modality.APPLICATION_MODAL)
+                    stage.showAndWait()
+                }
+            }
         }
     }).apply {
         isFitToWidth = true

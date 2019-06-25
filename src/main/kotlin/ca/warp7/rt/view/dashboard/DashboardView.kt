@@ -168,6 +168,6 @@ internal class DashboardView {
     val splitPane = splitPane {
         addFixed(vbox {}, indexTreeSection, propertiesSection)
         orientation = Orientation.VERTICAL
-        setDividerPositions(0.0, 0.7)
+        setDividerPositions(0.0, 0.65)
     }
 }

@@ -26,13 +26,13 @@ fun VBox.vspace() = add(vbox {
 })
 
 @FXKtDSL
-fun Node.hgrow(): Node {
+fun <T: Node> T.hgrow(): T {
     HBox.setHgrow(this, Priority.ALWAYS)
     return this
 }
 
 @FXKtDSL
-fun Node.vgrow(): Node {
+fun <T: Node> T.vgrow(): T {
     VBox.setVgrow(this, Priority.ALWAYS)
     return this
 }

@@ -6,6 +6,7 @@ import ca.warp7.rt.view.data.DataPane
 import ca.warp7.rt.view.fxkt.*
 import ca.warp7.rt.view.parameters.ParamsActivity
 import ca.warp7.rt.view.plugins.ExtensionsActivity
+import ca.warp7.rt.view.registry.Registry
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -203,6 +204,7 @@ class RTWindow private constructor(
             assert(primary == null) {
                 "A primary window already exists; cannot create another one"
             }
+            Registry.load()
             val win = RTWindow(stage)
             win.doWithActivities {
                 listOf(
