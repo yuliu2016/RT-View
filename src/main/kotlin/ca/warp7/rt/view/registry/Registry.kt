@@ -4,11 +4,19 @@ import java.io.File
 
 object Registry {
 
-    val map: MutableMap<String, String> = mutableMapOf()
+    private val map: MutableMap<String, String> = mutableMapOf()
 
-    private val home = File(System.getProperty("user.home"))
+    private val home = System.getProperty("user.home")
+    private const val version = "RT2019"
 
     private val registryFile = File(home, ".rt-registry.txt")
+
+    @Suppress("SpellCheckingInspection")
+    private val defaultProps = mapOf(
+            "USERPATH" to home,
+            "VERSION_PREFIX" to version,
+            "SYSTEM_PATH" to "$home/$version/System"
+    )
 
     fun parse(lines: List<String>) {
         map.clear()
@@ -16,6 +24,14 @@ object Registry {
                 .filter { it.isNotEmpty() && !it.startsWith("//") && it.contains("=") }
                 .map { it.split("=") }
                 .associateTo(map) { it[0].trim() to it[1].trim() }
+    }
+
+    operator fun get(key: String): String? {
+        return map[key]?.apply { defaultProps.forEach { replace("{${it.key}}", it.value) } }
+    }
+
+    operator fun set(key: String, value: String) {
+        map[key] = value
     }
 
     fun join(): String {

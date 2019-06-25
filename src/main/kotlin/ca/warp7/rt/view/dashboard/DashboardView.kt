@@ -89,6 +89,16 @@ internal class DashboardView {
                     align(Pos.CENTER_LEFT)
                     prefHeight = 36.dp2px
                     spacing = 8.dp2px
+                    add(Label("Context:").apply {
+                        style = "-fx-font-weight: bold"
+                        minWidth = 88.dp2px
+                    })
+                    add(Label("event/2019onwin"))
+                }
+                +hbox {
+                    align(Pos.CENTER_LEFT)
+                    prefHeight = 36.dp2px
+                    spacing = 8.dp2px
                     add(Label("Name:").apply {
                         style = "-fx-font-weight: bold"
                         minWidth = 88.dp2px
@@ -148,15 +158,10 @@ internal class DashboardView {
                     prefHeight = 36.dp2px
                     align(Pos.CENTER)
                     spacing = 8.dp2px
-                    add(Button("Derive").apply {
-                        prefWidth = 500.0
-                    })
                     add(Button("Update").apply {
-//                        style = "-fx-background-color:#080"
                         prefWidth = 500.0
                     })
                     add(Button("Delete").apply {
-//                        style = "-fx-background-color:#c11"
                         prefWidth = 500.0
                     })
                 }

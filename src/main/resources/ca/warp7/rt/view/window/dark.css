@@ -161,6 +161,14 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-padding: 6 12 6 12;
 }
 
+.menu-item .label {
+    -fx-text-fill: black;
+}
+
+.menu-item .ikonli-font-icon {
+    -fx-icon-color: black;
+}
+
 .menu-item:focused {
     -fx-background-color: #3c5c94;
 }

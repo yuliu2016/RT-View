@@ -2,7 +2,6 @@ package ca.warp7.rt.view.window
 
 import ca.warp7.rt.view.cf.ControlFActivity
 import ca.warp7.rt.view.dashboard.DashboardActivity
-import ca.warp7.rt.view.data.DataPane
 import ca.warp7.rt.view.fxkt.*
 import ca.warp7.rt.view.parameters.ParamsActivity
 import ca.warp7.rt.view.plugins.ExtensionsActivity
@@ -17,7 +16,6 @@ import javafx.scene.input.KeyCode
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
-import krangl.emptyDataFrame
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 
 @Suppress("MemberVisibilityCanBePrivate", "unused", "SpellCheckingInspection")
@@ -26,7 +24,7 @@ class RTWindow private constructor(
 ) {
 
     private val view = WindowView()
-    private val dataPane = DataPane(emptyDataFrame())
+    private val spreadsheet = SpreadsheetView()
     private val state = WindowState()
 
     private fun WindowState.reflectTheme() {
@@ -115,7 +113,7 @@ class RTWindow private constructor(
     init {
         stage.initialize()
         stage.fullScreenExitKeyCombination = Combo(KeyCode.F11)
-        view.rootPane.center = dataPane.control
+        view.rootPane.center = spreadsheet
         stage.scene = Scene(view.rootPane).apply {
             stylesheets.add(kMainCSS)
             onKeyPressed = EventHandler {
@@ -139,6 +137,7 @@ class RTWindow private constructor(
         view.okButton.onMouseClicked = EventHandler { state.okSignal() }
         view.cancelButton.onMouseClicked = EventHandler { state.cancelSignal() }
         state.reflectTheme()
+        state.updateModel()
     }
 
     private fun createIcon(i: Int, activity: TabActivity): Node {
@@ -196,6 +195,15 @@ class RTWindow private constructor(
         }
     }
 
+    fun setModel(model: ViewModel) {
+        state.model = model
+        state.updateModel()
+    }
+
+    private fun WindowState.updateModel() {
+        spreadsheet.grid = model.getGrid()
+    }
+
     companion object {
 
         private var primary: RTWindow? = null
@@ -205,20 +213,20 @@ class RTWindow private constructor(
                 "A primary window already exists; cannot create another one"
             }
             Registry.load()
-            val win = RTWindow(stage)
-            win.doWithActivities {
+            val window = RTWindow(stage)
+            window.doWithActivities {
                 listOf(
                         DashboardActivity(),
                         ParamsActivity(),
                         ControlFActivity(),
                         ExtensionsActivity()
                 ).forEach {
-                    it.dataPane = win.dataPane
+                    it.window = window
                     add(it)
                 }
             }
-            primary = win
-            return win
+            primary = window
+            return window
         }
     }
 }

@@ -1,5 +1,7 @@
 package ca.warp7.rt.view.dashboard
 
+import ca.warp7.rt.view.data.DerivedViewModel
+import ca.warp7.rt.view.data.EmptyViewModel
 import ca.warp7.rt.view.fxkt.Combo
 import ca.warp7.rt.view.fxkt.fontIcon
 import ca.warp7.rt.view.window.TabActivity
@@ -66,7 +68,7 @@ class DashboardActivity : TabActivity(
                 try {
                     val data = DataFrame.readDelim(res.inputStream().reader().buffered(),
                             CSVFormat.DEFAULT.withHeader().withNullString(""))
-                    dataPane.setData(data)
+                    window.setModel(DerivedViewModel(data))
                 } catch (e: Exception) {
                     val out = ByteArrayOutputStream()
                     val out1 = PrintStream(out.buffered())
@@ -76,7 +78,7 @@ class DashboardActivity : TabActivity(
             }
         }
         view.closeButton.setOnMouseClicked {
-            dataPane.setData(emptyDataFrame())
+            window.setModel(EmptyViewModel)
         }
 
         val ri = TreeItem(IndexItem("C:/Users/Yu/RT2019/Tables", fontIcon(DATABASE, 17)))
