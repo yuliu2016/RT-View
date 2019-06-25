@@ -1,6 +1,5 @@
 package ca.warp7.rt.view.window
 
-import ca.warp7.rt.view.data.Selection
 import javafx.scene.control.ContextMenu
 import krangl.DataFrame
 import org.controlsfx.control.spreadsheet.Grid

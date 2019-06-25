@@ -14,10 +14,15 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.*
+import org.controlsfx.control.spreadsheet.Grid
+import org.controlsfx.control.spreadsheet.GridBase
+import org.controlsfx.control.spreadsheet.SpreadsheetView
 import org.kordamp.ikonli.javafx.FontIcon
 
 @Suppress("MemberVisibilityCanBePrivate")
 internal class WindowView {
+
+    internal val spreadsheet = SpreadsheetView(GridBase(0, 0))
 
     internal val cancelButton = hbox {
         val a = FontIcon("fas-times")

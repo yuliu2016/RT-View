@@ -1,9 +1,7 @@
 package ca.warp7.rt.view.plugins
 
 import ca.warp7.rt.view.fxkt.*
-import ca.warp7.rt.view.registry.Registry
-import ca.warp7.rt.view.window.kLightCSS
-import ca.warp7.rt.view.window.kMainCSS
+import ca.warp7.rt.view.window.Registry
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos

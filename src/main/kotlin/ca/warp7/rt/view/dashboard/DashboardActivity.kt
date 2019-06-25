@@ -14,6 +14,7 @@ import krangl.emptyDataFrame
 import krangl.readDelim
 import org.apache.commons.csv.CSVFormat
 import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands.PYTHON
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.*
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -26,7 +27,7 @@ class DashboardActivity : TabActivity(
 ) {
     private val view = DashboardView()
 
-    val g get()  = listOf(
+    val g get()  = mutableListOf(
             IndexItem("Raw Data", fontIcon(QRCODE, 18)),
             IndexItem("Verified Data", fontIcon(QRCODE, 18)),
             IndexItem("TBA Match Schedule", fontIcon(CUBE, 18)),
@@ -43,9 +44,9 @@ class DashboardActivity : TabActivity(
             IndexItem("Notes", fontIcon(CLIPBOARD, 18))
     )
 
-    private val indexMap: MutableMap<String, List<IndexItem>> = mutableMapOf(
-            "local/csv" to g,
-            "year/2019" to listOf(),
+    private val indexMap: MutableMap<String, MutableList<IndexItem>> = mutableMapOf(
+            "local/csv" to mutableListOf(),
+            "year/2019" to mutableListOf(),
             "event/2019onto3" to g,
             "event/2019onwin" to g,
             "event/2019oncmp1" to g,
@@ -68,7 +69,13 @@ class DashboardActivity : TabActivity(
                 try {
                     val data = DataFrame.readDelim(res.inputStream().reader().buffered(),
                             CSVFormat.DEFAULT.withHeader().withNullString(""))
+                    val model = DerivedViewModel(data)
+                    val item = IndexItem(res.name, fontIcon(TABLE, 18)) {
+                        window.setModel(model)
+                    }
                     window.setModel(DerivedViewModel(data))
+                    indexMap["local/csv"]?.add(item)
+                    update()
                 } catch (e: Exception) {
                     val out = ByteArrayOutputStream()
                     val out1 = PrintStream(out.buffered())
@@ -82,17 +89,17 @@ class DashboardActivity : TabActivity(
         }
 
         val ri = TreeItem(IndexItem("C:/Users/Yu/RT2019/Tables", fontIcon(DATABASE, 17)))
+        view.indexTree.root = ri
+        update()
+    }
 
-
-        ri.children.addAll(indexMap.map {
-            TreeItem(IndexItem(it.key, fontIcon(FOLDER, 17))).apply {
-                children.addAll(it.value.map {
-                    TreeItem(it)
-                })
+    private fun update() {
+        view.indexTree.root.children.setAll(indexMap.map { e ->
+            TreeItem(IndexItem(e.key, fontIcon(FOLDER, 17))).apply {
+                isExpanded = true
+                children.addAll(e.value.map { TreeItem(it) })
             }
         })
-
-        ri.isExpanded = true
-        view.indexTree.root = ri
+        view.indexTree.root.isExpanded = true
     }
 }

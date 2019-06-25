@@ -1,4 +1,4 @@
-package ca.warp7.rt.view.data
+package ca.warp7.rt.view.window
 
 data class Selection(
         val rows: MutableSet<Int> = mutableSetOf(),

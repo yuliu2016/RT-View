@@ -20,6 +20,23 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 @Suppress("UsePropertyAccessSyntax")
 class DerivedViewModel(private val df: DataFrame) : ViewModel() {
 
+    override fun isTable(): Boolean {
+        return true
+    }
+
+    override fun getDataFrame(): DataFrame {
+        return df
+    }
+
+    private val sortColumns: MutableList<SortColumn> = mutableListOf()
+    private var referenceOrder: List<ObservableList<SpreadsheetCell>> = listOf()
+
+    private val grid: Grid = toGrid()
+
+    override fun getGrid(): Grid {
+        return grid
+    }
+
     override fun ContextMenu.updateMenu() {
         modify {
             submenu {
@@ -93,23 +110,6 @@ class DerivedViewModel(private val df: DataFrame) : ViewModel() {
         }
     }
 
-    override fun isTable(): Boolean {
-        return true
-    }
-
-    override fun getDataFrame(): DataFrame {
-        return df
-    }
-
-    private val grid = toGrid()
-
-    override fun getGrid(): Grid {
-        return grid
-    }
-
-    private val sortColumns: MutableList<SortColumn> = mutableListOf()
-    private var referenceOrder: List<ObservableList<SpreadsheetCell>> = listOf()
-
     fun toGrid(): Grid {
         val grid = GridBase(df.nrow, df.ncol)
         grid.rows.addAll(df.rows.mapIndexed { i, row ->
@@ -130,7 +130,6 @@ class DerivedViewModel(private val df: DataFrame) : ViewModel() {
             sortColumns.add(SortColumn(type, name))
             applySort()
         }
-
     }
 
     private fun applySort() {

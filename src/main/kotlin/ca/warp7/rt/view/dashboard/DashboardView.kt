@@ -65,6 +65,12 @@ internal class DashboardView {
                             }
                         }
                     }
+
+                    setOnMouseClicked {
+                        if (it.clickCount > 1) {
+                            item.action()
+                        }
+                    }
                 }
             }
         }
@@ -148,12 +154,6 @@ internal class DashboardView {
                     })
                     add(Label("QR Protocol Decoder v5"))
                 }
-                +hbox {
-                    align(Pos.CENTER_LEFT)
-                    prefHeight = 36.dp2px
-                    add(CheckBox())
-                    add(Label("Lock Table from Editing"))
-                }
                 +hbox vb@ {
                     prefHeight = 36.dp2px
                     align(Pos.CENTER)
@@ -173,6 +173,6 @@ internal class DashboardView {
     val splitPane = splitPane {
         addFixed(vbox {}, indexTreeSection, propertiesSection)
         orientation = Orientation.VERTICAL
-        setDividerPositions(0.0, 0.65)
+        setDividerPositions(0.0, 0.7)
     }
 }

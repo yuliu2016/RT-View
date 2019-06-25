@@ -1,4 +1,4 @@
-package ca.warp7.rt.view.registry
+package ca.warp7.rt.view.window
 
 import java.io.File
 

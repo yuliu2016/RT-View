@@ -5,7 +5,6 @@ import ca.warp7.rt.view.dashboard.DashboardActivity
 import ca.warp7.rt.view.fxkt.*
 import ca.warp7.rt.view.parameters.ParamsActivity
 import ca.warp7.rt.view.plugins.ExtensionsActivity
-import ca.warp7.rt.view.registry.Registry
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
@@ -24,7 +23,6 @@ class RTWindow private constructor(
 ) {
 
     private val view = WindowView()
-    private val spreadsheet = SpreadsheetView()
     private val state = WindowState()
 
     private fun WindowState.reflectTheme() {
@@ -110,10 +108,22 @@ class RTWindow private constructor(
         reflect()
     }
 
+    private fun WindowState.updateModel() {
+        val grid = model.getGrid()
+        view.spreadsheet.grid = grid
+        view.spreadsheet.columns.forEach { it.setPrefWidth(100.0) }
+        val menu = model.getMenu()
+        view.spreadsheet.contextMenu = menu
+        model.setCallbacks(selector, notifier)
+    }
+
+    val selector = { view.spreadsheet.getSelection() }
+    val notifier = { state.updateModel() }
+
     init {
         stage.initialize()
         stage.fullScreenExitKeyCombination = Combo(KeyCode.F11)
-        view.rootPane.center = spreadsheet
+        view.rootPane.center = view.spreadsheet
         stage.scene = Scene(view.rootPane).apply {
             stylesheets.add(kMainCSS)
             onKeyPressed = EventHandler {
@@ -198,10 +208,6 @@ class RTWindow private constructor(
     fun setModel(model: ViewModel) {
         state.model = model
         state.updateModel()
-    }
-
-    private fun WindowState.updateModel() {
-        spreadsheet.grid = model.getGrid()
     }
 
     companion object {
