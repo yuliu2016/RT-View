@@ -309,3 +309,21 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-background-insets: 2 0 2 0;
     -fx-background-radius: 8;
 }
+
+.titled-pane {
+    -fx-text-fill: white;
+}
+
+.titled-pane > .title > .arrow-button > .arrow {
+    -fx-background-color: white;
+}
+
+.titled-pane:focused > .title > .arrow-button > .arrow {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-effect: null;
+}
+
+.titled-pane > .title:hover {
+    -fx-background-color: #666;
+}

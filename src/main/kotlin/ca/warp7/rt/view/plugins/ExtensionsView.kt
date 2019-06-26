@@ -106,11 +106,12 @@ class ExtensionsView {
             }
         }
     }).apply {
+        vbarPolicy = ScrollPane.ScrollBarPolicy.ALWAYS
         isFitToWidth = true
     }
 
     val pane = vbox {
-        add(scrollPane)
+        add(scrollPane.vgrow())
         onScroll = EventHandler {
             val deltaY = it.deltaY * 6
             val width = scrollPane.content.boundsInLocal.width

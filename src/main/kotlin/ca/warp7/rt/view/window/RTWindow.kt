@@ -3,7 +3,6 @@ package ca.warp7.rt.view.window
 import ca.warp7.rt.view.cf.ControlFActivity
 import ca.warp7.rt.view.dashboard.DashboardActivity
 import ca.warp7.rt.view.fxkt.*
-import ca.warp7.rt.view.parameters.ParamsActivity
 import ca.warp7.rt.view.plugins.ExtensionsActivity
 import javafx.event.EventHandler
 import javafx.geometry.Insets
@@ -223,7 +222,6 @@ class RTWindow private constructor(
             window.doWithActivities {
                 listOf(
                         DashboardActivity(),
-                        ParamsActivity(),
                         ControlFActivity(),
                         ExtensionsActivity()
                 ).forEach {
