@@ -177,6 +177,10 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-icon-color: white;
 }
 
+.menu-item:focused .label {
+    -fx-text-fill: white;
+}
+
 .selection-rectangle {
     -fx-fill: transparent;
     -fx-stroke: #3c5c94;
@@ -325,5 +329,22 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .titled-pane > .title:hover {
+    -fx-background-color: #555;
+}
+
+.properties-list {
+    -fx-background-color: #333;
+}
+
+.properties-list .list-cell {
+    -fx-background-color: #333;
+    -fx-text-fill: white;
+}
+
+.choice-box {
+    -fx-background-color: #555;
+}
+
+.choice-box:hover {
     -fx-background-color: #666;
 }

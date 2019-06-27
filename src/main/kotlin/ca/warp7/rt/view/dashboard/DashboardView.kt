@@ -108,7 +108,7 @@ internal class DashboardView {
                 })
                 add(Label("QR Protocol Decoder v5"))
             }
-            +hbox vb@{
+            +hbox {
                 prefHeight = 36.dp2px
                 align(Pos.CENTER)
                 spacing = 8.dp2px
@@ -116,6 +116,13 @@ internal class DashboardView {
                     prefWidth = 500.0
                 })
                 add(Button("Delete").apply {
+                    prefWidth = 500.0
+                })
+            }
+            +hbox {
+                prefHeight = 36.dp2px
+                align(Pos.CENTER)
+                add(Button("Reveal in File Explorer").apply {
                     prefWidth = 500.0
                 })
             }
@@ -128,7 +135,11 @@ internal class DashboardView {
 
 
     val cadPane = TitledPane("Clone and Derive", vbox {
-
+        spacing = 8.dp2px
+        add(PropertiesList("Deep Copy",
+                "Linked View", "Execute Python Script", "Tr", "r", "Re", "R").apply {
+            prefHeight = 90.dp2px
+        })
     }).apply {
         graphic = fontIcon(FontAwesomeSolid.CLONE, 18).centerIn(24)
         isAnimated = false
@@ -136,6 +147,39 @@ internal class DashboardView {
     }
 
     val pivotPane = TitledPane("Group Rows", vbox {
+        spacing = 8.dp2px
+        add(Label("Rows:").apply { style="-fx-font-weight:bold" })
+        add(hbox {
+            align(Pos.CENTER_LEFT)
+            spacing = 8.dp2px
+            add(PropertiesList("Team", "Match").apply {
+                prefHeight = 45.dp2px
+                hgrow()
+            })
+            add(Button("", fontIcon(FontAwesomeSolid.CROSSHAIRS, 18)))
+        })
+
+        add(Label("Values:").apply { style="-fx-font-weight:bold" })
+
+        add(PropertiesList("Hatch Placed::Average", "Hatch Placed::Max").apply {
+            prefHeight = 120.dp2px
+            hgrow()
+        })
+
+        add(hbox {
+            align(Pos.CENTER_LEFT)
+            spacing = 8.dp2px
+            add(ChoiceBox<String>(listOf("Average", "Max", "Min", "Count", "Stddev", "Stddevp",
+                    "Median", "Mode", "Product", "Sum", "Var", "Varp", "Count-Percent", "Sum-Percent").observable()).apply {
+                selectionModel.select(0)
+            })
+            add(hbox {
+                align(Pos.CENTER)
+                add(CheckBox())
+                add(Label("NotNull"))
+            })
+            add(Button("", fontIcon(FontAwesomeSolid.CROSSHAIRS, 18)))
+        })
 
     }).apply {
         graphic = fontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_RIGHT, 18).centerIn(24)
@@ -151,19 +195,19 @@ internal class DashboardView {
         isExpanded = false
     }
 
-    val sortPane = TitledPane("Column Sort", vbox {
+    val filterPane = TitledPane("Row Filter", vbox {
 
     }).apply {
-        graphic = fontIcon(FontAwesomeSolid.SORT, 18).centerIn(24)
+        graphic = fontIcon(FontAwesomeSolid.FILTER, 18).centerIn(24)
         isAnimated = false
         isExpanded = false
     }
 
 
-    val filterPane = TitledPane("Row Filter", vbox {
+    val sortPane = TitledPane("Column Sort", vbox {
 
     }).apply {
-        graphic = fontIcon(FontAwesomeSolid.FILTER, 18).centerIn(24)
+        graphic = fontIcon(FontAwesomeSolid.SORT, 18).centerIn(24)
         isAnimated = false
         isExpanded = false
     }
@@ -183,8 +227,8 @@ internal class DashboardView {
         add(cadPane)
         add(pivotPane)
         add(formulaPane)
-        add(sortPane)
         add(filterPane)
+        add(sortPane)
         add(cf)
     }
 

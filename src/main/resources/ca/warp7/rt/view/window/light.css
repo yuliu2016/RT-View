@@ -282,3 +282,22 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 .titled-pane > .title:hover {
     -fx-background-color: #ddd;
 }
+
+
+.properties-list {
+    -fx-background-color: white;
+}
+
+.properties-list .list-cell {
+    -fx-padding: 2 8 2 8;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.choice-box {
+    -fx-background-color: #ddd;
+}
+
+.choice-box:hover {
+    -fx-background-color: #ccc;
+}

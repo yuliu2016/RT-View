@@ -2,6 +2,8 @@
 
 package ca.warp7.rt.view.fxkt
 
+import javafx.collections.FXCollections
+import javafx.collections.ObservableList
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.*
@@ -95,4 +97,9 @@ fun Pane.add(node: Node) {
 @FXKtDSL
 fun Region.height(height: Double) {
     prefHeight = height
+}
+
+@FXKtDSL
+fun <T> List<T>.observable(): ObservableList<T> {
+    return FXCollections.observableList(this)
 }
