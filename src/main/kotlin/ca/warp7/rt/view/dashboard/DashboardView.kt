@@ -134,10 +134,10 @@ internal class DashboardView {
     }
 
 
-    val cadPane = TitledPane("Clone and Derive", vbox {
+    val cadPane = TitledPane("Create Adapter", vbox {
         spacing = 8.dp2px
         add(PropertiesList("Deep Copy",
-                "Linked View", "Execute Python Script", "Tr", "r", "Re", "R").apply {
+                "Linked View", "Execute Python Script").apply {
             prefHeight = 90.dp2px
         })
     }).apply {
@@ -152,7 +152,7 @@ internal class DashboardView {
         add(hbox {
             align(Pos.CENTER_LEFT)
             spacing = 8.dp2px
-            add(PropertiesList("Team", "Match").apply {
+            add(PropertiesList("Team").apply {
                 prefHeight = 45.dp2px
                 hgrow()
             })

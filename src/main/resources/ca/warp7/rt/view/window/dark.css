@@ -11,7 +11,7 @@
 }
 
 .list-cell {
-    -fx-background-color: white;
+    -fx-background-color: #333;
     -fx-padding: 0;
 }
 
@@ -337,8 +337,19 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
 }
 
 .properties-list .list-cell {
+    -fx-padding: 2 8 2 8;
     -fx-background-color: #333;
     -fx-text-fill: white;
+    -fx-background-insets: 0;
+}
+
+.properties-list .list-cell:filled:hover {
+    -fx-background-color: #555;
+}
+
+.properties-list .list-cell.drag-over {
+    -fx-background-color: red, #333;
+    -fx-background-insets: 0, 2;
 }
 
 .choice-box {

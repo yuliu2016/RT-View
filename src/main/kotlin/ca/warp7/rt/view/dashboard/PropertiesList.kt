@@ -1,11 +1,86 @@
 package ca.warp7.rt.view.dashboard
 
+import ca.warp7.rt.view.fxkt.noStyleClass
 import ca.warp7.rt.view.fxkt.observable
 import ca.warp7.rt.view.fxkt.styleClass
 import javafx.event.EventHandler
+import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
+import javafx.scene.input.ClipboardContent
+import javafx.scene.input.TransferMode
+import javafx.util.Callback
+
 
 class PropertiesList(vararg initialItems: String) : ListView<String>(initialItems.toList().observable()) {
+
+    private inner class Cell : ListCell<String>() {
+
+        init {
+            val thisCell = this
+
+            onDragDetected = EventHandler { event ->
+                if (item == null) {
+                    return@EventHandler
+                }
+                val board = startDragAndDrop(TransferMode.MOVE)
+                val content = ClipboardContent()
+                content.putString(item)
+                board.setContent(content)
+                event.consume()
+            }
+
+            onDragOver = EventHandler { event ->
+                if (event.gestureSource !== thisCell && event.dragboard.hasString() && !isEmpty) {
+                    event.acceptTransferModes(TransferMode.MOVE)
+                }
+                event.consume()
+            }
+
+            onDragEntered = EventHandler { event ->
+                if (event.gestureSource !== thisCell && event.dragboard.hasString() && !isEmpty) {
+                    styleClass("drag-over")
+                }
+            }
+
+            onDragExited = EventHandler { event ->
+                if (event.gestureSource !== thisCell && event.dragboard.hasString() && !isEmpty) {
+                    noStyleClass()
+                }
+            }
+
+            onDragDropped = EventHandler { event ->
+                if (item == null) {
+                    return@EventHandler
+                }
+
+                val db = event.dragboard
+                var success = false
+
+                if (db.hasString()) {
+                    val items = listView.items
+                    val draggedIdx = items.indexOf(db.string)
+                    val thisIdx = items.indexOf(item)
+
+                    items[draggedIdx] = item
+                    items[thisIdx] = db.string
+
+                    success = true
+                }
+
+                event.isDropCompleted = success
+
+                event.consume()
+            }
+
+            onDragDone = EventHandler { it.consume() }
+        }
+
+        override fun updateItem(item: String?, empty: Boolean) {
+            super.updateItem(item, empty)
+            text = if (empty || item == null) null else item
+        }
+    }
+
     init {
 
         styleClass("properties-list")
@@ -14,6 +89,10 @@ class PropertiesList(vararg initialItems: String) : ListView<String>(initialItem
             if (!newValue) {
                 selectionModel.clearSelection()
             }
+        }
+
+        cellFactory = Callback {
+            Cell()
         }
 
         onScroll = EventHandler {
