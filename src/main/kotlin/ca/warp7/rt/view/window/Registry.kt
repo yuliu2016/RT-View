@@ -6,7 +6,7 @@ object Registry {
 
     private val map: MutableMap<String, String> = mutableMapOf()
 
-    private val home = System.getProperty("user.home")
+    private val home = System.getProperty("user.home").replace(File.separatorChar, '/')
     private const val version = "RT2019"
 
     private val registryFile = File(home, ".rt-registry.txt")
@@ -27,7 +27,13 @@ object Registry {
     }
 
     operator fun get(key: String): String? {
-        return map[key]?.apply { defaultProps.forEach { replace("{${it.key}}", it.value) } }
+        return map[key]?.run {
+            var replaced = this
+            defaultProps.forEach {
+                replaced = replaced.replace("{${it.key}}", it.value)
+            }
+            replaced
+        }
     }
 
     operator fun set(key: String, value: String) {

@@ -11,7 +11,7 @@ import javafx.scene.input.TransferMode
 import javafx.util.Callback
 
 
-class PropertiesList(vararg initialItems: String) : ListView<String>(initialItems.toList().observable()) {
+class PropertyList(vararg initialItems: String) : ListView<String>(initialItems.toList().observable()) {
 
     private inner class Cell : ListCell<String>() {
 

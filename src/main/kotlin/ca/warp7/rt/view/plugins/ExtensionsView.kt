@@ -45,6 +45,20 @@ class ExtensionsView {
         }
     }
 
+    private val libs = "wheel, numpy, scipy, pandas"
+
+    private fun pyInst():String {
+        val k = Registry["PYTHON_EXEC_PATH"]
+        return """
+            Run the following command in Power shell to set up the Python environment:
+            Make sure Python(3.6+) and Git is installed and on the system PATH.
+            
+            del $k/venv
+            python -m venv $k/venv
+            $k/venv/Scripts/python -m pip install $libs (+other required libraries)
+            $k/venv/Scripts/python -m pip install rt.whl""".trimIndent()
+    }
+
     private val scrollPane = ScrollPane(vbox {
         modify {
             +pluginBar("Open in New Window", "", fontIcon(WINDOW_RESTORE, 22))
@@ -56,9 +70,30 @@ class ExtensionsView {
             +pluginBar("CSV Integration", "csv.jar", fontIcon(FILE_ALT, 22))
             +pluginBar("Excel Integration", "excel.jar", fontIcon(FILE_EXCEL, 22))
             +pluginBar("Tableau Integration", "tableau.jar", fontIcon(CUBE, 22))
-            +pluginBar("Match Predictor", "predictor.py", fontIcon(CUBE, 22))
-            +pluginBar("Scout Rotation Generator", "rotgen.py", fontIcon(CUBE, 22))
-            +pluginBar("Python Integration", "pyext.jar", fontIcon(PYTHON, 25))
+            +pluginBar("Python Integration", "pyext.jar", fontIcon(PYTHON, 25)).apply {
+                onMouseClicked = EventHandler {
+                    val stage = Stage()
+                    stage.title = "Python not set up properly!"
+                    stage.scene = Scene(vbox {
+                        val b = Screen.getPrimary().visualBounds
+                        prefWidth = b.width * 0.6
+                        prefHeight = b.height * 0.6
+                        val ta = TextArea(pyInst()).apply {
+                            style = """-fx-background-insets: 0; -fx-border-insets:0; -fx-focus-color: transparent; 
+                                |-fx-faint-focus-color:transparent; -fx-font-family:'Roboto Mono', 'Courier New', 
+                                |monospace""".trimMargin()
+                        }
+                        ta.isEditable = false
+                        add(ta.vgrow())
+                    }).apply {
+                        accelerators[Combo(KeyCode.ESCAPE)] = Runnable { stage.close() }
+                    }
+                    stage.centerOnScreen()
+                    stage.isResizable = false
+                    stage.initModality(Modality.APPLICATION_MODAL)
+                    stage.showAndWait()
+                }
+            }
             +pluginBar("Quick Summary", "", fontIcon(CALCULATOR, 22))
             +pluginBar("External Media", "", fontIcon(LINK, 22))
             +pluginBar("Speed View", "", fontIcon(BOLT, 22))
@@ -71,8 +106,8 @@ class ExtensionsView {
                         prefWidth = b.width * 0.7
                         prefHeight = b.height * 0.7
                         val ta = TextArea(Registry.join()).apply {
-                            style = """-fx-background-insets: 0; -fx-border-insets:0; -fx-focus-color: transparent; 
-                                |-fx-faint-focus-color:transparent; -fx-font-family:'Roboto Mono', 'Courier New', 
+                            style = """-fx-background-insets: 0; -fx-border-insets:0; -fx-focus-color: transparent;
+                                |-fx-faint-focus-color:transparent; -fx-font-family:'Roboto Mono', 'Courier New',
                                 |monospace; -fx-font-size:24""".trimMargin()
                         }
                         val discard = Button("Discard").apply {

@@ -1,5 +1,6 @@
 package ca.warp7.rt.view.window
 
+import ca.warp7.rt.view.dashboard.PropertyGroup
 import javafx.scene.control.ContextMenu
 import krangl.DataFrame
 import org.controlsfx.control.spreadsheet.Grid
@@ -43,6 +44,8 @@ abstract class ViewModel {
     abstract fun getDataFrame(): DataFrame
 
     abstract fun getGrid(): Grid
+
+    abstract fun getPropertyGroups(): List<PropertyGroup>
 
     @Suppress("unused")
     fun getOptions() {

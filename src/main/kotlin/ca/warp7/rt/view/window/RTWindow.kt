@@ -205,8 +205,10 @@ class RTWindow private constructor(
     }
 
     fun setModel(model: ViewModel) {
-        state.model = model
-        state.updateModel()
+        if (model !== state.model) {
+            state.model = model
+            state.updateModel()
+        }
     }
 
     companion object {

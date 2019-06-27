@@ -1,5 +1,6 @@
 package ca.warp7.rt.view.data
 
+import ca.warp7.rt.view.dashboard.PropertyGroup
 import ca.warp7.rt.view.window.ViewModel
 import javafx.collections.FXCollections
 import javafx.scene.control.ContextMenu
@@ -28,5 +29,9 @@ object EmptyViewModel: ViewModel() {
                     .map { SpreadsheetCellType.STRING.createCell(i, it, 1, 1, "") }))
         }
         return grid
+    }
+
+    override fun getPropertyGroups(): List<PropertyGroup> {
+        return emptyList()
     }
 }
