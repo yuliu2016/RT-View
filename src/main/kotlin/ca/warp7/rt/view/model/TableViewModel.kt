@@ -1,7 +1,7 @@
 package ca.warp7.rt.view.model
 
 import ca.warp7.rt.view.api.PropertyGroup
-import ca.warp7.rt.view.dashboard.PropertyList
+import ca.warp7.rt.view.dash.PropertyList
 import ca.warp7.rt.view.fxkt.*
 import ca.warp7.rt.view.api.ViewModel
 import javafx.collections.FXCollections

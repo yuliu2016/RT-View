@@ -3,9 +3,9 @@ package ca.warp7.rt.view.window
 import ca.warp7.rt.view.api.TabActivity
 import ca.warp7.rt.view.api.ViewModel
 import ca.warp7.rt.view.cf.ControlFActivity
-import ca.warp7.rt.view.dashboard.DashboardActivity
+import ca.warp7.rt.view.dash.DashboardActivity
 import ca.warp7.rt.view.fxkt.*
-import ca.warp7.rt.view.plugins.ExtensionsActivity
+import ca.warp7.rt.view.ext.ExtensionsActivity
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos

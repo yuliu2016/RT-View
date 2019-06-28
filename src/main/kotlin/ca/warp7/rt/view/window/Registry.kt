@@ -36,6 +36,10 @@ object Registry {
         }
     }
 
+    fun getHomeRelativePath(key: String): String? {
+        return get(key)?.replace(home, "~")
+    }
+
     operator fun set(key: String, value: String) {
         map[key] = value
     }

@@ -1,6 +1,6 @@
-package ca.warp7.rt.view.dashboard
+package ca.warp7.rt.view.dash
 
-import ca.warp7.rt.view.api.IndexItem
+import ca.warp7.rt.view.api.Index
 import ca.warp7.rt.view.api.PropertyGroup
 import ca.warp7.rt.view.fxkt.*
 import javafx.geometry.Orientation
@@ -26,7 +26,7 @@ internal class DashboardView {
     internal val openButton = sectionIconButton(FontAwesomeSolid.FOLDER_OPEN)
     internal val closeButton = sectionIconButton(FontAwesomeSolid.TIMES)
 
-    internal val indexTree = TreeView<IndexItem>().apply {
+    internal val indexTree = TreeView<Index>().apply {
         VBox.setVgrow(this, Priority.ALWAYS)
         setCellFactory {
             IndexCell()

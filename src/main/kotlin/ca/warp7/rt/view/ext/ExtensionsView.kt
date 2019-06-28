@@ -1,4 +1,4 @@
-package ca.warp7.rt.view.plugins
+package ca.warp7.rt.view.ext
 
 import ca.warp7.rt.view.fxkt.*
 import ca.warp7.rt.view.window.Registry

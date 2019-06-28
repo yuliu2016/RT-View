@@ -1,4 +1,4 @@
-package ca.warp7.rt.view.dashboard
+package ca.warp7.rt.view.dash
 
 import ca.warp7.rt.view.fxkt.noStyleClass
 import ca.warp7.rt.view.fxkt.observable

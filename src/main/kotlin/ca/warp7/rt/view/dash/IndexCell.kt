@@ -1,14 +1,14 @@
-package ca.warp7.rt.view.dashboard
+package ca.warp7.rt.view.dash
 
-import ca.warp7.rt.view.api.IndexItem
+import ca.warp7.rt.view.api.Index
 import ca.warp7.rt.view.fxkt.*
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.control.TreeCell
 
-class IndexCell : TreeCell<IndexItem>() {
-    override fun updateItem(item: IndexItem?, empty: Boolean) {
+class IndexCell : TreeCell<Index>() {
+    override fun updateItem(item: Index?, empty: Boolean) {
         super.updateItem(item, empty)
         super.updateItem(item, empty)
 

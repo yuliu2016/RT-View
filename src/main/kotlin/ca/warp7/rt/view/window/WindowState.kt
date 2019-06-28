@@ -2,7 +2,7 @@ package ca.warp7.rt.view.window
 
 import ca.warp7.rt.view.api.TabActivity
 import ca.warp7.rt.view.api.ViewModel
-import ca.warp7.rt.view.model.EmptyViewModel
+import ca.warp7.rt.view.mem.EmptyViewModel
 import javafx.scene.Node
 
 internal class WindowState {
