@@ -23,8 +23,8 @@ object EmptyViewModel: ViewModel() {
     }
 
     override fun getGrid(): Grid {
-        val grid = GridBase(30, 10)
-        for (i in 0 until 30){
+        val grid = GridBase(20, 10)
+        for (i in 0 until 20){
             grid.rows.add(FXCollections.observableList((0 until 10)
                     .map { SpreadsheetCellType.STRING.createCell(i, it, 1, 1, "") }))
         }

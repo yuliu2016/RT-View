@@ -1,25 +1,26 @@
 package ca.warp7.rt.view.dashboard
 
-import ca.warp7.rt.view.data.TableViewModel
 import ca.warp7.rt.view.data.EmptyViewModel
+import ca.warp7.rt.view.data.TableViewModel
 import ca.warp7.rt.view.fxkt.Combo
 import ca.warp7.rt.view.fxkt.fontIcon
 import ca.warp7.rt.view.window.TabActivity
 import ca.warp7.rt.view.window.ViewModel
-import javafx.scene.control.TitledPane
+import javafx.event.EventHandler
 import javafx.scene.control.TreeItem
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
-import javafx.scene.layout.VBox
 import javafx.stage.FileChooser
 import krangl.DataFrame
 import krangl.readDelim
 import org.apache.commons.csv.CSVFormat
-import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands.PYTHON
+import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintStream
+import javax.print.attribute.IntegerSyntax
 
 class DashboardActivity : TabActivity(
         "Dashboard",
@@ -46,8 +47,7 @@ class DashboardActivity : TabActivity(
 //    )
 
     private val indexMap: MutableMap<String, MutableList<IndexItem>> = mutableMapOf(
-            "local/csv" to mutableListOf(),
-            "year/2019" to mutableListOf()//,
+            "local/csv" to mutableListOf()
 //            "event/2019onto3" to g,
 //            "event/2019onwin" to g,
 //            "event/2019oncmp1" to g,
@@ -70,9 +70,11 @@ class DashboardActivity : TabActivity(
         window.setModel(model)
     }
 
+    private val local: TreeItem<IndexItem>
+
     init {
         setContentView(view.splitPane)
-        view.openButton.setOnMouseClicked {
+        view.openButton.onMouseClicked = EventHandler {
             val chooser = FileChooser()
             chooser.title = "Open"
             chooser.initialDirectory = File(System.getProperty("user.home"))
@@ -99,17 +101,41 @@ class DashboardActivity : TabActivity(
                 }
             }
         }
-        view.closeButton.setOnMouseClicked {
+        view.closeButton.onMouseClicked = EventHandler {
             setModel(EmptyViewModel)
         }
 
-        val ri = TreeItem(IndexItem("C:/Users/Yu/RT2019/Tables", fontIcon(DATABASE, 17)))
+        val ri = TreeItem<IndexItem>(null)
+
+        val repo = Integer.toHexString(System.identityHashCode(ri))
+
+        ri.children.add(TreeItem(IndexItem("In-Memory Repo @/$repo", fontIcon(MICROCHIP, 17))).apply {
+            children.add(TreeItem(IndexItem("Empty View", fontIcon(MINUS, 17)) {
+                setModel(EmptyViewModel)
+            }))
+        })
+        local = TreeItem(IndexItem("Local File Repo @~/RT2019/Tables", fontIcon(DESKTOP, 17)))
+        ri.children.add(local)
+        ri.children.add(TreeItem(IndexItem("Remote File Repo @E:/Tables", fontIcon(LINK, 17))).apply {
+            children.add(TreeItem(IndexItem("Empty View", fontIcon(MINUS, 17)) {
+            }))
+        })
+        ri.children.add(TreeItem(IndexItem("Firebase Repo", fontIcon(DATABASE, 17))).apply {
+            children.add(TreeItem(IndexItem("Empty View", fontIcon(MINUS, 17)) {
+            }))
+        })
+        ri.children.add(TreeItem(IndexItem("Google Drive Repo", fontIcon(FontAwesomeBrands.GOOGLE_DRIVE, 19))).apply {
+            children.add(TreeItem(IndexItem("Empty View", fontIcon(MINUS, 17)) {
+            }))
+        })
+        view.indexTree.isShowRoot = false
         view.indexTree.root = ri
+
         update()
     }
 
     private fun update() {
-        view.indexTree.root.children.setAll(indexMap.map { e ->
+        local.children.setAll(indexMap.map { e ->
             TreeItem(IndexItem(e.key, fontIcon(FOLDER, 17))).apply {
                 isExpanded = true
                 children.addAll(e.value.map { TreeItem(it) })

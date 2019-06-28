@@ -77,7 +77,7 @@ class PropertyList(vararg initialItems: String) : ListView<String>(initialItems.
 
         override fun updateItem(item: String?, empty: Boolean) {
             super.updateItem(item, empty)
-            text = if (empty || item == null) null else item
+            text = if (empty || item == null) null else "${index + 1}. $item"
         }
     }
 

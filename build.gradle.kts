@@ -20,7 +20,10 @@ repositories {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xnew-inference")
+        kotlinOptions.jvmTarget = "1.8"
+    }
 }
 
 dependencies {

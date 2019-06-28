@@ -40,74 +40,72 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
         return grid
     }
 
-    override fun ContextMenu.updateMenu() {
-        modify {
-            submenu {
-                name("Sort")
-                icon(FontAwesomeSolid.SORT, 16)
-                modify {
-                    item {
-                        name("Set Ascending")
-                        accelerator = Combo(KeyCode.EQUALS)
-                        setOnAction { setSort(SortType.Ascending) }
-                    }
-                    item {
-                        name("Set Descending")
-                        accelerator = Combo(KeyCode.MINUS)
-                        setOnAction { setSort(SortType.Descending) }
-                    }
-                    item {
-                        name("Add Ascending")
-                    }
-                    item {
-                        name("Add Descending")
-                    }
-                    item {
-                        name("Clear Selected Columns")
-                    }
-                    item {
-                        name("Clear All")
-                        Combo(KeyCode.DIGIT0, KeyCombination.ALT_DOWN)
-                    }
+    override fun ContextMenu.updateMenu() = modify {
+        submenu {
+            name("Sort")
+            icon(FontAwesomeSolid.SORT, 16)
+            modify {
+                item {
+                    name("Set Ascending")
+                    accelerator = Combo(KeyCode.EQUALS)
+                    action { setSort(SortType.Ascending) }
+                }
+                item {
+                    name("Set Descending")
+                    accelerator = Combo(KeyCode.MINUS)
+                    action { setSort(SortType.Descending) }
+                }
+                item {
+                    name("Add Ascending")
+                }
+                item {
+                    name("Add Descending")
+                }
+                item {
+                    name("Clear Selected Columns")
+                }
+                item {
+                    name("Clear All")
+                    Combo(KeyCode.DIGIT0, KeyCombination.ALT_DOWN)
                 }
             }
-            submenu {
-                name("Copy")
-                icon(FontAwesomeRegular.COPY, 16)
-                modify {
-                    item {
-                        name("Tab-Delimited With Headers")
-                        accelerator = Combo(KeyCode.C, KeyCombination.SHORTCUT_DOWN)
-                        setOnAction { tabDelimitedHeaders() }
-                    }
-                    item {
-                        name("Tab-Delimited")
-                        setOnAction { tabDelimited() }
-                    }
-                    item {
-                        name("Comma-Delimited With Headers")
-                        setOnAction { commaDelimitedHeaders() }
-                    }
-                    item {
-                        name("Comma-Delimited")
-                        setOnAction { commaDelimited() }
-                    }
-                    item {
-                        name("Python Dict of List Cols")
-                        setOnAction { dictOfListColumns() }
-                    }
-                    item {
-                        name("Python List of List Cols")
-                        setOnAction { listOfListColumns() }
-                    }
-                    item {
-                        name("Python List of List Rows")
-                        setOnAction { pyLLR() }
-                    }
-                    item {
-                        name("Python List of Dict Rows")
-                        setOnAction { phLDR() }
-                    }
+        }
+        submenu {
+            name("Copy")
+            icon(FontAwesomeRegular.COPY, 16)
+            modify {
+                item {
+                    name("Tab-Delimited With Headers")
+                    accelerator = Combo(KeyCode.C, KeyCombination.SHORTCUT_DOWN)
+                    action { tabDelimitedHeaders() }
+                }
+                item {
+                    name("Tab-Delimited")
+                    action { tabDelimited() }
+                }
+                item {
+                    name("Comma-Delimited With Headers")
+                    setOnAction { commaDelimitedHeaders() }
+                }
+                item {
+                    name("Comma-Delimited")
+                    action { commaDelimited() }
+                }
+                item {
+                    name("Python Dict of List Cols")
+                    action { dictOfListColumns() }
+                }
+                item {
+                    name("Python List of List Cols")
+                    action { listOfListColumns() }
+                }
+                item {
+                    name("Python List of List Rows")
+                    action { listOfListRows() }
+                }
+                item {
+                    name("Python List of Dict Rows")
+                    action { listOfDistRows() }
                 }
             }
         }
@@ -228,15 +226,15 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
         }
     }
 
-    fun listOfListColumns() {
+    private fun listOfListColumns() {
 
     }
 
-    fun pyLLR() {
+    private fun listOfListRows() {
 
     }
 
-    fun phLDR() {
+    private fun listOfDistRows() {
 
     }
 
@@ -291,21 +289,21 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
     }
 
     private val filterPane = PropertyGroup("Row Filter", fontIcon(FontAwesomeSolid.FILTER, 18)) {
-        add(Label("Rules:").apply { style = "-fx-font-weight:bold" })
         add(PropertyList("Hatch Placed!=2", "Team=865").apply {
             prefHeight = 140.dp2px
             hgrow()
         })
     }
 
-    val sortPane = PropertyGroup("Column Sort", fontIcon(FontAwesomeSolid.SORT, 18)) {
-    }
-
-    val formatPane = PropertyGroup("Formatting", fontIcon(FontAwesomeSolid.SUN, 18)){
-
+    private val sortPane = PropertyGroup("Column Sort", fontIcon(FontAwesomeSolid.SORT, 18)) {
+        add(PropertyList("Hatch Placed (Desc.)", "Match (Asc.)", "Hatch Acquired (Nat.)", "Cargo Acquired (Rev.)").apply {
+            prefHeight = 140.dp2px
+            hgrow()
+        })
+        add(CheckBox("Apply sort before filter"))
     }
 
     override fun getPropertyGroups(): List<PropertyGroup> {
-        return listOf(pivotPane, formulaPane, filterPane, sortPane, formatPane)
+        return listOf(pivotPane, formulaPane, filterPane, sortPane)
     }
 }
