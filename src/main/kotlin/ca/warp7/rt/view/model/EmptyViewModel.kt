@@ -1,7 +1,7 @@
-package ca.warp7.rt.view.data
+package ca.warp7.rt.view.model
 
-import ca.warp7.rt.view.dashboard.PropertyGroup
-import ca.warp7.rt.view.window.ViewModel
+import ca.warp7.rt.view.api.PropertyGroup
+import ca.warp7.rt.view.api.ViewModel
 import javafx.collections.FXCollections
 import javafx.scene.control.ContextMenu
 import krangl.DataFrame

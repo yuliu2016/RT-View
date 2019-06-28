@@ -1,4 +1,4 @@
-package ca.warp7.rt.view.dashboard
+package ca.warp7.rt.view.api
 
 import ca.warp7.rt.view.fxkt.vbox
 import javafx.scene.control.TitledPane

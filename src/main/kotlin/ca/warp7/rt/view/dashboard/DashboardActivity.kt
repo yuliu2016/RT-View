@@ -1,11 +1,13 @@
 package ca.warp7.rt.view.dashboard
 
-import ca.warp7.rt.view.data.EmptyViewModel
-import ca.warp7.rt.view.data.TableViewModel
+import ca.warp7.rt.view.api.IndexItem
+import ca.warp7.rt.view.model.EmptyViewModel
+import ca.warp7.rt.view.model.TableViewModel
 import ca.warp7.rt.view.fxkt.Combo
 import ca.warp7.rt.view.fxkt.fontIcon
-import ca.warp7.rt.view.window.TabActivity
-import ca.warp7.rt.view.window.ViewModel
+import ca.warp7.rt.view.api.TabActivity
+import ca.warp7.rt.view.api.ViewModel
+import ca.warp7.rt.view.window.RTWindow
 import javafx.event.EventHandler
 import javafx.scene.control.TreeItem
 import javafx.scene.input.KeyCode
@@ -15,14 +17,12 @@ import krangl.DataFrame
 import krangl.readDelim
 import org.apache.commons.csv.CSVFormat
 import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands
-import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintStream
-import javax.print.attribute.IntegerSyntax
 
-class DashboardActivity : TabActivity(
+class DashboardActivity(private val window: RTWindow) : TabActivity(
         "Dashboard",
         fontIcon(BULLSEYE, 24),
         Combo(KeyCode.D, KeyCombination.SHORTCUT_DOWN)

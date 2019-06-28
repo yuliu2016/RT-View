@@ -1,6 +1,5 @@
-package ca.warp7.rt.view.window
+package ca.warp7.rt.view.api
 
-import ca.warp7.rt.view.dashboard.PropertyGroup
 import javafx.scene.control.ContextMenu
 import krangl.DataFrame
 import org.controlsfx.control.spreadsheet.Grid
@@ -9,19 +8,13 @@ import org.controlsfx.control.spreadsheet.Grid
 abstract class ViewModel {
 
     private lateinit var selection: () -> Selection
-    private lateinit var notify: () -> Unit
 
-    fun setCallbacks(selection: () -> Selection, notify: () -> Unit) {
+    fun setCallbacks(selection: () -> Selection) {
         this.selection = selection
-        this.notify = notify
     }
 
     fun getSelection(): Selection {
         return selection()
-    }
-
-    fun notifyGridChanged() {
-        notify()
     }
 
     private var menu: ContextMenu? = null

@@ -7,7 +7,7 @@ import javafx.stage.Stage
 class Launcher : Application() {
 
     override fun start(primaryStage: Stage) {
-        RTWindow.primary(primaryStage).show()
+        RTWindow.start(primaryStage)
     }
 
     companion object {

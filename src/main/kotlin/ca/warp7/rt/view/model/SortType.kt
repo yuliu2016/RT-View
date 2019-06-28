@@ -1,4 +1,4 @@
-package ca.warp7.rt.view.data
+package ca.warp7.rt.view.model
 
 enum class SortType {
     Ascending, Descending

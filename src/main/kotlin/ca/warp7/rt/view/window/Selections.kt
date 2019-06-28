@@ -1,5 +1,6 @@
 package ca.warp7.rt.view.window
 
+import ca.warp7.rt.view.api.Selection
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 
 fun SpreadsheetView.getSelection(): Selection {

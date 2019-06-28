@@ -1,5 +1,7 @@
 package ca.warp7.rt.view.dashboard
 
+import ca.warp7.rt.view.api.IndexItem
+import ca.warp7.rt.view.api.PropertyGroup
 import ca.warp7.rt.view.fxkt.*
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
@@ -130,7 +132,7 @@ internal class DashboardView {
     }
 
 
-    val adapterListPane = PropertyGroup("Adapter List", fontIcon(FontAwesomeSolid.CLONE, 18)){
+    val adapterListPane = PropertyGroup("Adapter List", fontIcon(FontAwesomeSolid.CLONE, 18)) {
         spacing = 8.dp2px
         add(PropertyList("Deep Copy",
                 "Linked View", "Python Integration").apply {

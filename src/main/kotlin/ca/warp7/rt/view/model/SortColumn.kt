@@ -1,3 +1,3 @@
-package ca.warp7.rt.view.data
+package ca.warp7.rt.view.model
 
 data class SortColumn(val sortType: SortType, val columnName: String)

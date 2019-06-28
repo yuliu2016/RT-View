@@ -1,5 +1,7 @@
 package ca.warp7.rt.view.window
 
+import ca.warp7.rt.view.api.TabActivity
+import ca.warp7.rt.view.api.ViewModel
 import ca.warp7.rt.view.cf.ControlFActivity
 import ca.warp7.rt.view.dashboard.DashboardActivity
 import ca.warp7.rt.view.fxkt.*
@@ -113,11 +115,10 @@ class RTWindow private constructor(
         view.spreadsheet.columns.forEach { it.setPrefWidth(100.0) }
         val menu = model.getMenu()
         view.spreadsheet.contextMenu = menu
-        model.setCallbacks(selector, notifier)
+        model.setCallbacks(selector)
     }
 
     val selector = { view.spreadsheet.getSelection() }
-    val notifier = { state.updateModel() }
 
     init {
         stage.initialize()
@@ -215,24 +216,24 @@ class RTWindow private constructor(
 
         private var primary: RTWindow? = null
 
-        fun primary(stage: Stage): RTWindow {
+        fun start(stage: Stage) {
             assert(primary == null) {
                 "A primary window already exists; cannot create another one"
             }
+
             Registry.load()
+
             val window = RTWindow(stage)
+
             window.doWithActivities {
-                listOf(
-                        DashboardActivity(),
+                addAll(listOf(
+                        DashboardActivity(window),
                         ControlFActivity(),
                         ExtensionsActivity()
-                ).forEach {
-                    it.window = window
-                    add(it)
-                }
+                ))
             }
             primary = window
-            return window
+            window.show()
         }
     }
 }

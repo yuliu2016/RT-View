@@ -2,7 +2,7 @@ package ca.warp7.rt.view.plugins
 
 import ca.warp7.rt.view.fxkt.Combo
 import ca.warp7.rt.view.fxkt.fontIcon
-import ca.warp7.rt.view.window.TabActivity
+import ca.warp7.rt.view.api.TabActivity
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
