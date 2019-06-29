@@ -10,6 +10,10 @@
     -fx-icon-color: white;
 }
 
+
+/*==========LIST VIEW==========*/
+
+
 .list-cell {
     -fx-background-color: #333;
     -fx-padding: 0;
@@ -31,6 +35,26 @@
 
 .list-view:focused .list-cell:filled:selected .ikonli-font-icon {
     -fx-icon-color: white;
+}
+
+.properties-list {
+    -fx-background-color: #333;
+}
+
+.properties-list .list-cell {
+    -fx-padding: 2 8 2 8;
+    -fx-background-color: #333;
+    -fx-text-fill: white;
+    -fx-background-insets: 0;
+}
+
+.properties-list .list-cell:filled:hover {
+    -fx-background-color: #555;
+}
+
+.properties-list .list-cell.drag-over {
+    -fx-background-color: red, #333;
+    -fx-background-insets: 0, 2;
 }
 
 .tree-cell .arrow {
@@ -332,30 +356,15 @@ HorizontalHeaderColumn > TableColumnHeader.column-header.table-column.selected >
     -fx-background-color: #555;
 }
 
-.properties-list {
-    -fx-background-color: #333;
-}
-
-.properties-list .list-cell {
-    -fx-padding: 2 8 2 8;
-    -fx-background-color: #333;
-    -fx-text-fill: white;
-    -fx-background-insets: 0;
-}
-
-.properties-list .list-cell:filled:hover {
-    -fx-background-color: #555;
-}
-
-.properties-list .list-cell.drag-over {
-    -fx-background-color: red, #333;
-    -fx-background-insets: 0, 2;
-}
-
 .choice-box {
     -fx-background-color: #555;
 }
 
 .choice-box:hover {
     -fx-background-color: #666;
+}
+
+.tree-cell.drag-over {
+    -fx-background-color: red, #444;
+    -fx-background-insets: 0, 2;
 }

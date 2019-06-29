@@ -4,17 +4,23 @@ import ca.warp7.rt.view.api.Index
 import ca.warp7.rt.view.api.TabActivity
 import ca.warp7.rt.view.api.ViewModel
 import ca.warp7.rt.view.fs.FSRepository
-import ca.warp7.rt.view.fxkt.Combo
-import ca.warp7.rt.view.fxkt.fontIcon
+import ca.warp7.rt.view.fxkt.*
 import ca.warp7.rt.view.mem.EmptyViewModel
 import ca.warp7.rt.view.mem.MemoryRepository
 import ca.warp7.rt.view.model.TableViewModel
 import ca.warp7.rt.view.window.RTWindow
 import javafx.event.EventHandler
+import javafx.geometry.Insets
+import javafx.geometry.Pos
+import javafx.scene.control.Label
+import javafx.scene.control.TreeCell
 import javafx.scene.control.TreeItem
+import javafx.scene.input.ClipboardContent
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
+import javafx.scene.input.TransferMode
 import javafx.stage.FileChooser
+import javafx.util.Callback
 import krangl.DataFrame
 import krangl.readDelim
 import org.apache.commons.csv.CSVFormat
@@ -42,7 +48,7 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
             view.adapterListPane
     )
 
-    private fun setModel(model: ViewModel) {
+    fun setModel(model: ViewModel) {
         propertyGroups.clear()
         propertyGroups.add(view.identityPane)
         propertyGroups.add(view.adapterListPane)
@@ -68,9 +74,7 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
                     val data = DataFrame.readDelim(res.inputStream().reader().buffered(),
                             CSVFormat.DEFAULT.withHeader().withNullString(""))
                     val model = TableViewModel(data)
-                    val item = Index(res.name, fontIcon(TABLE, 18)) {
-                        setModel(model)
-                    }
+                    val item = Index(res.name, fontIcon(TABLE, 18), memoryRepository, "", true, model)
                     setModel(model)
                     memoryRepository.add(item)
                     update()
@@ -87,13 +91,14 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
         }
 
         update()
+        view.indexTree.cellFactory = Callback { Cell() }
         view.indexTree.root = root
         view.indexTree.isShowRoot = false
     }
 
     private fun update() {
         root.children.setAll(repositories.map { repository ->
-            TreeItem(Index(repository.title, repository.icon)).apply {
+            TreeItem(Index(repository.title, repository.icon, repository, "", true)).apply {
                 val tables = repository.tables
                 children.clear()
                 tables[""]?.run {
@@ -101,13 +106,101 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
                 }
                 children.addAll(repository.tables.mapNotNull { e ->
                     if (e.key.isEmpty()) null else
-                        TreeItem(Index(e.key, fontIcon(FOLDER, 17))).apply {
-                            isExpanded = true
+                        TreeItem(Index(e.key, fontIcon(FOLDER, 18), repository, "", false)).apply {
                             children.addAll(e.value.map { TreeItem(it) })
                         }
                 })
             }
         })
-        root.isExpanded = true
+    }
+
+    inner class Cell : TreeCell<Index>() {
+
+        init {
+            onDragDetected = EventHandler { event ->
+                if (item == null || !treeItem.isLeaf) {
+                    return@EventHandler
+                }
+                val board = startDragAndDrop(TransferMode.MOVE)
+                val content = ClipboardContent()
+                content.putString(item.hashCode().toString())
+                board.setContent(content)
+                event.consume()
+            }
+
+            onDragOver = EventHandler { event ->
+                if (event.gestureSource !== this@Cell && event.dragboard.hasString() && !isEmpty && !item.isLeaf) {
+                    event.acceptTransferModes(TransferMode.MOVE)
+                }
+                event.consume()
+            }
+
+            onDragEntered = EventHandler { event ->
+                if (event.gestureSource !== this@Cell && event.dragboard.hasString() && !isEmpty && !item.isLeaf) {
+                    styleClass("drag-over")
+                }
+            }
+
+            onDragExited = EventHandler { event ->
+                if (event.gestureSource !== this@Cell && event.dragboard.hasString() && !isEmpty && !item.isLeaf) {
+                    noStyleClass()
+                }
+            }
+
+            onDragDropped = EventHandler { event ->
+                if (item == null) {
+                    return@EventHandler
+                }
+
+                val db = event.dragboard
+                var success = false
+
+                if (db.hasString()) {
+                    success = true
+                }
+
+                event.isDropCompleted = success
+
+                event.consume()
+            }
+
+            onDragDone = EventHandler { it.consume() }
+        }
+
+        override fun updateItem(item: Index?, empty: Boolean) {
+            super.updateItem(item, empty)
+            super.updateItem(item, empty)
+
+            if (item == null || empty) {
+                graphic = null
+            } else {
+                alignment = Pos.CENTER_LEFT
+                graphic = hbox {
+                    alignment = Pos.CENTER_LEFT
+                    padding = Insets(0.0, 0.0, 0.0, 4.dp2px)
+                    modify {
+                        +item.icon.centerIn(24)
+                        val a = item.title.substringBeforeLast("/", "")
+                        if (a.isEmpty()) {
+                            +Label(item.title)
+                        } else {
+                            +Label("$a/")
+                            +Label(item.title.substringAfterLast('/', "")).apply {
+                                style = "-fx-font-weight:bold"
+                                padding = Insets(0.0)
+                            }
+                        }
+                    }
+
+                    onMouseClicked = EventHandler { event ->
+                        if (event.clickCount == 2) {
+                            item.model.get()?.let { model ->
+                                setModel(model)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

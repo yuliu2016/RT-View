@@ -7,11 +7,11 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 
 class MemoryRepository : Repository(
         "In-Memory Repo @/${Integer.toHexString(System.identityHashCode(Unit))}",
-        fontIcon(FontAwesomeSolid.MICROCHIP, 18)
+        fontIcon(FontAwesomeSolid.BOLT, 18)
 ) {
-    override val tables: MutableMap<String, MutableList<Index>>
-        get() = mutableMapOf(
-                "" to mutableListOf(EmptyViewModel.index)
+    override val tables: MutableMap<String, MutableList<Index>> = mutableMapOf(
+                "" to mutableListOf(Index("Empty View",
+                        fontIcon(FontAwesomeSolid.MINUS, 18), this, "", true, EmptyViewModel))
         )
 
     fun add(index: Index) {

@@ -3,31 +3,35 @@ package ca.warp7.rt.view.fs
 import ca.warp7.rt.view.api.Index
 import ca.warp7.rt.view.api.Repository
 import ca.warp7.rt.view.fxkt.fontIcon
+import ca.warp7.rt.view.mem.EmptyViewModel
 import ca.warp7.rt.view.window.Registry
 import org.kordamp.ikonli.fontawesome5.FontAwesomeBrands.PYTHON
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.*
+import org.kordamp.ikonli.javafx.FontIcon
 
 class FSRepository : Repository(
         "Local Repo @${Registry.getHomeRelativePath("LOCAL_REPO")}",
         fontIcon(DESKTOP, 18)
 ) {
 
+    fun index(title: String, icon: FontIcon) = Index(title, icon, this, "", true, EmptyViewModel)
+
     val g
         get() = mutableListOf(
-                Index("Raw Data", fontIcon(QRCODE, 18)),
-                Index("Verified Data", fontIcon(QRCODE, 18)),
-                Index("TBA Match Schedule", fontIcon(CUBE, 18)),
-                Index("TBA Match Data", fontIcon(CUBE, 18)),
-                Index("TBA Team Rankings", fontIcon(CUBE, 18)),
-                Index("TBA Team OPRs", fontIcon(CUBE, 18)),
-                Index("1st Pick List", fontIcon(RANDOM, 18)),
-                Index("2nd Pick List", fontIcon(RANDOM, 18)),
-                Index("Top 10 List", fontIcon(RANDOM, 18)),
-                Index("Auto List", fontIcon(PYTHON, 21)),
-                Index("Cycle Matrix", fontIcon(PYTHON, 21)),
-                Index("Predicted Rankings", fontIcon(PYTHON, 21)),
-                Index("Team Pivot", fontIcon(EYE, 18)),
-                Index("Notes", fontIcon(CLIPBOARD, 18))
+                index("Raw Data", fontIcon(QRCODE, 18)),
+                index("Verified Data", fontIcon(QRCODE, 18)),
+                index("TBA Match Schedule", fontIcon(CUBE, 18)),
+                index("TBA Match Data", fontIcon(CUBE, 18)),
+                index("TBA Team Rankings", fontIcon(CUBE, 18)),
+                index("TBA Team OPRs", fontIcon(CUBE, 18)),
+                index("1st Pick List", fontIcon(RANDOM, 18)),
+                index("2nd Pick List", fontIcon(RANDOM, 18)),
+                index("Top 10 List", fontIcon(RANDOM, 18)),
+                index("Auto List", fontIcon(PYTHON, 21)),
+                index("Cycle Matrix", fontIcon(PYTHON, 21)),
+                index("Predicted Rankings", fontIcon(PYTHON, 21)),
+                index("Team Pivot", fontIcon(EYE, 18)),
+                index("Notes", fontIcon(CLIPBOARD, 18))
         )
 
     override val tables: MutableMap<String, MutableList<Index>> = mutableMapOf(

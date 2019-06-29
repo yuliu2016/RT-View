@@ -28,9 +28,6 @@ internal class DashboardView {
 
     internal val indexTree = TreeView<Index>().apply {
         VBox.setVgrow(this, Priority.ALWAYS)
-        setCellFactory {
-            IndexCell()
-        }
     }
 
     internal val indexTreeSection = vbox {

@@ -37,6 +37,4 @@ object EmptyViewModel: ViewModel() {
     override fun getPropertyGroups(): List<PropertyGroup> {
         return emptyList()
     }
-
-    val index = Index("Empty View", fontIcon(FontAwesomeSolid.MINUS, 18))
 }

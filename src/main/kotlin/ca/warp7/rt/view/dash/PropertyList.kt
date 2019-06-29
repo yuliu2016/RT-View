@@ -16,8 +16,6 @@ class PropertyList(vararg initialItems: String) : ListView<String>(initialItems.
     private inner class Cell : ListCell<String>() {
 
         init {
-            val thisCell = this
-
             onDragDetected = EventHandler { event ->
                 if (item == null) {
                     return@EventHandler
@@ -30,20 +28,20 @@ class PropertyList(vararg initialItems: String) : ListView<String>(initialItems.
             }
 
             onDragOver = EventHandler { event ->
-                if (event.gestureSource !== thisCell && event.dragboard.hasString() && !isEmpty) {
+                if (event.gestureSource !== this@PropertyList && event.dragboard.hasString() && !isEmpty) {
                     event.acceptTransferModes(TransferMode.MOVE)
                 }
                 event.consume()
             }
 
             onDragEntered = EventHandler { event ->
-                if (event.gestureSource !== thisCell && event.dragboard.hasString() && !isEmpty) {
+                if (event.gestureSource !== this@PropertyList && event.dragboard.hasString() && !isEmpty) {
                     styleClass("drag-over")
                 }
             }
 
             onDragExited = EventHandler { event ->
-                if (event.gestureSource !== thisCell && event.dragboard.hasString() && !isEmpty) {
+                if (event.gestureSource !== this@PropertyList && event.dragboard.hasString() && !isEmpty) {
                     noStyleClass()
                 }
             }
