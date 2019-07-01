@@ -40,7 +40,7 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
         return grid
     }
 
-    override fun ContextMenu.updateMenu() = modify {
+    override fun ContextMenu.updateMenu(): ContextMenu = modify {
         submenu {
             name("Sort")
             icon(FontAwesomeSolid.SORT, 16)

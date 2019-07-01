@@ -57,8 +57,9 @@ inline fun Pane.modify(modifier: Modifier<Node>.() -> Unit) {
 }
 
 @FXKtDSL
-inline fun ContextMenu.modify(modifier: Modifier<MenuItem>.() -> Unit) {
+inline fun ContextMenu.modify(modifier: Modifier<MenuItem>.() -> Unit): ContextMenu {
     Modifier(items).apply(modifier)
+    return this
 }
 
 @FXKtDSL

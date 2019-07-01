@@ -5,16 +5,14 @@ import ca.warp7.rt.view.api.TabActivity
 import ca.warp7.rt.view.api.ViewModel
 import ca.warp7.rt.view.fs.FSRepository
 import ca.warp7.rt.view.fxkt.*
-import ca.warp7.rt.view.mem.EmptyViewModel
 import ca.warp7.rt.view.mem.MemoryRepository
 import ca.warp7.rt.view.model.TableViewModel
 import ca.warp7.rt.view.window.RTWindow
+import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
-import javafx.scene.control.Label
-import javafx.scene.control.TreeCell
-import javafx.scene.control.TreeItem
+import javafx.scene.control.*
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
@@ -25,9 +23,8 @@ import krangl.DataFrame
 import krangl.readDelim
 import org.apache.commons.csv.CSVFormat
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.*
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.PrintStream
+import kotlin.contracts.contract
 
 class DashboardActivity(private val window: RTWindow) : TabActivity(
         "Dashboard",
@@ -43,18 +40,43 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
             FSRepository()
     )
 
-    private val propertyGroups = mutableListOf(
-            view.identityPane,
-            view.adapterListPane
-    )
+    private val propertyGroups = mutableListOf(view.identityPane)
 
-    fun setModel(model: ViewModel) {
-        propertyGroups.clear()
-        propertyGroups.add(view.identityPane)
-        propertyGroups.add(view.adapterListPane)
-        propertyGroups.addAll(model.getPropertyGroups())
-        view.propertiesBox.children.setAll(propertyGroups.map { it.pane })
-        window.setModel(model)
+    private fun setModel(model: ViewModel) {
+        if (window.trySetModel(model)) {
+            propertyGroups.clear()
+            propertyGroups.add(view.identityPane)
+            propertyGroups.addAll(model.getPropertyGroups())
+            view.propertiesBox.children.setAll(propertyGroups.map { it.pane })
+        }
+    }
+
+    private fun selectAndFocus(item: TreeItem<Index>) {
+        view.indexTree.selectionModel.select(item)
+        Platform.runLater {
+            view.indexTree.requestFocus()
+        }
+    }
+
+    private fun selectAndSet(item: TreeItem<Index>) {
+        selectAndFocus(item)
+        item.value.model.get()?.let { setModel(it) }
+    }
+
+    private fun addAndSelect(index: Index) {
+        // Requires item to be added to repo AFTER, not BEFORE
+        val item = TreeItem(index)
+        val repoIndex = repositories.indexOf(index.repository)
+        if (repoIndex == -1) return
+        val topLevelContextSize = index.repository.tables[""]?.size ?: 0
+        if (index.context.isEmpty()) {
+            root.children[repoIndex].children.add(topLevelContextSize, item)
+        } else {
+            val tableIndex = index.repository.tables.keys.sorted().indexOf(index.context)
+            if (tableIndex == -1) return
+            root.children[repoIndex].children[topLevelContextSize + tableIndex - 1].children.add(item)
+        }
+        selectAndSet(item)
     }
 
     private val root = TreeItem<Index>(null)
@@ -64,7 +86,7 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
         view.openButton.onMouseClicked = EventHandler {
             val chooser = FileChooser()
             chooser.title = "Open"
-            chooser.initialDirectory = File(System.getProperty("user.home"))
+            chooser.initialDirectory = File(System.getProperty("user.home") + "/Desktop")
             chooser.extensionFilters.addAll(
                     FileChooser.ExtensionFilter("CSV", "*.csv")
             )
@@ -75,30 +97,83 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
                             CSVFormat.DEFAULT.withHeader().withNullString(""))
                     val model = TableViewModel(data)
                     val item = Index(res.name, fontIcon(TABLE, 18), memoryRepository, "", true, model)
-                    setModel(model)
+                    addAndSelect(item)
                     memoryRepository.add(item)
-                    update()
                 } catch (e: Exception) {
-                    val out = ByteArrayOutputStream()
-                    val out1 = PrintStream(out.buffered())
-                    e.printStackTrace(out1)
-                    println(out.toString())
+                    e.printStackTrace()
                 }
             }
         }
-        view.closeButton.onMouseClicked = EventHandler {
-            setModel(EmptyViewModel)
+
+        view.expandIndexTreeButton.onMouseClicked = EventHandler {
+            root.children.forEach { item ->
+                item.isExpanded = true
+                item.children.forEach { item1 ->
+                    item1.isExpanded = true
+                }
+            }
         }
 
-        update()
+        view.compressIndexTreeButton.onMouseClicked = EventHandler {
+            root.children.forEach { item ->
+                item.isExpanded = false
+                item.children.forEach { item1 ->
+                    item1.isExpanded = false
+                }
+            }
+        }
+    }
+
+    init {
         view.indexTree.cellFactory = Callback { Cell() }
         view.indexTree.root = root
         view.indexTree.isShowRoot = false
+        view.indexTree.contextMenu = ContextMenu().modify {
+            submenu {
+                name("New")
+                modify {
+                    item {
+                        name("TBA Integration")
+                    }
+                    item {
+                        name("Python Integration")
+                    }
+                    item {
+                        name("Duplicate Table")
+                    }
+                    item {
+                        name("Linked View")
+                    }
+                }
+            }
+            +SeparatorMenuItem()
+            item {
+                name("New Folder")
+                icon(FOLDER_OPEN, 18)
+            }
+            item {
+                name("Rename")
+                icon(FONT, 18)
+            }
+            item {
+                name("Update")
+                icon(SYNC, 18)
+            }
+            item {
+                name("Delete")
+                icon(TRASH_ALT, 18)
+            }
+            item {
+                name("Reveal in Source")
+                icon(EYE, 18)
+            }
+        }
+        regenerate()
     }
 
-    private fun update() {
+    private fun regenerate() {
         root.children.setAll(repositories.map { repository ->
-            TreeItem(Index(repository.title, repository.icon, repository, "", true)).apply {
+            TreeItem(Index(repository.title, repository.icon, repository, "", false)).apply {
                 val tables = repository.tables
                 children.clear()
                 tables[""]?.run {
@@ -110,8 +185,10 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
                             children.addAll(e.value.map { TreeItem(it) })
                         }
                 })
+                isExpanded = true
             }
         })
+        selectAndSet(root.children.first().children.first())
     }
 
     inner class Cell : TreeCell<Index>() {

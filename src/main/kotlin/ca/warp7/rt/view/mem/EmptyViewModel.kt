@@ -14,7 +14,8 @@ import org.controlsfx.control.spreadsheet.SpreadsheetCellType
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 
 object EmptyViewModel: ViewModel() {
-    override fun ContextMenu.updateMenu() {
+    override fun ContextMenu.updateMenu(): ContextMenu {
+        return this
     }
 
     override fun isTable(): Boolean {

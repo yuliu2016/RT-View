@@ -30,7 +30,7 @@ abstract class ViewModel {
         return newMenu
     }
 
-    abstract fun ContextMenu.updateMenu()
+    abstract fun ContextMenu.updateMenu(): ContextMenu
 
     abstract fun isTable(): Boolean
 

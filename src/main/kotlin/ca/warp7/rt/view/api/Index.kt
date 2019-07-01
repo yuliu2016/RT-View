@@ -12,7 +12,7 @@ class Index(
         viewModel: ViewModel? = null
 ) {
     val model: WeakReference<ViewModel> = WeakReference(viewModel)
-    val strong: ViewModel? = viewModel
+    private val strong: ViewModel? = viewModel
 
     init {
         model === strong

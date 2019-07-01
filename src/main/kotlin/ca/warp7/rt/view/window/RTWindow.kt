@@ -12,6 +12,8 @@ import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.TextField
+import javafx.scene.control.TreeItem
+import javafx.scene.control.TreeView
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
@@ -205,11 +207,13 @@ class RTWindow private constructor(
         }
     }
 
-    fun setModel(model: ViewModel) {
+    fun trySetModel(model: ViewModel): Boolean {
         if (model !== state.model) {
             state.model = model
             state.updateModel()
+            return true
         }
+        return false
     }
 
     companion object {

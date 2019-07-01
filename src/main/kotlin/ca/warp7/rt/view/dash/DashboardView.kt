@@ -24,7 +24,9 @@ internal class DashboardView {
     }
 
     internal val openButton = sectionIconButton(FontAwesomeSolid.FOLDER_OPEN)
-    internal val closeButton = sectionIconButton(FontAwesomeSolid.TIMES)
+    internal val expandIndexTreeButton = sectionIconButton(FontAwesomeSolid.EXPAND)
+    internal val compressIndexTreeButton = sectionIconButton(FontAwesomeSolid.COMPRESS)
+    internal val locateButton = sectionIconButton(FontAwesomeSolid.MOUSE_POINTER)
 
     internal val indexTree = TreeView<Index>().apply {
         VBox.setVgrow(this, Priority.ALWAYS)
@@ -32,110 +34,82 @@ internal class DashboardView {
 
     internal val indexTreeSection = vbox {
         add(sectionBar("INDEX TREE").apply {
-            add(sectionIconButton(FontAwesomeSolid.EXPAND))
-            add(sectionIconButton(FontAwesomeSolid.COMPRESS))
-            add(sectionIconButton(FontAwesomeSolid.MOUSE_POINTER))
+            add(expandIndexTreeButton)
+            add(compressIndexTreeButton)
+            add(locateButton)
             add(openButton)
-            add(closeButton)
         })
         add(indexTree)
         minHeight = 32.dp2px
     }
 
-    val identityPane = PropertyGroup("View Identity", fontIcon(FontAwesomeSolid.INFO_CIRCLE, 18)) {
+    val identityPane = PropertyGroup("Info", fontIcon(FontAwesomeSolid.INFO_CIRCLE, 18)) {
         modify {
             +hbox {
                 align(Pos.CENTER_LEFT)
-                prefHeight = 36.dp2px
+                prefHeight = 28.dp2px
+                spacing = 8.dp2px
+                add(Label("Repository:").apply {
+                    style = "-fx-font-weight: bold"
+                    minWidth = 88.dp2px
+                })
+                add(fontIcon(FontAwesomeSolid.DESKTOP, 18))
+                add(Label("Local Repo"))
+            }
+            +hbox {
+                align(Pos.CENTER_LEFT)
+                prefHeight = 28.dp2px
                 spacing = 8.dp2px
                 add(Label("Context:").apply {
                     style = "-fx-font-weight: bold"
                     minWidth = 88.dp2px
                 })
+                add(fontIcon(FontAwesomeSolid.FOLDER, 18))
                 add(Label("event/2019onwin"))
             }
             +hbox {
                 align(Pos.CENTER_LEFT)
-                prefHeight = 36.dp2px
-                spacing = 8.dp2px
-                add(Label("Name:").apply {
-                    style = "-fx-font-weight: bold"
-                    minWidth = 88.dp2px
-                })
-                val tf = TextField("Raw Data")
-                tf.hgrow()
-                add(tf)
-            }
-            +hbox {
-                align(Pos.CENTER_LEFT)
-                prefHeight = 36.dp2px
-                spacing = 8.dp2px
-                add(Label("Source:").apply {
-                    style = "-fx-font-weight: bold"
-                    minWidth = 88.dp2px
-                })
-                add(Label("Team 865"))
-            }
-            +hbox {
-                align(Pos.CENTER_LEFT)
-                prefHeight = 36.dp2px
-                spacing = 8.dp2px
-                add(Label("Dependency:").apply {
-                    style = "-fx-font-weight: bold"
-                    minWidth = 88.dp2px
-                })
-                add(Label("N/A"))
-            }
-            +hbox {
-                align(Pos.CENTER_LEFT)
-                prefHeight = 36.dp2px
+                prefHeight = 28.dp2px
                 spacing = 8.dp2px
                 add(Label("Manager:").apply {
                     style = "-fx-font-weight: bold"
                     minWidth = 88.dp2px
                 })
-                add(fontIcon(FontAwesomeSolid.QRCODE, 22))
+                add(fontIcon(FontAwesomeSolid.QRCODE, 18))
                 add(Label("Android App Integration"))
             }
             +hbox {
                 align(Pos.CENTER_LEFT)
-                prefHeight = 36.dp2px
+                prefHeight = 28.dp2px
                 spacing = 8.dp2px
                 add(Label("Adapter:").apply {
                     style = "-fx-font-weight: bold"
                     minWidth = 88.dp2px
                 })
-                add(Label("QR Protocol Decoder v5"))
+                add(fontIcon(FontAwesomeSolid.CODE, 18))
+                add(Label("EventData (Raw)"))
             }
             +hbox {
-                prefHeight = 36.dp2px
-                align(Pos.CENTER)
+                align(Pos.CENTER_LEFT)
+                prefHeight = 28.dp2px
                 spacing = 8.dp2px
-                add(Button("Update").apply {
-                    prefWidth = 500.0
+                add(Label("Name:").apply {
+                    style = "-fx-font-weight: bold"
+                    minWidth = 88.dp2px
                 })
-                add(Button("Delete").apply {
-                    prefWidth = 500.0
-                })
+                add(Label("Raw Data"))
             }
             +hbox {
-                prefHeight = 36.dp2px
-                align(Pos.CENTER)
-                add(Button("Reveal in File Explorer").apply {
-                    prefWidth = 500.0
+                align(Pos.CENTER_LEFT)
+                prefHeight = 28.dp2px
+                spacing = 8.dp2px
+                add(Label("Source:").apply {
+                    style = "-fx-font-weight: bold"
+                    minWidth = 88.dp2px
                 })
+                add(Label("N/A"))
             }
         }
-    }
-
-
-    val adapterListPane = PropertyGroup("Adapter List", fontIcon(FontAwesomeSolid.CLONE, 18)) {
-        spacing = 8.dp2px
-        add(PropertyList("Deep Copy",
-                "Linked View", "Python Integration").apply {
-            prefHeight = 90.dp2px
-        })
-        add(Button("Create Adapter").apply { prefWidth = 500.0 })
     }
 
     val propertiesBox = vbox {}

@@ -32,7 +32,7 @@ object Registry {
             defaultProps.forEach {
                 replaced = replaced.replace("{${it.key}}", it.value)
             }
-            replaced
+            return@run replaced
         }
     }
 
@@ -45,7 +45,7 @@ object Registry {
     }
 
     fun join(): String {
-        return map.entries.joinToString("\n\n") { "${it.key}=${it.value}" }
+        return map.entries.joinToString("\n") { "${it.key}=${it.value}" }
     }
 
     fun save() {
