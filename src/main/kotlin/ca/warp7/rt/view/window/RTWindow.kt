@@ -12,8 +12,6 @@ import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.TextField
-import javafx.scene.control.TreeItem
-import javafx.scene.control.TreeView
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
@@ -22,7 +20,6 @@ import javafx.scene.text.FontWeight
 import javafx.scene.text.Text
 import javafx.stage.Stage
 import org.controlsfx.control.spreadsheet.SpreadsheetView
-
 @Suppress("MemberVisibilityCanBePrivate", "unused", "SpellCheckingInspection")
 class RTWindow private constructor(
         private val stage: Stage
@@ -124,15 +121,17 @@ class RTWindow private constructor(
                 val modelCol = view.spreadsheet.getModelColumn(index)
                 val name = grid.columnHeaders[modelCol]
                 text.text = name
-                val width = text.layoutBounds.width + 50
-                column.setPrefWidth(maxOf(100.0, width))
+                val headerWidth = text.layoutBounds.width + 50
+                text.text = grid.rows[modelCol][0].text
+                val firstWidth = text.layoutBounds.width + 30
+                column.setPrefWidth(maxOf(100.0, headerWidth, firstWidth))
             }
         } else {
             view.spreadsheet.columns.forEach { it.setPrefWidth(100.0) }
         }
-
         val menu = model.getMenu()
         view.spreadsheet.contextMenu = menu
+        view.spreadsheet.isEditable = model.isEditable
         model.setCallbacks(selector)
     }
 
@@ -165,7 +164,6 @@ class RTWindow private constructor(
         view.okButton.onMouseClicked = EventHandler { state.okSignal() }
         view.cancelButton.onMouseClicked = EventHandler { state.cancelSignal() }
         state.reflectTheme()
-        state.updateModel()
     }
 
     private fun createIcon(i: Int, activity: TabActivity): Node {

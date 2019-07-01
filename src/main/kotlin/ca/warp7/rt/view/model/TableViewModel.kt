@@ -11,6 +11,8 @@ import javafx.scene.input.ClipboardContent
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
 import krangl.DataFrame
+import krangl.DoubleCol
+import krangl.NumberCol
 import org.controlsfx.control.spreadsheet.Grid
 import org.controlsfx.control.spreadsheet.GridBase
 import org.controlsfx.control.spreadsheet.SpreadsheetCell
@@ -20,13 +22,9 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 import java.text.DecimalFormat
 
 @Suppress("UsePropertyAccessSyntax")
-class TableViewModel(private val df: DataFrame) : ViewModel() {
+class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
 
     private val view = TVMView()
-
-    override fun isTable(): Boolean {
-        return true
-    }
 
     override fun getDataFrame(): DataFrame {
         return df
@@ -88,10 +86,12 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
                 }
                 item {
                     name("Clear Selected Columns")
+                    action { clearSelectedSort() }
                 }
                 item {
                     name("Clear All")
-                    Combo(KeyCode.DIGIT0, KeyCombination.ALT_DOWN)
+                    accelerator = Combo(KeyCode.DIGIT0)
+                    action { clearSort() }
                 }
             }
         }
@@ -124,14 +124,6 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
                     name("Python List of List Cols")
                     action { listOfListColumns() }
                 }
-                item {
-                    name("Python List of List Rows")
-                    action { listOfListRows() }
-                }
-                item {
-                    name("Python List of Dict Rows")
-                    action { listOfDistRows() }
-                }
             }
         }
     }
@@ -145,8 +137,25 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
         val selection = getSelection()
         if (selection.cols.isNotEmpty()) {
             selection.cols.forEach {
-                sortColumns.add(SortColumn(type, it))
+                val col = SortColumn(type, it)
+                sortColumns.remove(col)
+                sortColumns.add(col)
             }
+            applySort()
+        }
+    }
+
+    private fun clearSort() {
+        sortColumns.clear()
+        grid.columnHeaders.setAll(headers)
+        grid.rows.setAll(referenceOrder)
+        view.sortList.items.clear()
+    }
+
+    private fun clearSelectedSort() {
+        val selection = getSelection()
+        if (selection.cols.isNotEmpty()) {
+            sortColumns.removeAll { it.index in selection.cols }
             applySort()
         }
     }
@@ -162,11 +171,14 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
         grid.rows.setAll(sortedOrder.map { referenceOrder[it] })
         grid.columnHeaders.setAll(headers)
         sortColumns.forEachIndexed { i, sortColumn ->
-            grid.columnHeaders[sortColumn.index] +=  when (sortColumn.sortType) {
+            grid.columnHeaders[sortColumn.index] += when (sortColumn.sortType) {
                 SortType.Ascending -> " " + "\u25B4".repeat(i + 1)
                 SortType.Descending -> " " + "\u25be".repeat(i + 1)
             }
         }
+        view.sortList.items.setAll(sortColumns.map {
+            df.cols[it.index].name + "  >>  " + it.sortType.name
+        })
     }
 
     private inline fun copyWithMinMax(block: (minRow: Int, maxRow: Int, minCol: Int, maxCol: Int) -> String) {
@@ -221,15 +233,27 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
             builder.append('{')
             if (df.cols.isNotEmpty() && minCol != maxCol) {
                 for (col in minCol..maxCol) {
+                    val column = df.cols[col]
                     builder.append("\n\"")
-                            .append(df[col].name)
+                            .append(column.name)
                             .append("\": [")
-                    for (row in minRow..maxRow) {
-                        val item = grid.rows[row][col].item
-                        if (item is String && item.isEmpty()) builder.append("None")
-                        else builder.append("\"").append(item).append("\"")
-                        if (row != maxRow) {
-                            builder.append(", ")
+                    if (column is NumberCol || column is DoubleCol) {
+                        for (row in minRow..maxRow) {
+                            val item = column[row]
+                            if (item == null) builder.append("None")
+                            else builder.append(item)
+                            if (row != maxRow) {
+                                builder.append(", ")
+                            }
+                        }
+                    } else {
+                        for (row in minRow..maxRow) {
+                            val item = column[row]
+                            if (item == null) builder.append("None")
+                            else builder.append("\"").append(item).append("\"")
+                            if (row != maxRow) {
+                                builder.append(", ")
+                            }
                         }
                     }
                     builder.append("]")
@@ -245,15 +269,42 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
     }
 
     private fun listOfListColumns() {
-
-    }
-
-    private fun listOfListRows() {
-
-    }
-
-    private fun listOfDistRows() {
-
+        copyWithMinMax { minRow, maxRow, minCol, maxCol ->
+            val builder = StringBuilder()
+            builder.append('[')
+            if (df.cols.isNotEmpty() && minCol != maxCol) {
+                for (col in minCol..maxCol) {
+                    val column = df.cols[col]
+                    builder.append("\n[")
+                    if (column is NumberCol || column is DoubleCol) {
+                        for (row in minRow..maxRow) {
+                            val item = column[row]
+                            if (item == null) builder.append("None")
+                            else builder.append(item)
+                            if (row != maxRow) {
+                                builder.append(", ")
+                            }
+                        }
+                    } else {
+                        for (row in minRow..maxRow) {
+                            val item = column[row]
+                            if (item == null) builder.append("None")
+                            else builder.append("\"").append(item).append("\"")
+                            if (row != maxRow) {
+                                builder.append(", ")
+                            }
+                        }
+                    }
+                    builder.append("]")
+                    if (col != maxCol) {
+                        builder.append(",")
+                    }
+                }
+                builder.append("\n")
+            }
+            builder.append(']')
+            builder.toString()
+        }
     }
 
     override fun getPropertyGroups(): List<PropertyGroup> {

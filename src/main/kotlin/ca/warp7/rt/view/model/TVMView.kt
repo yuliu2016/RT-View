@@ -69,11 +69,11 @@ internal class TVMView {
         })
     }
 
+    internal val sortList = PropertyList().apply {
+        prefHeight = 140.dp2px
+    }
+
     internal val sortPane = PropertyGroup("Column Sort", fontIcon(FontAwesomeSolid.SORT, 18)) {
-        add(PropertyList("Hatch Placed (Desc.)", "Match (Asc.)", "Hatch Acquired (Nat.)", "Cargo Acquired (Rev.)").apply {
-            prefHeight = 140.dp2px
-            hgrow()
-        })
-        add(CheckBox("Apply sort before filter"))
+        add(sortList)
     }
 }

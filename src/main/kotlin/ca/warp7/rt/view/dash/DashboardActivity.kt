@@ -24,7 +24,6 @@ import krangl.readDelim
 import org.apache.commons.csv.CSVFormat
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid.*
 import java.io.File
-import kotlin.contracts.contract
 
 class DashboardActivity(private val window: RTWindow) : TabActivity(
         "Dashboard",
@@ -43,12 +42,12 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
     private val propertyGroups = mutableListOf(view.identityPane)
 
     private fun setModel(model: ViewModel) {
-        if (window.trySetModel(model)) {
-            propertyGroups.clear()
-            propertyGroups.add(view.identityPane)
-            propertyGroups.addAll(model.getPropertyGroups())
-            view.propertiesBox.children.setAll(propertyGroups.map { it.pane })
-        }
+        window.trySetModel(model)
+        propertyGroups.clear()
+        propertyGroups.add(view.identityPane)
+        propertyGroups.addAll(model.getPropertyGroups())
+        view.propertiesBox.children.setAll(propertyGroups.map { it.pane })
+
     }
 
     private fun selectAndFocus(item: TreeItem<Index>) {
@@ -156,7 +155,7 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
                 icon(FONT, 18)
             }
             item {
-                name("Update")
+                name("Reload")
                 icon(SYNC, 18)
             }
             item {

@@ -5,7 +5,10 @@ import krangl.DataFrame
 import org.controlsfx.control.spreadsheet.Grid
 
 @Suppress("unused")
-abstract class ViewModel {
+abstract class ViewModel(
+        val isTable: Boolean,
+        val isEditable: Boolean
+) {
 
     private lateinit var selection: () -> Selection
 
@@ -31,8 +34,6 @@ abstract class ViewModel {
     }
 
     abstract fun ContextMenu.updateMenu(): ContextMenu
-
-    abstract fun isTable(): Boolean
 
     abstract fun getDataFrame(): DataFrame
 
