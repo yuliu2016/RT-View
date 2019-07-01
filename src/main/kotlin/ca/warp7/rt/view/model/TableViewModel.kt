@@ -1,13 +1,11 @@
 package ca.warp7.rt.view.model
 
 import ca.warp7.rt.view.api.PropertyGroup
-import ca.warp7.rt.view.dash.PropertyList
-import ca.warp7.rt.view.fxkt.*
 import ca.warp7.rt.view.api.ViewModel
+import ca.warp7.rt.view.fxkt.*
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.geometry.Pos
-import javafx.scene.control.*
+import javafx.scene.control.ContextMenu
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.KeyCode
@@ -19,9 +17,12 @@ import org.controlsfx.control.spreadsheet.SpreadsheetCell
 import org.controlsfx.control.spreadsheet.SpreadsheetCellType
 import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
+import java.text.DecimalFormat
 
 @Suppress("UsePropertyAccessSyntax")
 class TableViewModel(private val df: DataFrame) : ViewModel() {
+
+    private val view = TVMView()
 
     override fun isTable(): Boolean {
         return true
@@ -31,10 +32,32 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
         return df
     }
 
+    private val decimalFormat = DecimalFormat("####0.000")
+
     private val sortColumns: MutableList<SortColumn> = mutableListOf()
-    private var referenceOrder: List<ObservableList<SpreadsheetCell>> = listOf()
 
     private val grid: Grid = toGrid()
+
+    private fun toGrid(): Grid {
+        val grid = GridBase(df.nrow, df.ncol)
+        grid.rows.addAll(df.rows.mapIndexed { i, row ->
+            FXCollections.observableList(row.values.mapIndexed { j, value ->
+                if (value is Double) {
+                    SpreadsheetCellType.STRING.createCell(i, j,
+                            1, 1, decimalFormat.format(value))
+                } else {
+                    SpreadsheetCellType.STRING.createCell(i, j,
+                            1, 1, value?.toString() ?: "")
+                }
+            })
+        })
+        grid.columnHeaders.addAll(df.cols.map { it.name })
+        return grid
+    }
+
+    private var referenceOrder: List<ObservableList<SpreadsheetCell>> = grid.rows.toList()
+
+    private val headers = df.cols.map { it.name }
 
     override fun getGrid(): Grid {
         return grid
@@ -57,9 +80,11 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
                 }
                 item {
                     name("Add Ascending")
+                    action { addSort(SortType.Ascending) }
                 }
                 item {
                     name("Add Descending")
+                    action { addSort(SortType.Descending) }
                 }
                 item {
                     name("Clear Selected Columns")
@@ -111,24 +136,17 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
         }
     }
 
-    private fun toGrid(): Grid {
-        val grid = GridBase(df.nrow, df.ncol)
-        grid.rows.addAll(df.rows.mapIndexed { i, row ->
-            FXCollections.observableList(row.values.mapIndexed { j, value ->
-                SpreadsheetCellType.STRING.createCell(i, j, 1, 1, value?.toString() ?: "")
-            })
-        })
-        grid.columnHeaders.addAll(df.cols.map { it.name })
-        referenceOrder = grid.rows.toList()
-        return grid
+    private fun setSort(type: SortType) {
+        sortColumns.clear()
+        addSort(type)
     }
 
-    private fun setSort(type: SortType) {
+    private fun addSort(type: SortType) {
         val selection = getSelection()
         if (selection.cols.isNotEmpty()) {
-            val name = df.cols[selection.cols.first()].name
-            sortColumns.clear()
-            sortColumns.add(SortColumn(type, name))
+            selection.cols.forEach {
+                sortColumns.add(SortColumn(type, it))
+            }
             applySort()
         }
     }
@@ -136,26 +154,26 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
     private fun applySort() {
         val totalOrderComparator = sortColumns.map {
             when (it.sortType) {
-                SortType.Ascending -> df[it.columnName].ascendingComparator()
-                SortType.Descending -> df[it.columnName].descendingComparator()
+                SortType.Ascending -> df.cols[it.index].ascendingComparator()
+                SortType.Descending -> df.cols[it.index].descendingComparator()
             }
         }.reduce { a, b -> a.then(b) }
         val sortedOrder = (0 until df.nrow).sortedWith(totalOrderComparator)
         grid.rows.setAll(sortedOrder.map { referenceOrder[it] })
+        grid.columnHeaders.setAll(headers)
+        sortColumns.forEachIndexed { i, sortColumn ->
+            grid.columnHeaders[sortColumn.index] +=  when (sortColumn.sortType) {
+                SortType.Ascending -> " " + "\u25B4".repeat(i + 1)
+                SortType.Descending -> " " + "\u25be".repeat(i + 1)
+            }
+        }
     }
-
 
     private inline fun copyWithMinMax(block: (minRow: Int, maxRow: Int, minCol: Int, maxCol: Int) -> String) {
         val se = getSelection()
-        val minRow = se.rows.min()
-        val maxRow = se.rows.max()
-        val minCol = se.cols.min()
-        val maxCol = se.cols.max()
-        if (minRow != null && maxRow != null && minCol != null && maxCol != null) {
-            val content = ClipboardContent()
-            content.putString(block(minRow, maxRow, minCol, maxCol))
-            Clipboard.getSystemClipboard().setContent(content)
-        }
+        val content = ClipboardContent()
+        content.putString(block(se.minRow, se.maxRow, se.minCol, se.maxCol))
+        Clipboard.getSystemClipboard().setContent(content)
     }
 
     private fun copyDelimited(delimiter: Char, headers: Boolean) {
@@ -201,10 +219,10 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
         copyWithMinMax { minRow, maxRow, minCol, maxCol ->
             val builder = StringBuilder()
             builder.append('{')
-            if (grid.columnHeaders.isNotEmpty() && minCol != maxCol) {
+            if (df.cols.isNotEmpty() && minCol != maxCol) {
                 for (col in minCol..maxCol) {
                     builder.append("\n\"")
-                            .append(grid.columnHeaders[col])
+                            .append(df[col].name)
                             .append("\": [")
                     for (row in minRow..maxRow) {
                         val item = grid.rows[row][col].item
@@ -238,72 +256,7 @@ class TableViewModel(private val df: DataFrame) : ViewModel() {
 
     }
 
-    private val pivotPane = PropertyGroup("Group Rows",
-            fontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_RIGHT, 18)) {
-        spacing = 8.dp2px
-        add(Label("Rows:").apply { style = "-fx-font-weight:bold" })
-        add(hbox {
-            align(Pos.CENTER_LEFT)
-            spacing = 8.dp2px
-            add(PropertyList("Team").apply {
-                prefHeight = 45.dp2px
-                hgrow()
-            })
-            add(Button("", fontIcon(FontAwesomeSolid.CROSSHAIRS, 18)))
-        })
-
-        add(Label("Values:").apply { style = "-fx-font-weight:bold" })
-
-        add(PropertyList("Hatch Placed::Average", "Hatch Placed::Max").apply {
-            prefHeight = 120.dp2px
-            hgrow()
-        })
-
-        add(hbox {
-            align(Pos.CENTER_LEFT)
-            spacing = 8.dp2px
-            add(ChoiceBox<String>(listOf("Average", "Max", "Min", "Count", "Stddev", "Stddevp",
-                    "Median", "Mode", "Product", "Sum", "Var", "Varp", "Count-Percent", "Sum-Percent").observable()).apply {
-                selectionModel.select(0)
-            })
-            add(hbox {
-                align(Pos.CENTER)
-                add(CheckBox())
-                add(Label("NotNull"))
-            })
-            add(Button("", fontIcon(FontAwesomeSolid.CROSSHAIRS, 18)))
-        })
-
-    }
-
-    private val formulaPane = PropertyGroup("Column Formulas", fontIcon(FontAwesomeSolid.SUPERSCRIPT, 18)) {
-        add(PropertyList("=max([Hatch Placed], [Hatch Received])", "=sum(1,2)").apply {
-            prefHeight = 140.dp2px
-            hgrow()
-        })
-        add(hbox {
-            spacing = 8.dp2px
-            add(Button("Add"))
-            add(Button("Edit"))
-        })
-    }
-
-    private val filterPane = PropertyGroup("Row Filter", fontIcon(FontAwesomeSolid.FILTER, 18)) {
-        add(PropertyList("Hatch Placed!=2", "Team=865").apply {
-            prefHeight = 140.dp2px
-            hgrow()
-        })
-    }
-
-    private val sortPane = PropertyGroup("Column Sort", fontIcon(FontAwesomeSolid.SORT, 18)) {
-        add(PropertyList("Hatch Placed (Desc.)", "Match (Asc.)", "Hatch Acquired (Nat.)", "Cargo Acquired (Rev.)").apply {
-            prefHeight = 140.dp2px
-            hgrow()
-        })
-        add(CheckBox("Apply sort before filter"))
-    }
-
     override fun getPropertyGroups(): List<PropertyGroup> {
-        return listOf(pivotPane, formulaPane, filterPane, sortPane)
+        return listOf(view.pivotPane, view.formulaPane, view.filterPane, view.sortPane)
     }
 }

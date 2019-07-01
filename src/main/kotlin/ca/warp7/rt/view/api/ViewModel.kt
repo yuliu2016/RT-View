@@ -39,9 +39,4 @@ abstract class ViewModel {
     abstract fun getGrid(): Grid
 
     abstract fun getPropertyGroups(): List<PropertyGroup>
-
-    @Suppress("unused")
-    fun getOptions() {
-
-    }
 }

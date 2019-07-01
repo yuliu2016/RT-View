@@ -17,6 +17,9 @@ import javafx.scene.control.TreeView
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import javafx.scene.text.Font
+import javafx.scene.text.FontWeight
+import javafx.scene.text.Text
 import javafx.stage.Stage
 import org.controlsfx.control.spreadsheet.SpreadsheetView
 
@@ -114,7 +117,20 @@ class RTWindow private constructor(
     private fun WindowState.updateModel() {
         val grid = model.getGrid()
         view.spreadsheet.grid = grid
-        view.spreadsheet.columns.forEach { it.setPrefWidth(100.0) }
+        val text = Text()
+        text.font = Font.font("sans-serif", FontWeight.BOLD, 14.0)
+        if (grid.columnHeaders.isNotEmpty()) {
+            view.spreadsheet.columns.forEachIndexed { index, column ->
+                val modelCol = view.spreadsheet.getModelColumn(index)
+                val name = grid.columnHeaders[modelCol]
+                text.text = name
+                val width = text.layoutBounds.width + 50
+                column.setPrefWidth(maxOf(100.0, width))
+            }
+        } else {
+            view.spreadsheet.columns.forEach { it.setPrefWidth(100.0) }
+        }
+
         val menu = model.getMenu()
         view.spreadsheet.contextMenu = menu
         model.setCallbacks(selector)
