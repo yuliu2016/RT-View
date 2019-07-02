@@ -10,9 +10,7 @@ import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCombination
-import krangl.DataFrame
-import krangl.DoubleCol
-import krangl.NumberCol
+import krangl.*
 import org.controlsfx.control.spreadsheet.Grid
 import org.controlsfx.control.spreadsheet.GridBase
 import org.controlsfx.control.spreadsheet.SpreadsheetCell
@@ -20,6 +18,8 @@ import org.controlsfx.control.spreadsheet.SpreadsheetCellType
 import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 import java.text.DecimalFormat
+import kotlin.math.pow
+import kotlin.math.withSign
 
 @Suppress("UsePropertyAccessSyntax")
 class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
@@ -33,6 +33,8 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
     private val decimalFormat = DecimalFormat("####0.000")
 
     private val sortColumns: MutableList<SortColumn> = mutableListOf()
+
+    private val colourScales: MutableList<ColorScale> = mutableListOf()
 
     private val grid: Grid = toGrid()
 
@@ -64,7 +66,7 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
     override fun ContextMenu.updateMenu(): ContextMenu = modify {
         submenu {
             name("Sort")
-            icon(FontAwesomeSolid.SORT, 16)
+            icon(FontAwesomeSolid.SORT, 18)
             modify {
                 item {
                     name("Set Ascending")
@@ -97,7 +99,7 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
         }
         submenu {
             name("Copy")
-            icon(FontAwesomeRegular.COPY, 16)
+            icon(FontAwesomeRegular.COPY, 18)
             modify {
                 item {
                     name("Tab-Delimited With Headers")
@@ -123,6 +125,89 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
                 item {
                     name("Python List of List Cols")
                     action { listOfListColumns() }
+                }
+            }
+        }
+        submenu {
+            name("Format")
+            icon(FontAwesomeSolid.SUN, 18)
+            modify {
+                item {
+                    name("Green Scale Ascending")
+                    action { addColourScale(SortType.Ascending, true) }
+                }
+                item {
+                    name("Green Scale Descending")
+                    action { addColourScale(SortType.Descending, true) }
+                }
+                item {
+                    name("Red Scale Ascending")
+                    action { addColourScale(SortType.Ascending, false) }
+
+                }
+                item {
+                    name("Red Scale Descending")
+                    action { addColourScale(SortType.Descending, false) }
+                }
+                item {
+                    name("Clear Formatting")
+                }
+            }
+        }
+    }
+
+    private fun addColourScale(sortType: SortType, isGood: Boolean) {
+        val selection = getSelection()
+        if (selection.cols.isNotEmpty()) {
+            selection.cols.forEach {
+                val col = ColorScale(it, sortType, isGood)
+                colourScales.remove(col)
+                colourScales.add(col)
+            }
+            applyColourScale()
+        }
+    }
+
+    private fun applyColourScale() {
+        for (colorScale in colourScales) {
+            val col = df.cols[colorScale.index]
+            val comparator = when (colorScale.sortType) {
+                SortType.Ascending -> col.ascendingComparator()
+                SortType.Descending -> col.ascendingComparator().reversed() // Use this because nullsLast doesn't apply
+            }
+            val indices = (0 until df.nrow).sortedWith(comparator)
+
+            val values = when(col) {
+                is DoubleCol -> col.values.toList()
+                is IntCol -> col.values.map { it?.toDouble() }
+                is LongCol -> col.values.map { it?.toDouble() }
+                is StringCol -> (0 until df.nrow).map { indices.indexOf(it).toDouble() }
+                else -> listOf()
+            }
+
+            val min = values[indices.first()] ?: 0.0
+            val max = values[indices.last()] ?: 0.0
+
+            for (row in 0 until df.nrow) {
+                val n = values[row] ?: 0.0
+                val r: Int
+                val g: Int
+                val b: Int
+                if (colorScale.isGood) {
+                    r = 96
+                    g = 192
+                    b = 144
+                } else {
+                    r = 255
+                    g = 108
+                    b = 108
+                }
+                var x = ((n - min) / (max - min)) * 2 - 1
+                x = ((x * x).withSign(x) + 1) / 2
+                val a = ((x * 100).toInt() / 100.0).coerceIn(0.0, 1.0)
+                referenceOrder[row][colorScale.index].apply {
+                    styleClass.add("reload-hot-fix")
+                    style = "-fx-background-color: rgba($r, $g, $b, $a)"
                 }
             }
         }
