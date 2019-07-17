@@ -18,8 +18,6 @@ import org.controlsfx.control.spreadsheet.SpreadsheetCellType
 import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid
 import java.text.DecimalFormat
-import kotlin.math.pow
-import kotlin.math.withSign
 
 @Suppress("UsePropertyAccessSyntax")
 class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
@@ -172,8 +170,8 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
         for (colorScale in colourScales) {
             val col = df.cols[colorScale.index]
             val comparator = when (colorScale.sortType) {
-                SortType.Ascending -> col.ascendingComparator()
-                SortType.Descending -> col.ascendingComparator().reversed() // Use this because nullsLast doesn't apply
+                SortType.Ascending -> col.descendingComparator().reversed()
+                SortType.Descending -> col.ascendingComparator().reversed()
             }
             val indices = (0 until df.nrow).sortedWith(comparator)
 
@@ -185,8 +183,27 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
                 else -> listOf()
             }
 
-            val min = values[indices.first()] ?: 0.0
-            val max = values[indices.last()] ?: 0.0
+            var min = 0.0
+            var max = 0.0
+
+            when (colorScale.sortType) {
+                SortType.Ascending -> {
+                    min = values[indices.first()] ?: 0.0
+                    var i = indices.size - 1
+                    while (i > 0 && values[indices[i]] == null){
+                        i--
+                    }
+                    max = values[indices[i]]!!
+                }
+                SortType.Descending -> {
+                    max = values[indices.last()] ?: 0.0
+                    var i = 0
+                    while (i < indices.size && values[indices[i]] == null){
+                        i++
+                    }
+                    min = values[indices[i]]!!
+                }
+            }
 
             for (row in 0 until df.nrow) {
                 val n = values[row] ?: 0.0
@@ -202,9 +219,8 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
                     g = 108
                     b = 108
                 }
-                var x = ((n - min) / (max - min)) * 2 - 1
-                x = ((x * x).withSign(x) + 1) / 2
-                val a = ((x * 100).toInt() / 100.0).coerceIn(0.0, 1.0)
+                val x = (n - min) / (max - min)
+                val a = ((x * 100).toInt() / 100.0)
                 referenceOrder[row][colorScale.index].apply {
                     styleClass.add("reload-hot-fix")
                     style = "-fx-background-color: rgba($r, $g, $b, $a)"

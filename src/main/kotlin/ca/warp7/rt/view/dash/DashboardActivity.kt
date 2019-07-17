@@ -42,12 +42,12 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
     private val propertyGroups = mutableListOf(view.identityPane)
 
     private fun setModel(model: ViewModel) {
-        window.trySetModel(model)
-        propertyGroups.clear()
-        propertyGroups.add(view.identityPane)
-        propertyGroups.addAll(model.getPropertyGroups())
-        view.propertiesBox.children.setAll(propertyGroups.map { it.pane })
-
+        if (window.trySetModel(model)) {
+            propertyGroups.clear()
+            propertyGroups.add(view.identityPane)
+            propertyGroups.addAll(model.getPropertyGroups())
+            view.propertiesBox.children.setAll(propertyGroups.map { it.pane })
+        }
     }
 
     private fun selectAndFocus(item: TreeItem<Index>) {

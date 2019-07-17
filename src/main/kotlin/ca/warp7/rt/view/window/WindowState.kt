@@ -13,5 +13,5 @@ internal class WindowState {
     var iconNodes: List<Node> = listOf()
     val activities: MutableList<TabActivity> = mutableListOf()
     var isFullScreen = false
-    var model: ViewModel = EmptyViewModel
+    var model: ViewModel = EmptyViewModel()
 }

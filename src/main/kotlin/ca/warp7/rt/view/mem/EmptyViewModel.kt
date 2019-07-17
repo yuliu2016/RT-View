@@ -10,7 +10,7 @@ import org.controlsfx.control.spreadsheet.Grid
 import org.controlsfx.control.spreadsheet.GridBase
 import org.controlsfx.control.spreadsheet.SpreadsheetCellType
 
-object EmptyViewModel : ViewModel(false, true) {
+class EmptyViewModel : ViewModel(false, true) {
     override fun ContextMenu.updateMenu(): ContextMenu {
         return this
     }

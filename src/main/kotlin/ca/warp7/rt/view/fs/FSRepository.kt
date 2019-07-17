@@ -14,7 +14,7 @@ class FSRepository : Repository(
         fontIcon(DESKTOP, 18)
 ) {
 
-    fun index(title: String, icon: FontIcon) = Index(title, icon, this, "", true, EmptyViewModel)
+    fun index(title: String, icon: FontIcon) = Index(title, icon, this, "", true, EmptyViewModel())
 
     val g
         get() = mutableListOf(
