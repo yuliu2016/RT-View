@@ -2,98 +2,94 @@ package ca.warp7.rt.view.model
 
 import krangl.*
 
-fun DataCol.ascendingComparator(): Comparator<Int> {
-    return when (this) {
-        is DoubleCol -> Comparator { a, b ->
-            val va = values[a]
-            val vb = values[b]
-            when {
-                va === vb -> 0
-                va == null -> 1 // a > b
-                vb == null -> -1 // a < b
-                else -> {
-                    va.compareTo(vb)
-                }
+fun DataCol.ascendingComparator(): Comparator<Int> = when (this) {
+    is DoubleCol -> Comparator { a, b ->
+        val va = values[a]
+        val vb = values[b]
+        when {
+            va === vb -> 0
+            va == null -> 1 // a > b
+            vb == null -> -1 // a < b
+            else -> {
+                va.compareTo(vb)
             }
         }
-        is IntCol -> Comparator { a, b ->
-            val va = values[a]
-            val vb = values[b]
-            when {
-                va === vb -> 0
-                va == null -> 1 // a > b
-                vb == null -> -1 // a < b
-                else -> va.compareTo(vb)
-            }
-        }
-        is BooleanCol -> Comparator { a, b ->
-            val va = values[a]
-            val vb = values[b]
-            when {
-                va === vb -> 0
-                va == null -> 1 // a > b
-                vb == null -> -1 // a < b
-                else -> va.compareTo(vb)
-            }
-        }
-        is StringCol -> Comparator { a, b ->
-            val va = values[a]
-            val vb = values[b]
-            when {
-                va === vb -> 0
-                va == null -> 1 // a > b
-                vb == null -> -1 // a < b
-                else -> compareNaturally(va, vb)
-            }
-        }
-        else -> throw UnsupportedOperationException()
     }
+    is IntCol -> Comparator { a, b ->
+        val va = values[a]
+        val vb = values[b]
+        when {
+            va === vb -> 0
+            va == null -> 1 // a > b
+            vb == null -> -1 // a < b
+            else -> va.compareTo(vb)
+        }
+    }
+    is BooleanCol -> Comparator { a, b ->
+        val va = values[a]
+        val vb = values[b]
+        when {
+            va === vb -> 0
+            va == null -> 1 // a > b
+            vb == null -> -1 // a < b
+            else -> va.compareTo(vb)
+        }
+    }
+    is StringCol -> Comparator { a, b ->
+        val va = values[a]
+        val vb = values[b]
+        when {
+            va === vb -> 0
+            va == null -> 1 // a > b
+            vb == null -> -1 // a < b
+            else -> compareNaturally(va, vb)
+        }
+    }
+    else -> throw UnsupportedOperationException()
 }
 
-fun DataCol.descendingComparator(): Comparator<Int> {
-    return when (this) {
-        is DoubleCol -> Comparator { a, b ->
-            val va = values[a]
-            val vb = values[b]
-            when {
-                va === vb -> 0
-                va == null -> 1 // a > b
-                vb == null -> -1 // a < b
-                else -> vb.compareTo(va)
-            }
+fun DataCol.descendingComparator(): Comparator<Int> = when (this) {
+    is DoubleCol -> Comparator { a, b ->
+        val va = values[a]
+        val vb = values[b]
+        when {
+            va === vb -> 0
+            va == null -> 1 // a > b
+            vb == null -> -1 // a < b
+            else -> vb.compareTo(va)
         }
-        is IntCol -> Comparator { a, b ->
-            val va = values[a]
-            val vb = values[b]
-            when {
-                va === vb -> 0
-                va == null -> 1 // a > b
-                vb == null -> -1 // a < b
-                else -> vb.compareTo(va)
-            }
-        }
-        is BooleanCol -> Comparator { a, b ->
-            val va = values[a]
-            val vb = values[b]
-            when {
-                va === vb -> 0
-                va == null -> 1 // a > b
-                vb == null -> -1 // a < b
-                else -> vb.compareTo(va)
-            }
-        }
-        is StringCol -> Comparator { a, b ->
-            val va = values[a]
-            val vb = values[b]
-            when {
-                va === vb -> 0
-                va == null -> 1 // a > b
-                vb == null -> -1 // a < b
-                else -> compareNaturally(vb, va)
-            }
-        }
-        else -> throw UnsupportedOperationException()
     }
+    is IntCol -> Comparator { a, b ->
+        val va = values[a]
+        val vb = values[b]
+        when {
+            va === vb -> 0
+            va == null -> 1 // a > b
+            vb == null -> -1 // a < b
+            else -> vb.compareTo(va)
+        }
+    }
+    is BooleanCol -> Comparator { a, b ->
+        val va = values[a]
+        val vb = values[b]
+        when {
+            va === vb -> 0
+            va == null -> 1 // a > b
+            vb == null -> -1 // a < b
+            else -> vb.compareTo(va)
+        }
+    }
+    is StringCol -> Comparator { a, b ->
+        val va = values[a]
+        val vb = values[b]
+        when {
+            va === vb -> 0
+            va == null -> 1 // a > b
+            vb == null -> -1 // a < b
+            else -> compareNaturally(vb, va)
+        }
+    }
+    else -> throw UnsupportedOperationException()
 }
 
 /*

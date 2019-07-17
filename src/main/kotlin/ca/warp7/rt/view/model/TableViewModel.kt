@@ -132,33 +132,49 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
             modify {
                 item {
                     name("Green Scale Ascending")
-                    action { addColourScale(SortType.Ascending, true) }
+                    action { addColourScale(SortType.Ascending, 96, 192, 144) }
                 }
                 item {
                     name("Green Scale Descending")
-                    action { addColourScale(SortType.Descending, true) }
+                    action { addColourScale(SortType.Descending, 96, 192, 144) }
+                }
+                item {
+                    name("Orange Scale Ascending")
+                    action { addColourScale(SortType.Ascending, 255, 144, 0) }
+                }
+                item {
+                    name("Orange Scale Descending")
+                    action { addColourScale(SortType.Descending, 255, 144, 0) }
                 }
                 item {
                     name("Red Scale Ascending")
-                    action { addColourScale(SortType.Ascending, false) }
-
+                    action { addColourScale(SortType.Ascending, 255, 108, 108) }
                 }
                 item {
                     name("Red Scale Descending")
-                    action { addColourScale(SortType.Descending, false) }
+                    action { addColourScale(SortType.Descending, 255, 108, 108) }
+                }
+                item {
+                    name("Blue Scale Ascending")
+                    action { addColourScale(SortType.Ascending, 110, 170, 256) }
+                }
+                item {
+                    name("Blue Scale Descending")
+                    action { addColourScale(SortType.Descending, 110, 170, 256) }
                 }
                 item {
                     name("Clear Formatting")
+                    action { clearColourScale() }
                 }
             }
         }
     }
 
-    private fun addColourScale(sortType: SortType, isGood: Boolean) {
+    private fun addColourScale(sortType: SortType, r: Int, g: Int, b: Int) {
         val selection = getSelection()
         if (selection.cols.isNotEmpty()) {
             selection.cols.forEach {
-                val col = ColorScale(it, sortType, isGood)
+                val col = ColorScale(it, sortType, r, g, b)
                 colourScales.remove(col)
                 colourScales.add(col)
             }
@@ -175,7 +191,7 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
             }
             val indices = (0 until df.nrow).sortedWith(comparator)
 
-            val values = when(col) {
+            val values = when (col) {
                 is DoubleCol -> col.values.toList()
                 is IntCol -> col.values.map { it?.toDouble() }
                 is LongCol -> col.values.map { it?.toDouble() }
@@ -205,20 +221,12 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
                 }
             }
 
+            val r = colorScale.r
+            val g = colorScale.g
+            val b = colorScale.b
+
             for (row in 0 until df.nrow) {
                 val n = values[row] ?: 0.0
-                val r: Int
-                val g: Int
-                val b: Int
-                if (colorScale.isGood) {
-                    r = 96
-                    g = 192
-                    b = 144
-                } else {
-                    r = 255
-                    g = 108
-                    b = 108
-                }
                 val x = (n - min) / (max - min)
                 val a = ((x * 100).toInt() / 100.0)
                 referenceOrder[row][colorScale.index].apply {
@@ -227,6 +235,18 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
                 }
             }
         }
+    }
+
+    private fun clearColourScale() {
+        for (colorScale in colourScales) {
+            for (row in 0 until df.nrow) {
+                referenceOrder[row][colorScale.index].apply {
+                    styleClass.remove("reload-hot-fix")
+                    style = ""
+                }
+            }
+        }
+        colourScales.clear()
     }
 
     private fun setSort(type: SortType) {
