@@ -46,7 +46,7 @@ class DashboardActivity(private val window: RTWindow) : TabActivity(
             propertyGroups.clear()
             propertyGroups.add(view.identityPane)
             propertyGroups.addAll(model.getPropertyGroups())
-            view.propertiesBox.children.setAll(propertyGroups.map { it.pane })
+            view.propertiesBox.panes.setAll(propertyGroups.map { it.pane })
         }
     }
 

@@ -112,18 +112,19 @@ internal class DashboardView {
         }
     }
 
-    val propertiesBox = vbox {}
+    val propertiesBox = Accordion()
 
     val propertiesSection = vbox {
         add(sectionBar("PROPERTIES").apply {
             add(sectionIconButton(FontAwesomeSolid.EXPAND))
             add(sectionIconButton(FontAwesomeSolid.COMPRESS))
         })
-        add(ScrollPane(propertiesBox).apply {
-            vbarPolicy = ScrollPane.ScrollBarPolicy.ALWAYS
-            isFitToWidth = true
-            vgrow()
-        })
+//        add(ScrollPane(propertiesBox).apply {
+//            vbarPolicy = ScrollPane.ScrollBarPolicy.ALWAYS
+//            isFitToWidth = true
+//            vgrow()
+//        })
+        add(propertiesBox)
         minHeight = 32.dp2px
     }
 

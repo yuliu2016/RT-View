@@ -187,7 +187,7 @@ class TableViewModel(private val df: DataFrame) : ViewModel(true, false) {
             val col = df.cols[colorScale.index]
             val comparator = when (colorScale.sortType) {
                 SortType.Ascending -> col.descendingComparator().reversed()
-                SortType.Descending -> col.ascendingComparator().reversed()
+                SortType.Descending -> col.descendingComparator()
             }
             val indices = (0 until df.nrow).sortedWith(comparator)
 
